@@ -38,12 +38,13 @@ CustomAppbar(
       backgroundColor: bgcolor);
 }
 
-textfield({String? text, prefix, suffix, Color? hintcolor, feildcolor}) {
+textfield({String? text, prefix, suffix, Color? hintcolor, feildcolor , TextEditingController? controller}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 0),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16), color: feildcolor),
     child: TextField(
+      controller: controller,
       decoration: InputDecoration(
         hintText: text,
         labelStyle: const TextStyle(color: Colors.white),

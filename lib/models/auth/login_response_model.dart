@@ -1,40 +1,40 @@
 // To parse this JSON data, do
 //
-//     final loginResponse = loginResponseFromJson(jsonString);
+//     final loginResponseModel = loginResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginResponse loginResponseFromJson(String str) => LoginResponse.fromJson(json.decode(str));
+LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
 
-String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
+String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJson());
 
-class LoginResponse {
+class LoginResponseModel {
     final String? token;
     final String? name;
     final String? email;
     final String? tokenType;
 
-    LoginResponse({
+    LoginResponseModel({
         this.token,
         this.name,
         this.email,
         this.tokenType,
     });
 
-    LoginResponse copyWith({
+    LoginResponseModel copyWith({
         String? token,
         String? name,
         String? email,
         String? tokenType,
     }) => 
-        LoginResponse(
+        LoginResponseModel(
             token: token ?? this.token,
             name: name ?? this.name,
             email: email ?? this.email,
             tokenType: tokenType ?? this.tokenType,
         );
 
-    factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+    factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
         token: json["token"],
         name: json["name"],
         email: json["email"],

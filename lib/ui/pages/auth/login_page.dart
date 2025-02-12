@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tomatebnb/bloc/auth_bloc/auth_bloc.dart';
+import 'package:tomatebnb/bloc/auth_bloc/auth_event.dart';
+import 'package:tomatebnb/bloc/auth_bloc/auth_state.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +18,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late ColorNotifire notifire;
+
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -65,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: notifire.getwhiteblackcolor)),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
+                    controller: emailController,
                     feildcolor: notifire.getdarkmodecolor,
                     hintcolor: notifire.getgreycolor,
                     text: 'Enter your number',
@@ -81,12 +90,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
-                    feildcolor: notifire.getdarkmodecolor,
-                    hintcolor: notifire.getgreycolor,
-                    text: 'Enter your password',
-                    prefix: Image.asset("assets/images/password.png",
-                        height: 25, color: notifire.getgreycolor),
-                    suffix: null),
+                  controller: passwordController,
+                  feildcolor: notifire.getdarkmodecolor,
+                  hintcolor: notifire.getgreycolor,
+                  text: 'Enter your password',
+                  prefix: Image.asset("assets/images/password.png",
+                      height: 25, color: notifire.getgreycolor),
+                  suffix: null
+                ),
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -123,13 +134,37 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            AppButton(
-                buttontext: "Login",
-                onclick: () {
+            BlocConsumer<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if(state is AuthLoading){
+                  return const CircularProgressIndicator();
+                } 
+                return AppButton(
+                  buttontext: "Iniciar Sesión",
+                  onclick: () {
+                    context.read<AuthBloc>().add(
+                      AuthLoginEvent(
+                        emailController.text, 
+                        passwordController.text
+                      )
+                    );
+                  }
+                );
+              }, 
+              listener: (context, state) {
+                if(state is AuthLoginSuccess){
                   context.push('/menu');
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => const homepage()));
-                }),
+                } else if(state is AuthLoginError){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                      backgroundColor: Colors.red,
+                    )
+                  );
+                }
+              },
+            ),
+            
             const SizedBox(height: 15),
             Center(
               child: Column(
