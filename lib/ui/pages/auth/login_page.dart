@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:tomatebnb/bloc/auth_bloc/auth_bloc.dart';
-import 'package:tomatebnb/bloc/auth_bloc/auth_event.dart';
-import 'package:tomatebnb/bloc/auth_bloc/auth_state.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    emailController.text = 'juan@mail.com';
+    passwordController.text = '1234567';
     getdarkmodepreviousstate();
     super.initState();
   }
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
             BlocConsumer<AuthBloc, AuthState>(
               builder: (context, state) {
                 if(state is AuthLoading){
-                  return const CircularProgressIndicator();
+                  return Center(child: const CircularProgressIndicator());
                 } 
                 return AppButton(
                   buttontext: "Iniciar Sesión",

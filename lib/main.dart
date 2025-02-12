@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:tomatebnb/bloc/auth_bloc/auth_bloc.dart';
+import 'package:tomatebnb/bloc/blocs.dart';
 import 'package:tomatebnb/config/router/app_router.dart';
-import 'package:tomatebnb/repository/auth_repository.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 Future<void> main() async {
@@ -26,9 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc(AuthRepository())),
-      ], 
+      providers: Blocs.blocsProviders, 
       child: Builder(builder: (context) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
