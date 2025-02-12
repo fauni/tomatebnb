@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import 'package:tomatebnb/config/router/app_router.dart';
+import 'package:tomatebnb/utils/dark_lightmode.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ColorNotifire()),
+      ],
+      child: const MyApp(),
+    )
+  );
+} 
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,9 +23,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'TomateBnb',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+      theme: ThemeData(
+        fontFamily: 'SofiaRegular',
+        useMaterial3: false,
+        splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        dividerColor: Colors.transparent,
+      ),
     );
   }
 }

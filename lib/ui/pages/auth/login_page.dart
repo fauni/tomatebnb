@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,27 +13,27 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // late ColorNotifire notifire;
+  late ColorNotifire notifire;
 
   @override
   void initState() {
-    // getdarkmodepreviousstate();
+    getdarkmodepreviousstate();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
+      backgroundColor: notifire.getbgcolor,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(75),
           child: CustomAppbar(
               centertext: "",
               ActionIcon: null,
-              // bgcolor: notifire.getbgcolor,
-              // actioniconcolor: notifire.getwhiteblackcolor,
-              // leadingiconcolor: notifire.getwhiteblackcolor
-              )
-            ),
+              bgcolor: notifire.getbgcolor,
+              actioniconcolor: notifire.getwhiteblackcolor,
+              leadingiconcolor: notifire.getwhiteblackcolor)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Column(
@@ -45,14 +47,14 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     fontSize: 24,
                     fontFamily: "Gilroy Bold",
-                    // color: notifire.getwhiteblackcolor,
+                    color: notifire.getwhiteblackcolor,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                 Text("Please login to your account",
                     style: TextStyle(
                       fontSize: 14,
-                      // color: notifire.getgreycolor,
+                      color: notifire.getgreycolor,
                       fontFamily: "Gilroy Medium",
                     )),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
@@ -60,17 +62,14 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
-                        // color: notifire.getwhiteblackcolor
-                      )),
+                        color: notifire.getwhiteblackcolor)),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
-                    // feildcolor: notifire.getdarkmodecolor,
-                    // hintcolor: notifire.getgreycolor,
+                    feildcolor: notifire.getdarkmodecolor,
+                    hintcolor: notifire.getgreycolor,
                     text: 'Enter your number',
                     prefix: Image.asset("assets/images/call.png",
-                        height: 25, 
-                        // color: notifire.getgreycolor
-                      ),
+                        height: 25, color: notifire.getgreycolor),
                     suffix: null),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                 Text(
@@ -78,18 +77,15 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Gilroy Medium",
-                      // color: notifire.getwhiteblackcolor
-                    ),
+                      color: notifire.getwhiteblackcolor),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
-                    // feildcolor: notifire.getdarkmodecolor,
-                    // hintcolor: notifire.getgreycolor,
+                    feildcolor: notifire.getdarkmodecolor,
+                    hintcolor: notifire.getgreycolor,
                     text: 'Enter your password',
                     prefix: Image.asset("assets/images/password.png",
-                        height: 25, 
-                        // color: notifire.getgreycolor
-                    ),
+                        height: 25, color: notifire.getgreycolor),
                     suffix: null),
               ],
             ),
@@ -110,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Forgot Password?",
                     style: TextStyle(
                         fontSize: 15,
-                        // color: notifire.getdarkbluecolor,
+                        color: notifire.getdarkbluecolor,
                         fontFamily: "Gilroy Medium"),
                   ),
                 ),
@@ -130,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
             AppButton(
                 buttontext: "Login",
                 onclick: () {
+                  context.push('/menu');
                   // Navigator.of(context).push(MaterialPageRoute(
                   //     builder: (context) => const homepage()));
                 }),
@@ -141,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Or login with",
                     style: TextStyle(
                         fontSize: 15,
-                        // color: notifire.getgreycolor,
+                        color: notifire.getgreycolor,
                         fontFamily: "c"),
                   )
                 ],
@@ -155,8 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      // color: notifire.getdarkmodecolor
-                    ),
+                      color: notifire.getdarkmodecolor),
                   // margin: EdgeInsets.only(top: 12),
                   height: 50,
                   width: MediaQuery.of(context).size.width / 2.3,
@@ -175,8 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   fontSize: 17,
                                   fontFamily: "Gilroy Medium",
-                                  // color: notifire.getwhiteblackcolor
-                                ),
+                                  color: notifire.getwhiteblackcolor),
                             )
                           ],
                         ),
@@ -210,8 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
-                        // color: notifire.getwhiteblackcolor
-                      )),
+                        color: notifire.getwhiteblackcolor)),
                 InkWell(
                   onTap: () {
                     // Navigator.of(context).push(MaterialPageRoute(
@@ -221,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Register",
                     style: TextStyle(
                       fontSize: 16,
-                      // color: notifire.getdarkbluecolor,
+                      color: notifire.getdarkbluecolor,
                       fontFamily: "Gilroy Medium",
                     ),
                   ),
@@ -239,9 +233,9 @@ class _LoginPageState extends State<LoginPage> {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
     if (previusstate == null) {
-      // notifire.setIsDark = false;
+      notifire.setIsDark = false;
     } else {
-      // notifire.setIsDark = previusstate;
+      notifire.setIsDark = previusstate;
     }
   }
 }

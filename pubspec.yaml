@@ -30,10 +30,14 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.8
   custom_pop_up_menu: ^1.2.4
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.0.0
+  flutter_dotenv: ^5.2.1
   flutter_switch: ^0.3.2
   go_router: ^14.8.0
+  http: ^1.3.0
   like_button: ^2.0.5
   modal_bottom_sheet: ^3.0.0
   onboarding: ^4.0.2
@@ -60,8 +64,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - .env
+    - assets/images/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -72,6 +77,28 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Gilroy Black
+      fonts:
+        - asset: fonts/Gilroy-Black.otf
+    - family: Gilroy Light
+      fonts:
+        - asset: fonts/Gilroy-Light.otf
+    - family: Gilroy Heavy
+      fonts:
+        - asset: fonts/Gilroy-Heavy.otf
+    - family: Gilroy Medium
+      fonts:
+        - asset: fonts/Gilroy-Medium.otf
+    - family: Gilroy Bold
+      fonts:
+        - asset: fonts/Gilroy-Bold.otf
+    - family: Gilroy ExtraBold
+      fonts:
+        - asset: fonts/Gilroy-ExtraBold.otf
+    - family: Gilroy Regular
+      fonts:
+        - asset: fonts/Gilroy-Regular.otf
   # fonts:
   #   - family: Schyler
   #     fonts:
