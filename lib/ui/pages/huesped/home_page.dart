@@ -17,20 +17,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getdarkmodepreviousstate();
-    getUserData();
+    //getUserData();
     super.initState();
   }
 
   // TODO: Quitar este metodo o sutituir por otro
-  void getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? name = prefs.getString("name");
-    String? email = prefs.getString("email");
-    String? token = prefs.getString("token");
-    print("Name: $name");
-    print("Email: $email");
-    print("Token: $token");
-  }
+  // void getUserData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? name = prefs.getString("name");
+  //   String? email = prefs.getString("email");
+  //   String? token = prefs.getString("token");
+  //   print("Name: $name");
+  //   print("Email: $email");
+  //   print("Token: $token");
+  // }
   late ColorNotifire notifire;
 
   @override

@@ -492,3 +492,27 @@ List hotelList5 = [
     "massagetime": "10:m Ago"
   },
 ];
+
+List instructions1 = [
+  {
+    "title": " Describe tu espacio",
+    "subtitle":
+        "Agrega algunos datos básicos sobre tu espacio, como donde esta y cuantos huespedes pueden quedarse",
+    "order": "1",
+    "img": "assets/images/person13.jpg"
+  },
+  {
+    "title": "Haz que destaque",
+    "subtitle":
+        "Agrega al menos 5 fotos un titulo y una descripción para que los huespedes sepan que esperar",
+    "order": "2",
+    "img": "assets/images/person2.jpg"
+  },
+  {
+    "title": "Terminar y publicar",
+    "subtitle":
+        "Elije un precio inicial, verifica algunos detalles y publica tu anuncio.",
+    "order": "3",
+    "img": "assets/images/person12.jpg"
+  }
+];

@@ -7,9 +7,7 @@ abstract class AuthEvent extends Equatable {
 class AuthLoginEvent extends AuthEvent {
   final String email;
   final String password;
-
   AuthLoginEvent(this.email, this.password);
-
   @override
   List<Object?> get props => [email, password];
 }

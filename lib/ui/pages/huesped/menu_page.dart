@@ -18,8 +18,8 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  late int _lastTimeBackButtonWasTapped;
-  static const exitTimeInMillis = 2000;
+  // late int _lastTimeBackButtonWasTapped;
+  // static const exitTimeInMillis = 2000;
 
   final _pageOption = [
     const HomePage(),
