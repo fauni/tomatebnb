@@ -9,7 +9,7 @@ abstract class AccommodationState extends Equatable {
 
 class AccommodationInitial extends AccommodationState {}
 
-// Estados para el registro de alojamientos
+// Estados para el listado de alojamientos por usuario
 
 class AccommodationLoading extends AccommodationState {}
 
@@ -31,6 +31,7 @@ class AccommodationGetError extends AccommodationState {
   List<Object> get props => [message];
 }
 
+// Estados para el registro de alojamientos
 class AccommodationCreateLoading extends AccommodationState {}
 
 class AccommodationCreateSuccess extends AccommodationState {
