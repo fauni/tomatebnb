@@ -12,4 +12,9 @@ export 'package:tomatebnb/bloc/describe_bloc/describe_bloc.dart';
 export 'package:tomatebnb/bloc/describe_bloc/describe_event.dart';
 export 'package:tomatebnb/bloc/describe_bloc/describe_state.dart';
 
+//bloca para describe
+export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_event.dart';
+export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_state.dart';
+
 

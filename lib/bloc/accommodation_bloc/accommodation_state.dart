@@ -51,6 +51,44 @@ class AccommodationCreateError extends AccommodationState {
   @override
   List<Object> get props => [message];
 }
+//Estados para obtencion de alojamiento por id
+class AccommodationGetByIdLoading extends AccommodationState {}
 
+class AccommodationGetByIdSuccess extends AccommodationState {
+  final AccommodationResponseModel responseAccommodation;
+  AccommodationGetByIdSuccess(
+    this.responseAccommodation
+  );
+  @override
+  List<Object> get props => [responseAccommodation];
+}
 
+class AccommodationGetByIdError extends AccommodationState {
+  final String message;
+  AccommodationGetByIdError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
 
+//Estados para actualizar alojamiento por id
+class AccommodationUpdateLoading extends AccommodationState {}
+
+class AccommodationUpdateSuccess extends AccommodationState {
+  final bool status;
+  AccommodationUpdateSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class AccommodationUpdateError extends AccommodationState {
+  final String message;
+  AccommodationUpdateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

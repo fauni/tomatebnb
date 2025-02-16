@@ -146,7 +146,7 @@ class _StartPageState extends State<StartPage> {
             ));
             } , listener: (context, state) {
                 if(state is AccommodationCreateSuccess){
-                   context.push('/describe',extra: state.responseAccommodation.id.toString());
+                   context.push('/describe',extra: state.responseAccommodation.id);
                 } else if(state is AccommodationCreateError){
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

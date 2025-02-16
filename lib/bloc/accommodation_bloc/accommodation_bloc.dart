@@ -8,6 +8,8 @@ class AccommodationBloc extends Bloc<AccommodationEvent, AccommodationState> {
   AccommodationBloc(this.accommodationRepository) : super(AccommodationInitial()){
     on<AccommodationGetEvent>(_onAccommodationGet);
     on<AccommodationCreateEvent>(_onAccommodationCreate);
+    on<AccommodationGetByIdEvent>(_onAccommodationGetById);
+    on<AccommodationUpdateEvent>(_onAccommodationUpdate);
   }
 
   Future<void> _onAccommodationGet(AccommodationGetEvent event, Emitter<AccommodationState> emit) async {
@@ -39,5 +41,36 @@ class AccommodationBloc extends Bloc<AccommodationEvent, AccommodationState> {
       emit(AccommodationCreateError(e.toString()));
     }
   }
-  
+
+  Future<void> _onAccommodationGetById(AccommodationGetByIdEvent event, Emitter<AccommodationState> emit) async {
+    emit(AccommodationGetByIdLoading());
+    try{
+      final response = await accommodationRepository.getById(event.id);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(AccommodationGetByIdSuccess(response.data!));
+      } else {
+        emit(AccommodationGetByIdError(response.message));
+      }
+    } catch(e){
+      emit(AccommodationGetByIdError(e.toString()));
+    }
+  }
+
+ Future<void> _onAccommodationUpdate(AccommodationUpdateEvent event, Emitter<AccommodationState> emit) async {
+    emit(AccommodationUpdateLoading());
+    try{
+      final response = await accommodationRepository.update(event.id,event.accommodationRequest);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(AccommodationUpdateSuccess(response.status));
+      } else {
+        emit(AccommodationUpdateError(response.message));
+      }
+    } catch(e){
+      emit(AccommodationUpdateError(e.toString()));
+    }
+  }
+
 }
+

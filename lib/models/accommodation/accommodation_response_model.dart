@@ -2,6 +2,8 @@
 //
 //     final AccommodationResponseModel = AccommodationResponseModelFromJson(jsonString);
 import 'dart:convert';
+import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
+
 class AccommodationsResponseModel {
   List<AccommodationResponseModel> items = [];
   AccommodationsResponseModel();
@@ -44,26 +46,26 @@ class AccommodationResponseModel {
     DateTime? createdAt;
 
     AccommodationResponseModel({
-        required this.id,
-        required this.hostId,
-        required this.title,
-        required this.description,
-        required this.typeId,
-        required this.describeId,
-        required this.address,
-        required this.city,
-        required this.postalCode,
-        required this.country,
-        required this.latitude,
-        required this.longitude,
-        required this.guestCapacity,
-        required this.numberRooms,
-        required this.numberBathrooms,
-        required this.numberBeds,
-        required this.priceNight,
-        required this.status,
-        required this.updatedAt,
-        required this.createdAt,
+        this.id,
+        this.hostId,
+        this.title,
+        this.description,
+        this.typeId,
+        this.describeId,
+        this.address,
+        this.city,
+        this.postalCode,
+        this.country,
+        this.latitude,
+        this.longitude,
+        this.guestCapacity,
+        this.numberRooms,
+        this.numberBathrooms,
+        this.numberBeds,
+        this.priceNight,
+        this.status,
+        this.updatedAt,
+        this.createdAt,
     });
 
      AccommodationResponseModel copyWith({
@@ -156,4 +158,24 @@ class AccommodationResponseModel {
         "updated_at": updatedAt?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),
     };
+
+    AccommodationRequestModel toRequestModel() => AccommodationRequestModel(
+        hostId: hostId,
+        title: title,
+        description: description,
+        typeId: typeId,
+        describeId: describeId,
+        address: address,
+        city: city,
+        postalCode: postalCode,
+        country: country,
+        latitude: latitude,
+        longitude: longitude,
+        guestCapacity: guestCapacity,
+        numberRooms: numberRooms,
+        numberBathrooms: numberBathrooms,
+        numberBeds: numberBeds,
+        priceNight: priceNight,
+        status: status,
+    );
 }
