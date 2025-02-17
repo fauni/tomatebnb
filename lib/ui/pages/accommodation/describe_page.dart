@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -685,9 +686,19 @@ class _DescribePageState extends State<DescribePage> {
         body: Column(
           children: <Widget>[
             SizedBox(
-                height: MediaQuery.of(context).size.height *0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+                height: MediaQuery.of(context).size.height *0.02),
+            Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: InkWell(
+                    onTap: bottomsheet,
+                    child: Image.asset(
+                      "assets/images/Filter.png",
+                      height: 25,
+                      width: 25,
+                      color: notifire.getwhiteblackcolor,
+                    ),
+                  ),
+                ),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
@@ -792,6 +803,104 @@ class _DescribePageState extends State<DescribePage> {
       _titles[_currentPage],
     ));
   }
+
+ bottomsheet() {
+    return showModalBottomSheet(
+        backgroundColor: notifire.getbgcolor,
+        isScrollControlled: true,
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), topRight: Radius.circular(15),),),
+        builder: (context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.90,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Filter",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: "Gilroy Bold",
+                              color: notifire.getwhiteblackcolor),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(
+                              Icons.close,
+                              color: notifire.getwhiteblackcolor,
+                            ))
+                      ],
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.03),
+                    Text(
+                      "Guests",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: notifire.getwhiteblackcolor,
+                          fontFamily: "Gilroy Bold"),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: notifire.getdarkmodecolor),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Guest detail",
+                          hintStyle: TextStyle(
+                            color: notifire.getgreycolor,
+                            fontFamily: "Gilroy Medium",
+                          ),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Darkblue,
+                            ),
+                          ),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Color(0xffE2E4EA),
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Divider(color: notifire.getgreycolor),
+                    const SizedBox(height: 4),
+                    const SizedBox(height: 10),
+                    Divider(color: notifire.getgreycolor),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01),
+                   
+                    const SizedBox(height: 10),                 
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
