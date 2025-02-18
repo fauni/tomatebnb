@@ -8,7 +8,7 @@ class LocationService {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if(!serviceEnabled){
-      return Future.error('Los servicios de ubicación están dehabilitados.');
+      return Future.error('Por favor habilite el GPS de su dispositivo.');
     }
 
     permission = await Geolocator.checkPermission();

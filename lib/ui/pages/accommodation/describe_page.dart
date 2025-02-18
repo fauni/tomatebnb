@@ -721,41 +721,64 @@ class _DescribePageState extends State<DescribePage> {
                   buttontext: "Ingresa tu direccón", onclick: bottomsheet),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap:  () async  {
-                              Position pos = await locationService.getCurrentLocation();
-                              print (pos.latitude);
-                              print (pos.longitude);
-                              },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: Darkblue,
-                                    borderRadius: BorderRadius.circular(50)),
-                                height: 50,
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                child: Center(
-                                  child: Text(
-                                    "Mi ubicacion",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: WhiteColor,
-                                        fontFamily: "Gilroy Bold"),
-                                  ),
-                                )),
-                          ),
-                          Icon(Icons.check_circle_outlined, 
-                          color: Darkblue)
-                        ],
+            BlocConsumer<LocalizationBloc, LocalizationState>(
+              listener: (context, state) {
+                if (state is LocalizationGetSuccess) {
+                       accommodationRequestModel?.latitude = state.latitude; 
+                       accommodationRequestModel?.longitude = state.longitude;
+                    } else if (state is LocalizationGetError) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message ),
+                        backgroundColor: Colors.red[800],
+                      ));
+                    }
+              },
+              builder: (context, state) {
+                  if (state is LocalizationGetLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                    
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: ()  {
+                           context.read<LocalizationBloc>().add(
+                                    LocalizationGetEvent());
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Darkblue,
+                                borderRadius: BorderRadius.circular(50)),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: Center(
+                              child: Text(
+                                "Obtener mi ubicación",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: WhiteColor,
+                                    fontFamily: "Gilroy Bold"),
+                              ),
+                            )),
                       ),
-                    ),
+                       accommodationRequestModel?.latitude != null && accommodationRequestModel?.longitude != null
+                          ? Icon(Icons.check_circle_outlined, color: Darkblue)
+                          :Icon(Icons.circle_outlined, color: Colors.grey)
+                       
+                    ],
+                  ),
+                );
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.60,
+                height: MediaQuery.of(context).size.height * 0.50,
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.03),
@@ -782,11 +805,13 @@ class _DescribePageState extends State<DescribePage> {
                 BlocConsumer<AccommodationBloc, AccommodationState>(
                   listener: (context, state) {
                     if (state is AccommodationUpdateSuccess) {
-                      accommodationResponseModel?.address=accommodationRequestModel?.address;
-                      accommodationResponseModel?.city=accommodationRequestModel?.city;
-                      accommodationResponseModel?.country=accommodationRequestModel?.country;
+                      accommodationResponseModel?.address = accommodationRequestModel?.address;
+                      accommodationResponseModel?.city = accommodationRequestModel?.city;
+                      accommodationResponseModel?.country = accommodationRequestModel?.country;
+                      accommodationResponseModel?.latitude = accommodationRequestModel?.latitude;
+                      accommodationResponseModel?.longitude = accommodationRequestModel?.longitude;
                       _pageController.nextPage(
-                      duration: const Duration(microseconds: 300),
+                          duration: const Duration(microseconds: 300),
                           curve: Curves.easeIn);
                       accommodationResponseModel?.typeId =
                           accommodationRequestModel?.typeId;
@@ -808,9 +833,12 @@ class _DescribePageState extends State<DescribePage> {
                                 countryController.text.isEmpty
                             ? null
                             : () {
-                                accommodationRequestModel?.address = adressController.text;
-                                accommodationRequestModel?.city = cityController.text;
-                                accommodationRequestModel?.country = countryController.text;
+                                accommodationRequestModel?.address =
+                                    adressController.text;
+                                accommodationRequestModel?.city =
+                                    cityController.text;
+                                accommodationRequestModel?.country =
+                                    countryController.text;
 
                                 context.read<AccommodationBloc>().add(
                                     AccommodationUpdateEvent(
@@ -836,7 +864,6 @@ class _DescribePageState extends State<DescribePage> {
                     );
                   },
                 ),
-              
               ],
             ),
           ],
@@ -845,12 +872,126 @@ class _DescribePageState extends State<DescribePage> {
     );
   }
 
-  Widget _buildPage5() {
-    return (Text(
-      _titles[_currentPage],
-    ));
+ Widget _buildPage5() {
+    notifire = Provider.of<ColorNotifire>(context, listen: true);
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: notifire.getbgcolor,
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            Padding(
+              padding: const EdgeInsets.symmetric(),
+              child: Text(
+                _titles[_currentPage],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: "Gilroy Bold",
+                    color: notifire.getwhiteblackcolor), //heding Text
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.50,
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        // context.pop();
+                        _pageController.previousPage(
+                            duration: const Duration(microseconds: 300),
+                            curve: Curves.easeIn);
+                      },
+                      child: Text(
+                        "Atras",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Darkblue,
+                            fontFamily: "Gilroy Bold"),
+                      )),
+                ),
+                BlocConsumer<AccommodationBloc, AccommodationState>(
+                  listener: (context, state) {
+                    if (state is AccommodationUpdateSuccess) {
+                      accommodationResponseModel?.address = accommodationRequestModel?.address;
+                      accommodationResponseModel?.city = accommodationRequestModel?.city;
+                      accommodationResponseModel?.country = accommodationRequestModel?.country;
+                      accommodationResponseModel?.latitude = accommodationRequestModel?.latitude;
+                      accommodationResponseModel?.longitude = accommodationRequestModel?.longitude;
+                      _pageController.nextPage(
+                          duration: const Duration(microseconds: 300),
+                          curve: Curves.easeIn);
+                      accommodationResponseModel?.typeId =
+                          accommodationRequestModel?.typeId;
+                    } else if (state is AccommodationUpdateError) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message),
+                      ));
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AccommodationUpdateLoading) {
+                      return Center(child: const CircularProgressIndicator());
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: GestureDetector(
+                        onTap: adressController.text.isEmpty ||
+                                cityController.text.isEmpty ||
+                                countryController.text.isEmpty
+                            ? null
+                            : () {
+                                accommodationRequestModel?.address =
+                                    adressController.text;
+                                accommodationRequestModel?.city =
+                                    cityController.text;
+                                accommodationRequestModel?.country =
+                                    countryController.text;
+
+                                context.read<AccommodationBloc>().add(
+                                    AccommodationUpdateEvent(
+                                        _accommodationId ?? 0,
+                                        accommodationRequestModel!));
+                              },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Darkblue,
+                                borderRadius: BorderRadius.circular(50)),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: Center(
+                              child: Text(
+                                "Siguiente",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: WhiteColor,
+                                    fontFamily: "Gilroy Bold"),
+                              ),
+                            )),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
+
+ 
   bottomsheet() {
     return showModalBottomSheet(
         backgroundColor: notifire.getbgcolor,
@@ -909,7 +1050,8 @@ class _DescribePageState extends State<DescribePage> {
                       child: TextField(
                         controller: adressController,
                         decoration: InputDecoration(
-                          hintText: "Calle, Avenida, Nro.  Zona/ Barrio Piso dpto.",
+                          hintText:
+                              "Calle, Avenida, Nro.  Zona/ Barrio Piso dpto.",
                           hintStyle: TextStyle(
                             color: notifire.getgreycolor,
                             fontFamily: "Gilroy Medium",
@@ -1012,8 +1154,7 @@ class _DescribePageState extends State<DescribePage> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Divider(color: notifire.getgreycolor), 
-                    
+                    Divider(color: notifire.getgreycolor),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: GestureDetector(
@@ -1022,9 +1163,12 @@ class _DescribePageState extends State<DescribePage> {
                                 countryController.text.isEmpty
                             ? null
                             : () {
-                                accommodationRequestModel?.address = adressController.text;
-                                accommodationRequestModel?.city = cityController.text;
-                                accommodationRequestModel?.country = countryController.text;
+                                accommodationRequestModel?.address =
+                                    adressController.text;
+                                accommodationRequestModel?.city =
+                                    cityController.text;
+                                accommodationRequestModel?.country =
+                                    countryController.text;
                                 Navigator.of(context).pop();
                               },
                         child: Container(
@@ -1044,7 +1188,6 @@ class _DescribePageState extends State<DescribePage> {
                             )),
                       ),
                     ),
-                  
                   ],
                 ),
               ),

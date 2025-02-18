@@ -17,4 +17,7 @@ export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.d
 export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_event.dart';
 export 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_state.dart';
 
-
+//bloca para geolocalizacion
+export 'package:tomatebnb/bloc/localization_bloc/localization_bloc.dart';
+export 'package:tomatebnb/bloc/localization_bloc/localization_event.dart';
+export 'package:tomatebnb/bloc/localization_bloc/localization_state.dart';
