@@ -17,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late ColorNotifire notifire;
 
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -90,14 +89,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
-                  controller: passwordController,
-                  feildcolor: notifire.getdarkmodecolor,
-                  hintcolor: notifire.getgreycolor,
-                  text: 'Enter your password',
-                  prefix: Image.asset("assets/images/password.png",
-                      height: 25, color: notifire.getgreycolor),
-                  suffix: null
-                ),
+                    controller: passwordController,
+                    feildcolor: notifire.getdarkmodecolor,
+                    hintcolor: notifire.getgreycolor,
+                    text: 'Enter your password',
+                    prefix: Image.asset("assets/images/password.png",
+                        height: 25, color: notifire.getgreycolor),
+                    suffix: null),
               ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -136,35 +134,27 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             BlocConsumer<AuthBloc, AuthState>(
               builder: (context, state) {
-                if(state is AuthLoading){
+                if (state is AuthLoading) {
                   return Center(child: const CircularProgressIndicator());
-                } 
+                }
                 return AppButton(
-                  buttontext: "Iniciar Sesión",
-                  onclick: () {
-                    context.read<AuthBloc>().add(
-                      AuthLoginEvent(
-                        emailController.text, 
-                        passwordController.text
-                      )
-                    );
-                  }
-                );
-              }, 
+                    buttontext: "Iniciar Sesión",
+                    onclick: () {
+                      context.read<AuthBloc>().add(AuthLoginEvent(
+                          emailController.text, passwordController.text));
+                    });
+              },
               listener: (context, state) {
-                if(state is AuthLoginSuccess){
+                if (state is AuthLoginSuccess) {
                   context.push('/menu');
-                } else if(state is AuthLoginError){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    )
-                  );
+                } else if (state is AuthLoginError) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ));
                 }
               },
             ),
-            
             const SizedBox(height: 15),
             Center(
               child: Column(
