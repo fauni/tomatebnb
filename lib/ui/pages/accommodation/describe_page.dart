@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,7 @@ import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart'
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_type_response_model.dart';
 import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
+import 'package:tomatebnb/services/location_service.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
@@ -54,6 +56,7 @@ class _DescribePageState extends State<DescribePage> {
   List<bool> selectedTypes = [];
   late AccommodationRequestModel? accommodationRequestModel;
   late AccommodationResponseModel? accommodationResponseModel;
+  LocationService locationService = LocationService();
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -719,9 +722,40 @@ class _DescribePageState extends State<DescribePage> {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap:  () async  {
+                              Position pos = await locationService.getCurrentLocation();
+                              print (pos.latitude);
+                              print (pos.longitude);
+                              },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Darkblue,
+                                    borderRadius: BorderRadius.circular(50)),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: Center(
+                                  child: Text(
+                                    "Mi ubicacion",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: WhiteColor,
+                                        fontFamily: "Gilroy Bold"),
+                                  ),
+                                )),
+                          ),
+                          Icon(Icons.check_circle_outlined, 
+                          color: Darkblue)
+                        ],
+                      ),
+                    ),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.63,
+                height: MediaQuery.of(context).size.height * 0.60,
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.03),
