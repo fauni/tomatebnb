@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
+// import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
 
 abstract class LocalizationState extends Equatable {
   @override

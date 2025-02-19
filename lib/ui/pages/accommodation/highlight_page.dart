@@ -8,26 +8,25 @@ import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_type_response_model.dart';
-import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
-import 'package:tomatebnb/services/location_service.dart';
+import 'package:tomatebnb/models/service_response_model.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 
-class DescribePage extends StatefulWidget {
-  const DescribePage({super.key});
+class HighlightPage extends StatefulWidget {
+  const HighlightPage({super.key});
 
   @override
-  State<DescribePage> createState() => _DescribePageState();
+  State<HighlightPage> createState() => _HighlightPageState();
 }
 
-class _DescribePageState extends State<DescribePage> {
+class _HighlightPageState extends State<HighlightPage> {
   @override
   void initState() {
     _pageController = PageController(initialPage: _currentPage);
     getdarkmodepreviousstate();
     super.initState();
-    context.read<DescribeBloc>().add(DescribeGetEvent());
+    context.read<ServiceBloc>().add(ServiceGetEvent());
     context.read<AccommodationTypeBloc>().add(AccommodationTypeGetEvent());
     accommodationRequestModel = AccommodationRequestModel();
     accommodationResponseModel = AccommodationResponseModel();
@@ -37,7 +36,7 @@ class _DescribePageState extends State<DescribePage> {
   PageController _pageController = PageController();
   int _currentPage = 0;
   int? _accommodationId;
-  List<DescribeResponseModel> describes = [];
+  List<ServiceResponseModel> services = [];
   List<AccommodationTypeResponseModel> accommodationTypes = [];
 
   final adressController = TextEditingController();
@@ -50,17 +49,19 @@ class _DescribePageState extends State<DescribePage> {
   int _bedsCounter = 0;
 
   static const List<String> _titles = [
-    'Describe tu espacio',
-    '¿Cuál de estas opciones describen mejor tu alojamiento?',
+    'Haz que tu espacion se destaque',
+    'Cuentale a tus huéspedes todo lo que tu espacio tiene para ofrecer',
     '¿Que tipo de alojamiento ofreces a los huespedes?',
-    '¿Donde se encuentra tu espacio?',
-    'Agrega algunos datos básicos de tu espacio',
+    'Agrega algunas fotos de tu alojamiento',
+    'Ponle Título a tu alojamiento',
+    'Vamos a describir tu alojamiento, elije hasta dos aspectos que lo distingan',
+    'Crea tu descripción',
   ];
-  List<bool> selected = []; //selected describes
+  List<bool> selectedServices = []; //selected describes
   List<bool> selectedTypes = [];
   late AccommodationRequestModel? accommodationRequestModel;
   late AccommodationResponseModel? accommodationResponseModel;
-  LocationService locationService = LocationService();
+  
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -131,7 +132,7 @@ class _DescribePageState extends State<DescribePage> {
                             margin: EdgeInsetsDirectional.only(
                                 start: 1.0, end: 10.0),
                             height: 5.0,
-                            color: Colors.black),
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: 10.0,
@@ -140,7 +141,7 @@ class _DescribePageState extends State<DescribePage> {
                             margin: EdgeInsetsDirectional.only(
                                 start: 1.0, end: 10.0),
                             height: 5.0,
-                            color: Colors.grey),
+                            color: Colors.black),
                       ),
                       SizedBox(
                         height: 10.0,
@@ -217,7 +218,7 @@ class _DescribePageState extends State<DescribePage> {
             Container(
               height: MediaQuery.of(context).size.height / 1.9, //imagee size
               width: MediaQuery.of(context).size.width,
-              child: Image.asset("assets/images/onbording11.png"),
+              child: Image.asset("assets/images/onbording12.png"),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
@@ -237,7 +238,7 @@ class _DescribePageState extends State<DescribePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                "En este paso, te preguntaremos sobre el tipo de alojamiento que compartes, si los huespedes tendrán el espacio entero o una habitación. Posteriormente indicanos la ubicación y cuantos huespedes pueden quedarse.",
+                "En este paso agregarás algunos de los servicios que ofrece tu alojamiento y subiras un mínimo de 5 fotos luego crearas un título y una descripción ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 15,
@@ -326,22 +327,22 @@ class _DescribePageState extends State<DescribePage> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: SizedBox(
-                  child: BlocBuilder<DescribeBloc, DescribeState>(
+                  child: BlocBuilder<ServiceBloc, ServiceState>(
                     builder: (context, state) {
-                      if (state is DescribeGetLoading) {
+                      if (state is ServiceGetLoading) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
-                      if (state is DescribeGetError) {
+                      if (state is ServiceGetError) {
                         return Center(
                           child: Text(state.message),
                         );
                       }
-                      if (state is DescribeGetSuccess) {
-                        describes = state.responseDescribes;
-                        for (int i = 0; i < describes.length; i++) {
-                          selected.add(false);
+                      if (state is ServiceGetSuccess) {
+                        services = state.responseServices;
+                        for (int i = 0; i < services.length; i++) {
+                          selectedServices.add(false);
                         }
                       }
                       return SizedBox(
@@ -352,12 +353,12 @@ class _DescribePageState extends State<DescribePage> {
                             crossAxisCount: 2,
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 10,
-                            childAspectRatio: 1.5,
+                            childAspectRatio: 1.2,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          itemCount: describes.length,
+                          itemCount: services.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                                 padding:
@@ -370,21 +371,13 @@ class _DescribePageState extends State<DescribePage> {
                                     children: [
                                       ListTile(
                                         onTap: () {
-                                          for (var i = 0;
-                                              i < selected.length;
-                                              i++) {
-                                            selected[i] = false;
-                                          }
-                                          selected[index] = true;
-                                          accommodationRequestModel
-                                                  ?.describeId =
-                                              describes[index].id;
+                                          selectedServices[index] = !selectedServices[index];
                                           setState(() {});
                                         },
                                         // leading: Image.asset(
                                         //     "assets/images/home-2.png",
                                         //     height: 35),
-                                        trailing: selected[index] == true
+                                        trailing: selectedServices[index] == true
                                             // || accommodationResponseModel?.describeId == describes[index].id
                                             ? Icon(Icons.check_circle,
                                                 color:
@@ -397,7 +390,7 @@ class _DescribePageState extends State<DescribePage> {
                                           child: Icon(Icons.bed),
                                         ),
                                         subtitle: Text(
-                                          describes[index].describe,
+                                          services[index].name,
                                           style: TextStyle(
                                               fontFamily: "Gilroy Bold",
                                               fontSize: 16,
@@ -1003,10 +996,9 @@ class _DescribePageState extends State<DescribePage> {
                       accommodationResponseModel?.numberRooms = accommodationRequestModel?.numberRooms;
                       accommodationResponseModel?.numberBathrooms = accommodationRequestModel?.numberBathrooms;
                       accommodationResponseModel?.numberBeds = accommodationRequestModel?.numberBeds;
-                      // _pageController.nextPage(
-                      //     duration: const Duration(microseconds: 300),
-                      //     curve: Curves.easeIn);
-                       context.push('/highlight',extra: _accommodationId);
+                      _pageController.nextPage(
+                          duration: const Duration(microseconds: 300),
+                          curve: Curves.easeIn);
                     } else if (state is AccommodationUpdateError) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(state.message),

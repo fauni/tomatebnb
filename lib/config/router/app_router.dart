@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
@@ -40,6 +41,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/describe',
       builder: (context, state) => const DescribePage()
+    ),
+    GoRoute(
+      path: '/highlight',
+      builder: (context, state) => const HighlightPage()
     )
   ]
 );

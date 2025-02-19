@@ -6,6 +6,7 @@ import 'package:tomatebnb/repository/accommodation_type_repository.dart';
 import 'package:tomatebnb/repository/auth_repository.dart';
 import 'package:tomatebnb/repository/accommodation_repository.dart';
 import 'package:tomatebnb/repository/describe_repository.dart';
+import 'package:tomatebnb/repository/service_repository.dart';
 import 'package:tomatebnb/services/location_service.dart';
 // import 'auth_bloc/auth_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_bloc/accommodation_bloc.dart';
@@ -18,6 +19,7 @@ class Blocs {
   static final DescribeBloc describeBloc = DescribeBloc(DescribeRepository(),);
   static final AccommodationTypeBloc accommodationTypeBloc = AccommodationTypeBloc(AccommodationTypeRepository(),);
   static final LocalizationBloc localizationBloc = LocalizationBloc(LocationService(),);
+  static final ServiceBloc serviceBloc = ServiceBloc(ServiceRepository(),);
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
     BlocProvider<AuthBloc>(create: (context) => authBloc),
@@ -25,6 +27,7 @@ class Blocs {
     BlocProvider<DescribeBloc>(create: (context) => describeBloc),
     BlocProvider<AccommodationTypeBloc>(create: (context) => accommodationTypeBloc),
     BlocProvider<LocalizationBloc>(create: (context) => localizationBloc),
+    BlocProvider<ServiceBloc>(create: (context) => serviceBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -34,6 +37,7 @@ class Blocs {
     describeBloc.close();
     accommodationTypeBloc.close();
     localizationBloc.close();
+    serviceBloc.close();
   }
 
 
