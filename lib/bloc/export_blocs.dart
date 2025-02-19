@@ -26,3 +26,8 @@ export 'package:tomatebnb/bloc/localization_bloc/localization_state.dart';
 export 'package:tomatebnb/bloc/service_bloc/service_bloc.dart';
 export 'package:tomatebnb/bloc/service_bloc/service_event.dart';
 export 'package:tomatebnb/bloc/service_bloc/service_state.dart';
+
+//bloca para servicios
+export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_event.dart';
+export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_state.dart';
