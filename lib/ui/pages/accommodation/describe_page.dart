@@ -770,7 +770,7 @@ class _DescribePageState extends State<DescribePage> {
                               ),
                             )),
                       ),
-                       accommodationRequestModel?.latitude != null && accommodationRequestModel?.longitude != null
+                       (accommodationRequestModel?.latitude?? 0) != 0  && (accommodationRequestModel?.longitude?? 0) != 0
                           ? Icon(Icons.check_circle_outlined, color: Darkblue)
                           :Icon(Icons.circle_outlined, color: Colors.grey)
                        
@@ -834,7 +834,9 @@ class _DescribePageState extends State<DescribePage> {
                       child: GestureDetector(
                         onTap: adressController.text.isEmpty ||
                                 cityController.text.isEmpty ||
-                                countryController.text.isEmpty
+                                countryController.text.isEmpty||
+                                (accommodationRequestModel?.latitude??0)==0||
+                                (accommodationRequestModel?.longitude??0)==0
                             ? null
                             : () {
                                 accommodationRequestModel?.address =

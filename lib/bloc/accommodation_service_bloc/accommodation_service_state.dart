@@ -48,3 +48,24 @@ class AccommodationServiceCreateError extends AccommodationServiceState {
   @override
   List<Object> get props => [message];
 }
+
+//estados para eliminar servicios de alojamiento
+class AccommodationServiceDeleteLoading extends AccommodationServiceState {}
+
+class AccommodationServiceDeleteSuccess extends AccommodationServiceState {
+  final AccommodationServiceResponseModel responseAccommodationService;
+  AccommodationServiceDeleteSuccess(
+    this.responseAccommodationService
+  );
+  @override
+  List<Object> get props => [responseAccommodationService];
+}
+
+class AccommodationServiceDeleteError extends AccommodationServiceState {
+  final String message;
+  AccommodationServiceDeleteError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

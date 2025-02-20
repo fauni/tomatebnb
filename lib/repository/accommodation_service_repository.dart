@@ -50,15 +50,16 @@ Future<ApiResponse<AccommodationServiceResponseModel>> createAccommodationServic
       final prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("token")??"";
       final response = await http.post(
-        Uri.parse('$_baseUrl/v1/accommodations'),
+        Uri.parse('$_baseUrl/v1/accommodation_services'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept' : 'application/json',
           'Authorization':'Bearer $token',
         },
-        body:jsonEncode(<String,int>{
+        body:jsonEncode(<String,dynamic>{
           'accommodation_id' : accommodationId,
-          'service_id' : serviceId
+          'service_id' : serviceId,
+          'status':true
         }) 
       );
       if (response.statusCode == 200) {
@@ -82,6 +83,41 @@ Future<ApiResponse<AccommodationServiceResponseModel>> createAccommodationServic
       );
     }
   }
+
+Future<ApiResponse<AccommodationServiceResponseModel>> delete(int accommodationId, int serviceId) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/v1/accommodation_services/$accommodationId/$serviceId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        }
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<AccommodationServiceResponseModel>(
+          status: true,
+          message: data['message'],
+          data: AccommodationServiceResponseModel.fromJson(data['data']),
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<AccommodationServiceResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<AccommodationServiceResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
 
 
   

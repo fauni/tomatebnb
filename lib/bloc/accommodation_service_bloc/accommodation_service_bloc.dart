@@ -8,6 +8,8 @@ class AccommodationServiceBloc extends Bloc<AccommodationServiceEvent, Accommoda
   AccommodationServiceBloc(this.accommodationServiceRepository) : super(AccommodationServiceInitial()){
     on<AccommodationServiceGetEvent>(_onAccommodationServiceGet);
     on<AccommodationServiceCreateEvent>(_onAccommodationServiceCreate);
+    on<AccommodationServiceDeleteEvent>(_onAccommodationServiceDelete);
+    
   }
 
   Future<void> _onAccommodationServiceGet(AccommodationServiceGetEvent event, Emitter<AccommodationServiceState> emit) async {
@@ -37,6 +39,22 @@ class AccommodationServiceBloc extends Bloc<AccommodationServiceEvent, Accommoda
       }
     } catch(e){
       emit(AccommodationServiceCreateError(e.toString()));
+      
+    }
+  }
+
+  Future<void> _onAccommodationServiceDelete(AccommodationServiceDeleteEvent event, Emitter<AccommodationServiceState> emit) async {
+    emit(AccommodationServiceDeleteLoading());
+    try{
+      final response = await accommodationServiceRepository.delete(event.accommodationId,event.serviceId);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(AccommodationServiceDeleteSuccess(response.data!));
+      } else {
+        emit(AccommodationServiceDeleteError(response.message));
+      }
+    } catch(e){
+      emit(AccommodationServiceDeleteError(e.toString()));
     }
   }
 }
