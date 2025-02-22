@@ -33,3 +33,11 @@ class AccommodationUpdateEvent extends AccommodationEvent {
   @override
   List<Object?> get props => [id,accommodationRequest];
 }
+
+class AccommodationUpdate2Event extends AccommodationEvent {
+  final int id;
+  final AccommodationRequestModel accommodationRequest;
+  AccommodationUpdate2Event(this.id,this.accommodationRequest);
+  @override
+  List<Object?> get props => [id,accommodationRequest];
+}

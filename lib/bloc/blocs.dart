@@ -2,8 +2,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/repository/accommodation_aspect_repository.dart';
 import 'package:tomatebnb/repository/accommodation_service_repository.dart';
 import 'package:tomatebnb/repository/accommodation_type_repository.dart';
+import 'package:tomatebnb/repository/aspect_repository.dart';
 import 'package:tomatebnb/repository/auth_repository.dart';
 import 'package:tomatebnb/repository/accommodation_repository.dart';
 import 'package:tomatebnb/repository/describe_repository.dart';
@@ -22,6 +24,8 @@ class Blocs {
   static final LocalizationBloc localizationBloc = LocalizationBloc(LocationService(),);
   static final ServiceBloc serviceBloc = ServiceBloc(ServiceRepository(),);
   static final AccommodationServiceBloc accommodationServiceBloc = AccommodationServiceBloc(AccommodationServiceRepository(),);
+  static final AspectBloc aspectBloc = AspectBloc(AspectRepository(),);
+  static final AccommodationAspectBloc accommodationAspectBloc = AccommodationAspectBloc(AccommodationAspectRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -32,6 +36,8 @@ class Blocs {
     BlocProvider<LocalizationBloc>(create: (context) => localizationBloc),
     BlocProvider<ServiceBloc>(create: (context) => serviceBloc),
     BlocProvider<AccommodationServiceBloc>(create: (context) => accommodationServiceBloc),
+    BlocProvider<AspectBloc>(create: (context) => aspectBloc),
+    BlocProvider<AccommodationAspectBloc>(create: (context) => accommodationAspectBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -43,6 +49,8 @@ class Blocs {
     localizationBloc.close();
     serviceBloc.close();
     accommodationServiceBloc.close();
+    aspectBloc.close();
+    accommodationAspectBloc.close();
   }
 
 
