@@ -120,7 +120,6 @@ class _PricesPageState extends State<PricesPage> {
               _buildPage2(),
               _buildPage3(),
               _buildPage4(),
-              _buildPage5()
             ],
           ),
           Positioned(
@@ -192,7 +191,7 @@ class _PricesPageState extends State<PricesPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              for (int i = 0; i < 5; i++)
+              for (int i = 0; i < 4; i++)
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
@@ -974,9 +973,10 @@ class _PricesPageState extends State<PricesPage> {
                       }
                       return GestureDetector(
                         onTap: () {
-                              _pageController.nextPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
+                            //   _pageController.nextPage(
+                            // duration: const Duration(microseconds: 300),
+                            // curve: Curves.easeIn);
+                            context.push('/finish', extra: _accommodationId);
                         },
                         child: Container(
                             decoration: BoxDecoration(
@@ -1005,134 +1005,7 @@ class _PricesPageState extends State<PricesPage> {
     );
   }
 
-  Widget _buildPage5() {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['title'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['subtitle'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getblackgreycolor), //heding Text
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            const SizedBox(height: 4),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: TextField(
-                minLines: 5,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                // controller: adressController,
-                decoration: InputDecoration(
-                  hintText: "Alojamiento espacioso.....",
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontFamily: "Gilroy Medium",
-                  ),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xffE2E4EA),
-                      ),
-                      borderRadius: BorderRadius.circular(15)),
-                ),
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: BlocConsumer<AccommodationBloc, AccommodationState>(
-                    listener: (context, state) {
-                      if (state is AccommodationUpdate2Success) {
-                        _pageController.nextPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      } else if (state is AccommodationUpdate2Error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(state.message),
-                        ));
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AccommodationUpdate2Loading) {
-                        return Center(child: const CircularProgressIndicator());
-                      }
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Finalizar",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  bottomsheet() {
+   bottomsheet() {
     return showModalBottomSheet(
         backgroundColor: notifire.getbgcolor,
         isScrollControlled: true,

@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/config/constants/environment.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_photo_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_photo_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/aspect_response_model.dart';
@@ -28,9 +31,9 @@ class _HighlightPageState extends State<HighlightPage> {
     getdarkmodepreviousstate();
     super.initState();
     context.read<ServiceBloc>().add(ServiceGetEvent());
-
     accommodationRequestModel = AccommodationRequestModel();
     accommodationResponseModel = AccommodationResponseModel();
+    addEmptyPhoto();
   }
 
   late ColorNotifire notifire;
@@ -39,6 +42,9 @@ class _HighlightPageState extends State<HighlightPage> {
   int? _accommodationId;
   List<ServiceResponseModel> services = [];
   List<AspectResponseModel> aspects = [];
+  List<AccommodationPhotoResponseModel> photos = [];
+   final String _imgsUrl = Environment.UrlImg;
+  int _countPhotos=0;
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -81,8 +87,8 @@ class _HighlightPageState extends State<HighlightPage> {
                     accommodationRequestModel =
                         accommodationResponseModel?.toRequestModel();
 
-                    context.read<AspectBloc>()
-                        .add(AspectGetByDescribeEvent(accommodationResponseModel?.describeId ?? 0));
+                    context.read<AspectBloc>().add(AspectGetByDescribeEvent(
+                        accommodationResponseModel?.describeId ?? 0));
                   }
                 },
                 builder: (context, state) {
@@ -184,7 +190,9 @@ class _HighlightPageState extends State<HighlightPage> {
                     //   Radius.circular(50),
                     // ),
                     // color: Color(0xFF000000),
-                    color: _currentPage == i ? Theme.of(context).colorScheme.primary : greyColor,
+                    color: _currentPage == i
+                        ? Theme.of(context).colorScheme.primary
+                        : greyColor,
                   ),
                   margin: const EdgeInsets.only(right: 8),
                   curve: Curves.easeIn,
@@ -562,66 +570,54 @@ class _HighlightPageState extends State<HighlightPage> {
                 child: SizedBox(
                     child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.63,
-                  child: ListView.builder(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 5,
+                      childAspectRatio: 1.3,
+                    ),
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    itemCount: 0,
+                    itemCount: photos.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: notifire.getdarkmodecolor),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                    onTap: () {
-                                      setState(() {});
-                                    },
-                                    // leading: Image.asset(
-                                    //     "assets/images/home-2.png",
-                                    //     height: 35),
-                                    trailing: true
-                                        ? Icon(Icons.check_circle,
-                                            color: notifire.getdarkbluecolor)
-                                        : SizedBox.shrink(),
-                                    leading: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12.0),
-                                      child: Icon(Icons.holiday_village),
-                                    ),
-                                    title: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12.0),
-                                      child: Text(
-                                        // accommodationTypes[index].name,
-                                        "aun",
-                                        style: TextStyle(
-                                            fontFamily: "Gilroy Bold",
-                                            fontSize: 16,
-                                            color: notifire.getwhiteblackcolor),
+                      if (photos[index].id > 0) {
+                        return Image.network('$_imgsUrl/accommodations/${photos[index].photoUrl}');  
+                        // Text('foto ');
+                      } else {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: notifire.getdarkmodecolor),
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    onTap: bottomsheet,
+                                    subtitle: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 1.0),
+                                        child: Icon(
+                                          Icons.add_a_photo_outlined,
+                                          size: 50.0,
+                                        ),
                                       ),
                                     ),
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.61,
-                                          child: Text('descripción',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: greyColor,
-                                                  fontFamily:
-                                                      "Gilroy Medium"))),
-                                    )
+                                    // subtitle: Padding(
+                                    //   padding: const EdgeInsets.only(top: 8),
+                                    //   child: IconButton(
+                                    //     onPressed: null,
+                                    //     icon: Icon(Icons.add_a_photo_outlined))
+                                    // )
                                     // isThreeLine: true,
-                                    ),
-                              ],
-                            ),
-                          ));
+                                  ),
+                                ],
+                              ),
+                            ));
+                      }
                     },
                   ),
                 ))),
@@ -646,32 +642,52 @@ class _HighlightPageState extends State<HighlightPage> {
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: accommodationRequestModel?.typeId == null
-                        ? null
-                        : () {
-                            _pageController.nextPage(
-                                duration: const Duration(microseconds: 300),
-                                curve: Curves.easeIn);
-                          },
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(25)),
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: Center(
-                          child: Text(
-                            "Siguiente",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: WhiteColor,
-                                fontFamily: "Gilroy Bold"),
-                          ),
-                        )),
-                  ),
+                BlocConsumer<AccommodationPhotoBloc, AccommodationPhotoState>(
+                  listener: (context, state) {
+                    if(state is AccommodationPhotoCreateSuccess){
+                      _countPhotos++;
+                      photos.removeLast();
+                      photos.add(state.responseAccommodationPhoto);
+                      addEmptyPhoto();
+                      setState(() { });
+                    }
+                    if(state is AccommodationPhotoCreateError){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message)));
+                    }
+                  },
+                  builder: (context, state) {
+                    if(state is AccommodationPhotoCreateLoading){
+                      return Center(child:CircularProgressIndicator());
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: GestureDetector(
+                        onTap: accommodationRequestModel?.typeId == null
+                            ? null
+                            : () {
+                                _pageController.nextPage(
+                                    duration: const Duration(microseconds: 300),
+                                    curve: Curves.easeIn);
+                              },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: Center(
+                              child: Text(
+                                "Siguiente",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: WhiteColor,
+                                    fontFamily: "Gilroy Bold"),
+                              ),
+                            )),
+                      ),
+                    );
+                  },
                 )
               ],
             ),
@@ -715,7 +731,9 @@ class _HighlightPageState extends State<HighlightPage> {
                     minLines: 2,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: TextStyle(fontSize: 35, color: Theme.of(context).colorScheme.primary),
+                    style: TextStyle(
+                        fontSize: 35,
+                        color: Theme.of(context).colorScheme.primary),
                     // controller: adressController,
                     decoration: InputDecoration(
                       hintText: "Alojamiento.....",
@@ -761,33 +779,31 @@ class _HighlightPageState extends State<HighlightPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: BlocConsumer<AccommodationBloc, AccommodationState>(
                     listener: (context, state) {
-                          if (state is AccommodationUpdate2Success) {
-                            _pageController.nextPage(
-                                duration: const Duration(microseconds: 300),
-                                curve: Curves.easeIn);
-
-                          } else if (state is AccommodationUpdate2Error) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(state.message),
-                            ));
-                          }
-                      
+                      if (state is AccommodationUpdate2Success) {
+                        _pageController.nextPage(
+                            duration: const Duration(microseconds: 300),
+                            curve: Curves.easeIn);
+                      } else if (state is AccommodationUpdate2Error) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(state.message),
+                        ));
+                      }
                     },
                     builder: (context, state) {
                       if (state is AccommodationUpdate2Loading) {
                         return Center(child: const CircularProgressIndicator());
                       }
                       return GestureDetector(
-                        onTap: 
-                        _titleController.text.isEmpty
-                        ?null
-                        :() {
-                          accommodationRequestModel?.title= _titleController.text;  
-                           context.read<AccommodationBloc>().add(
+                        onTap: _titleController.text.isEmpty
+                            ? null
+                            : () {
+                                accommodationRequestModel?.title =
+                                    _titleController.text;
+                                context.read<AccommodationBloc>().add(
                                     AccommodationUpdate2Event(
                                         _accommodationId ?? 0,
                                         accommodationRequestModel!));
-                        },
+                              },
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
@@ -814,6 +830,7 @@ class _HighlightPageState extends State<HighlightPage> {
       ),
     );
   }
+
   Widget _buildPage5() {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
@@ -877,7 +894,8 @@ class _HighlightPageState extends State<HighlightPage> {
                             return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 6),
-                                child: BlocListener<AccommodationAspectBloc,AccommodationAspectState>(
+                                child: BlocListener<AccommodationAspectBloc,
+                                    AccommodationAspectState>(
                                   listener: (context, state) {
                                     // TODO: implement listener
                                     if (state
@@ -938,9 +956,8 @@ class _HighlightPageState extends State<HighlightPage> {
                                                           _accommodationId ?? 0,
                                                           aspects[index].id));
                                             }
-                                         
                                           },
-                                         
+
                                           trailing: selectedAspects[index]
                                               // || accommodationResponseModel?.describeId == describes[index].id
                                               ? Icon(Icons.check_circle,
@@ -1040,8 +1057,7 @@ class _HighlightPageState extends State<HighlightPage> {
     );
   }
 
-
- Widget _buildPage6() {
+  Widget _buildPage6() {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
@@ -1075,16 +1091,16 @@ class _HighlightPageState extends State<HighlightPage> {
                     minLines: 5,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
-                    style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.primary),
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Theme.of(context).colorScheme.primary),
                     // controller: adressController,
                     decoration: InputDecoration(
                       hintText: "Alojamiento espacioso.....",
-                      
                       hintStyle: TextStyle(
-                        color: notifire.getgreycolor,
-                        fontFamily: "Gilroy Medium",
-                        fontSize: 20
-                      ),
+                          color: notifire.getgreycolor,
+                          fontFamily: "Gilroy Medium",
+                          fontSize: 20),
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15))),
                       enabledBorder: OutlineInputBorder(
@@ -1122,29 +1138,29 @@ class _HighlightPageState extends State<HighlightPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: BlocConsumer<AccommodationBloc, AccommodationState>(
                     listener: (context, state) {
-                          if (state is AccommodationUpdate2Success) {
-                            context.push('/prices', extra: _accommodationId);
-                          } else if (state is AccommodationUpdate2Error) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(state.message),
-                            ));
-                          }
+                      if (state is AccommodationUpdate2Success) {
+                        context.push('/prices', extra: _accommodationId);
+                      } else if (state is AccommodationUpdate2Error) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(state.message),
+                        ));
+                      }
                     },
                     builder: (context, state) {
                       if (state is AccommodationUpdate2Loading) {
                         return Center(child: const CircularProgressIndicator());
                       }
                       return GestureDetector(
-                        onTap: 
-                        _descriptionController.text.isEmpty
-                        ?null
-                        :() {
-                          accommodationRequestModel!.description= _descriptionController.text;
-                           context.read<AccommodationBloc>().add(
+                        onTap: _descriptionController.text.isEmpty
+                            ? null
+                            : () {
+                                accommodationRequestModel!.description =
+                                    _descriptionController.text;
+                                context.read<AccommodationBloc>().add(
                                     AccommodationUpdate2Event(
                                         _accommodationId ?? 0,
                                         accommodationRequestModel!));
-                        },
+                              },
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
@@ -1171,6 +1187,7 @@ class _HighlightPageState extends State<HighlightPage> {
       ),
     );
   }
+
   bottomsheet() {
     return showModalBottomSheet(
         backgroundColor: notifire.getbgcolor,
@@ -1186,173 +1203,99 @@ class _HighlightPageState extends State<HighlightPage> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.90,
+              height: MediaQuery.of(context).size.height * 0.20,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Datos de dirección ",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: "Gilroy Bold",
-                              color: notifire.getwhiteblackcolor),
-                        ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Icon(
-                              Icons.close,
-                              color: notifire.getwhiteblackcolor,
-                            ))
-                      ],
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                    Text(
-                      "Direccón",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: notifire.getwhiteblackcolor,
-                          fontFamily: "Gilroy Bold"),
-                    ),
+                    //  Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+
+                    //     InkWell(
+                    //         onTap: () {
+                    //           Navigator.of(context).pop();
+                    //         },
+                    //         child: Icon(
+                    //           Icons.close,
+                    //           color: notifire.getwhiteblackcolor,
+                    //         ))
+                    //   ],
+                    // ),
                     const SizedBox(height: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: notifire.getdarkmodecolor),
-                      child: TextField(
-                        // controller: adressController,
-                        decoration: InputDecoration(
-                          hintText:
-                              "Calle, Avenida, Nro.  Zona/ Barrio Piso dpto.",
-                          hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
-                            fontFamily: "Gilroy Medium",
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0xffE2E4EA),
-                              ),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                      ),
-                    ),
-                    Divider(color: notifire.getgreycolor),
-                    Text(
-                      "Ciudad",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: notifire.getwhiteblackcolor,
-                          fontFamily: "Gilroy Bold"),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: notifire.getdarkmodecolor),
-                      child: TextField(
-                        // controller: cityController,
-                        decoration: InputDecoration(
-                          hintText: "La Paz, Santa Cruz, Montero.....",
-                          hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
-                            fontFamily: "Gilroy Medium",
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0xffE2E4EA),
-                              ),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                      ),
-                    ),
-                    Divider(color: notifire.getgreycolor),
-                    const SizedBox(height: 4),
-                    Text(
-                      "País",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: notifire.getwhiteblackcolor,
-                          fontFamily: "Gilroy Bold"),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: notifire.getdarkmodecolor),
-                      child: TextField(
-                        // controller: countryController,
-                        decoration: InputDecoration(
-                          hintText: "Bolivia .....",
-                          hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
-                            fontFamily: "Gilroy Medium",
-                          ),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0xffE2E4EA),
-                              ),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Divider(color: notifire.getgreycolor),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: null,
-                        child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 1),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            AccommodationPhotoRequestModel request = AccommodationPhotoRequestModel(
+                              accommodationId: _accommodationId.toString(),
+                              photoUrl: "none",
+                              mainPhoto: "0",
+                              order: photos.length.toString(),
+                               ); 
+                            context.read<AccommodationPhotoBloc>().add(
+                                    AccommodationPhotoCreateEvent(
+                                        request,
+                                        false));
+                          },
+                          child: Container(
                             decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                color: WhiteColor,
+                                borderRadius: BorderRadius.circular(5)),
                             height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width,
                             child: Center(
                               child: Text(
-                                "Aceptar",
+                                "Desde Galeria",
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 20,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontFamily: "Gilroy Bold"),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(color: Theme.of(context).colorScheme.primary),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 1),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            AccommodationPhotoRequestModel request = AccommodationPhotoRequestModel(
+                              accommodationId: _accommodationId.toString(),
+                              photoUrl: "none",
+                              mainPhoto: "0",
+                              order: photos.length.toString(),
+                               ); 
+                            context.read<AccommodationPhotoBloc>().add(
+                                    AccommodationPhotoCreateEvent(
+                                        request,
+                                        true));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(5)),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: Text(
+                                "Desde Cámara",
+                                style: TextStyle(
+                                    fontSize: 20,
                                     color: WhiteColor,
                                     fontFamily: "Gilroy Bold"),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -1427,5 +1370,17 @@ class _HighlightPageState extends State<HighlightPage> {
     } else {
       notifire.setIsDark = previusstate;
     }
+  }
+
+  addEmptyPhoto() {
+    photos.add(AccommodationPhotoResponseModel(
+        accommodationId: "0",
+        photoUrl: "",
+        mainPhoto: "",
+        order: "",
+        // status: "",
+        updatedAt: DateTime.parse("2000-01-01"),
+        createdAt: DateTime.parse("2000-01-01"),
+        id: 0));
   }
 }
