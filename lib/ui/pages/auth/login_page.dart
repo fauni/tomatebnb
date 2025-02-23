@@ -25,7 +25,15 @@ class _LoginPageState extends State<LoginPage> {
     emailController.text = 'juan@mail.com';
     passwordController.text = '1234567';
     getdarkmodepreviousstate();
+    getMode();
     super.initState();
+  }
+
+  late bool? isAnfitrion = false;
+
+  void getMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    isAnfitrion = prefs.getBool("setIsAnfitrion");
   }
 
   @override
@@ -50,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Welcome to GoHotel",
+                  "Bienvenido a TomateBnb",
                   style: TextStyle(
                     fontSize: 24,
                     fontFamily: "Gilroy Bold",
@@ -58,14 +66,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-                Text("Please login to your account",
+                Text("Acceda a su cuenta",
                     style: TextStyle(
                       fontSize: 14,
                       color: notifire.getgreycolor,
                       fontFamily: "Gilroy Medium",
                     )),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                Text("Phone Number",
+                Text("Correo Electrónico",
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
@@ -75,13 +83,12 @@ class _LoginPageState extends State<LoginPage> {
                     controller: emailController,
                     feildcolor: notifire.getdarkmodecolor,
                     hintcolor: notifire.getgreycolor,
-                    text: 'Enter your number',
-                    prefix: Image.asset("assets/images/call.png",
-                        height: 25, color: notifire.getgreycolor),
+                    text: 'Ingresa tu Correo Electrónico',
+                    prefix: Icon(Icons.email_outlined, color: Theme.of(context).colorScheme.primary,),
                     suffix: null),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                 Text(
-                  "Password",
+                  "Contraseña",
                   style: TextStyle(
                       fontSize: 15,
                       fontFamily: "Gilroy Medium",
@@ -112,10 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                     // );
                   },
                   child: Text(
-                    "Forgot Password?",
+                    "Olvidaste tu contraseña?",
                     style: TextStyle(
                         fontSize: 15,
-                        color: notifire.getdarkbluecolor,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontFamily: "Gilroy Medium"),
                   ),
                 ),
@@ -142,11 +149,15 @@ class _LoginPageState extends State<LoginPage> {
                     onclick: () {
                       context.read<AuthBloc>().add(AuthLoginEvent(
                           emailController.text, passwordController.text));
-                    });
+                    }, context: context);
               },
               listener: (context, state) {
                 if (state is AuthLoginSuccess) {
-                  context.push('/menu-viajero');
+                  if(isAnfitrion == null || isAnfitrion == false){
+                    context.pushReplacement('/menu-viajero');
+                  } else {
+                    context.pushReplacement('/menu-anfitrion');
+                  }
                 } else if (state is AuthLoginError) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(state.message),
@@ -160,73 +171,93 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   Text(
-                    "Or login with",
+                    "o inicie sesión con",
                     style: TextStyle(
                         fontSize: 15,
-                        color: notifire.getgreycolor,
+                        color: Theme.of(context).colorScheme.tertiary,
                         fontFamily: "c"),
                   )
                 ],
               ),
             ),
             const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: notifire.getdarkmodecolor),
-                  // margin: EdgeInsets.only(top: 12),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width / 2.3,
-                  child: InkWell(
-                    onTap: () {},
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Image.asset("assets/images/google.png",
-                                fit: BoxFit.fill),
-                            Text(
-                              "Google",
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontFamily: "Gilroy Medium",
-                                  color: notifire.getwhiteblackcolor),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),  
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    // margin: EdgeInsets.only(top: 12),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 2.3,
-                    child: InkWell(
-                      onTap: () {},
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(50)),
-                        child: Image.asset("assets/images/facebook.png",
-                            fit: BoxFit.fitWidth),
-                      ),
-                    )),
-              ],
+                onPressed: () {
+                
+                }, 
+                label: Text('Google'),
+                icon: Image.asset("assets/images/google.png", width: 30,),
+              ),
             ),
+
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Container(
+            //       padding: const EdgeInsets.all(12),
+            //       decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(10),
+            //           color: notifire.getdarkmodecolor),
+            //       // margin: EdgeInsets.only(top: 12),
+            //       height: 50,
+            //       width: MediaQuery.of(context).size.width/1.0,
+            //       child: InkWell(
+            //         onTap: () {},
+            //         child: ClipRRect(
+            //           borderRadius: const BorderRadius.all(Radius.circular(50)),
+            //           child: Center(
+            //             child: Row(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 Image.asset("assets/images/google.png",
+            //                     fit: BoxFit.fill),
+            //                 SizedBox(width: 10,),
+            //                 Text(
+            //                   "Google",
+            //                   style: TextStyle(
+            //                       fontSize: 17,
+            //                       fontFamily: "Gilroy Medium",
+            //                       color: Colors.black),
+            //                 )
+            //               ],
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     // Container(
+            //     //     decoration: BoxDecoration(
+            //     //       borderRadius: BorderRadius.circular(50),
+            //     //     ),
+            //     //     // margin: EdgeInsets.only(top: 12),
+            //     //     height: 50,
+            //     //     width: MediaQuery.of(context).size.width / 2.3,
+            //     //     child: InkWell(
+            //     //       onTap: () {},
+            //     //       child: ClipRRect(
+            //     //         borderRadius:
+            //     //             const BorderRadius.all(Radius.circular(50)),
+            //     //         child: Image.asset("assets/images/facebook.png",
+            //     //             fit: BoxFit.fitWidth),
+            //     //       ),
+            //     //     ),
+            //     // ),
+            //   ],
+            // ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don’t have an account?",
+                Text("No tienes una cuenta?",
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
@@ -237,10 +268,10 @@ class _LoginPageState extends State<LoginPage> {
                     //     builder: (context) => const creatscreen()));
                   },
                   child: Text(
-                    "Register",
+                    "Registrar",
                     style: TextStyle(
                       fontSize: 16,
-                      color: notifire.getdarkbluecolor,
+                      color: Theme.of(context).colorScheme.primary,
                       fontFamily: "Gilroy Medium",
                     ),
                   ),

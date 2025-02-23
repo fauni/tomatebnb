@@ -94,7 +94,9 @@ class _AnuncioPageState extends State<AnuncioPage> {
                         padding: EdgeInsets.zero,
                         itemCount: ads.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return ItemListAnuncio(anuncio: ads[index],);
+                          return ItemListAnuncio(
+                            anuncio: ads[index],
+                          );
                           // return Padding(
                           //     padding: const EdgeInsets.symmetric(vertical: 6),
                           //     child: Container(

@@ -73,14 +73,14 @@ textfield({String? text, prefix, suffix, Color? hintcolor, feildcolor , TextEdit
   );
 }
 
-AppButton({onclick, buttontext}) {
+AppButton({onclick, buttontext, BuildContext? context}) {
   return InkWell(
     onTap: onclick,
     child: Container(
         height: 55,
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50), color: Darkblue),
+            borderRadius: BorderRadius.circular(10), color: Theme.of(context!).colorScheme.primary),
         child: Center(
             child: Text(buttontext,
                 style: TextStyle(

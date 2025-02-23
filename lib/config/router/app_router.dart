@@ -1,9 +1,13 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
+import 'package:tomatebnb/ui/pages/huesped/explorar_mapa_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
 import 'package:tomatebnb/ui/pages/auth/login_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/menu_page.dart';
@@ -50,6 +54,23 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/highlight',
       builder: (context, state) => const HighlightPage()
-    )
+    ),
+    GoRoute(
+      path: '/explorar_mapa',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: ExplorarMapaPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0, 1);
+          const end = Offset.zero;
+          final tween = Tween(begin: begin, end: end);
+          final offsetAnimation = animation.drive(tween);
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    ),
   ]
 );
