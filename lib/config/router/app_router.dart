@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
@@ -72,5 +73,9 @@ final GoRouter appRouter = GoRouter(
         },
       ),
     ),
+    GoRoute(
+      path: '/prices',
+      builder: (context, state) => const PricesPage()
+    )
   ]
 );

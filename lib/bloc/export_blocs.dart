@@ -31,3 +31,23 @@ export 'package:tomatebnb/bloc/service_bloc/service_state.dart';
 export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_event.dart';
 export 'package:tomatebnb/bloc/accommodation_service_bloc/accommodation_service_state.dart';
+
+//bloca para aspectos 
+export 'package:tomatebnb/bloc/aspect_bloc/aspect_bloc.dart';
+export 'package:tomatebnb/bloc/aspect_bloc/aspect_event.dart';
+export 'package:tomatebnb/bloc/aspect_bloc/aspect_state.dart';
+
+//bloca para aspectos pos alojamiento
+export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_event.dart';
+export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_state.dart';
+
+//bloca para precios pos alojamiento
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_event.dart';
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_state.dart';
+
+//bloca para descuentos pos alojamiento
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_event.dart';
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_state.dart';

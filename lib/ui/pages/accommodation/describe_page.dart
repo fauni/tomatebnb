@@ -64,7 +64,7 @@ class _DescribePageState extends State<DescribePage> {
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
-    _accommodationId = GoRouterState.of(context).extra! as int;
+    _accommodationId = GoRouterState.of(context).extra as int?;
     context
         .read<AccommodationBloc>()
         .add(AccommodationGetByIdEvent(_accommodationId ?? 0));
@@ -75,7 +75,7 @@ class _DescribePageState extends State<DescribePage> {
           PageView(
             controller: _pageController,
             onPageChanged: _handlingOnPageChanged,
-            physics: const BouncingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               BlocBuilder<AccommodationBloc, AccommodationState>(
                 builder: (context, state) {
@@ -614,9 +614,11 @@ class _DescribePageState extends State<DescribePage> {
                                           ),
                                     ],
                                   ),
-                                ));
+                                )
+                                );
                           },
                         ),
+                     
                       );
                     },
                   ),

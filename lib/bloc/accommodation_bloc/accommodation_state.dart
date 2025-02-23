@@ -92,3 +92,24 @@ class AccommodationUpdateError extends AccommodationState {
   @override
   List<Object> get props => [message];
 }
+
+//Estados para actualizar alojamiento por id
+class AccommodationUpdate2Loading extends AccommodationState {}
+
+class AccommodationUpdate2Success extends AccommodationState {
+  final bool status;
+  AccommodationUpdate2Success(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class AccommodationUpdate2Error extends AccommodationState {
+  final String message;
+  AccommodationUpdate2Error(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
