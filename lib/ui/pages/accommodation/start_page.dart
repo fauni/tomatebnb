@@ -122,7 +122,7 @@ class _StartPageState extends State<StartPage> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.75,
+                                              0.70,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -154,11 +154,7 @@ class _StartPageState extends State<StartPage> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.007),
+                                       
                                         SizedBox(
                                           height: MediaQuery.of(context)
                                                   .size
@@ -167,7 +163,7 @@ class _StartPageState extends State<StartPage> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.70,
+                                              0.65,
                                           child: Text(
                                               instructions1[index]["subtitle"]
                                                   .toString(),
@@ -211,6 +207,7 @@ class _StartPageState extends State<StartPage> {
                                     .add(AccommodationCreateEvent());
                                 // context.push("/describe");
                               },
+                              context: context
                             ));
                       }, listener: (context, state) {
                         if (state is AccommodationCreateSuccess) {

@@ -201,7 +201,7 @@ class _PricesPageState extends State<PricesPage> {
                     //   Radius.circular(50),
                     // ),
                     // color: Color(0xFF000000),
-                    color: _currentPage == i ? Darkblue : greyColor,
+                    color: _currentPage == i ? Theme.of(context).colorScheme.primary : greyColor,
                   ),
                   margin: const EdgeInsets.only(right: 8),
                   curve: Curves.easeIn,
@@ -262,7 +262,7 @@ class _PricesPageState extends State<PricesPage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 15,
-                    color: notifire.getgreycolor,
+                    color: Theme.of(context).colorScheme.primary,
                     fontFamily: "Gilroy Medium"), //subtext
               ),
             ),
@@ -283,7 +283,7 @@ class _PricesPageState extends State<PricesPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -321,8 +321,8 @@ class _PricesPageState extends State<PricesPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -388,26 +388,29 @@ class _PricesPageState extends State<PricesPage> {
                   borderRadius: BorderRadius.circular(15),
                   color: notifire.getdarkmodecolor),
               child: Center(
-                child: TextField(
-                  controller: _priceController,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: notifire.getgreycolor, fontSize: 50),
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                    prefixText: 'Bs.',
-                    hintText: "0",
-                    hintStyle: TextStyle(
-                      fontSize: 50.0,
-                      color: notifire.getgreycolor,
-                      fontFamily: "Gilroy Medium",
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _priceController,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      prefixText: 'Bs.',
+                      hintText: "0",
+                      hintStyle: TextStyle(
+                        fontSize: 50.0,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontFamily: "Gilroy Medium",
+                      ),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xffE2E4EA),
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
                     ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xffE2E4EA),
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
                   ),
                 ),
               ),
@@ -430,7 +433,7 @@ class _PricesPageState extends State<PricesPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -474,8 +477,8 @@ class _PricesPageState extends State<PricesPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -541,26 +544,29 @@ class _PricesPageState extends State<PricesPage> {
                   borderRadius: BorderRadius.circular(15),
                   color: notifire.getdarkmodecolor),
               child: Center(
-                child: TextField(
-                  controller: _priceWeekendController,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  style: TextStyle(color: notifire.getgreycolor, fontSize: 50),
-                  decoration: InputDecoration(
-                    prefixText: 'Bs.',
-                    hintText: "00",
-                    hintStyle: TextStyle(
-                      fontSize: 50.0,
-                      color: notifire.getgreycolor,
-                      fontFamily: "Gilroy Medium",
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _priceWeekendController,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.numberWithOptions(),
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                    decoration: InputDecoration(
+                      prefixText: 'Bs.',
+                      hintText: "0",
+                      hintStyle: TextStyle(
+                        fontSize: 50.0,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontFamily: "Gilroy Medium",
+                      ),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xffE2E4EA),
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
                     ),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0xffE2E4EA),
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
                   ),
                 ),
               ),
@@ -583,7 +589,7 @@ class _PricesPageState extends State<PricesPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -627,8 +633,8 @@ class _PricesPageState extends State<PricesPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -944,7 +950,7 @@ class _PricesPageState extends State<PricesPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -974,8 +980,8 @@ class _PricesPageState extends State<PricesPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1045,7 +1051,7 @@ class _PricesPageState extends State<PricesPage> {
                 decoration: InputDecoration(
                   hintText: "Alojamiento espacioso.....",
                   hintStyle: TextStyle(
-                    color: notifire.getgreycolor,
+                    color: Theme.of(context).colorScheme.primary,
                     fontFamily: "Gilroy Medium",
                   ),
                   border: const OutlineInputBorder(
@@ -1075,7 +1081,7 @@ class _PricesPageState extends State<PricesPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -1101,8 +1107,8 @@ class _PricesPageState extends State<PricesPage> {
                         onTap: () {},
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1187,14 +1193,14 @@ class _PricesPageState extends State<PricesPage> {
                           hintText:
                               "Calle, Avenida, Nro.  Zona/ Barrio Piso dpto.",
                           hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Medium",
                           ),
                           suffixIcon: Padding(
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1208,7 +1214,7 @@ class _PricesPageState extends State<PricesPage> {
                         ),
                       ),
                     ),
-                    Divider(color: notifire.getgreycolor),
+                    Divider(color: Theme.of(context).colorScheme.primary),
                     Text(
                       "Ciudad",
                       style: TextStyle(
@@ -1226,14 +1232,14 @@ class _PricesPageState extends State<PricesPage> {
                         decoration: InputDecoration(
                           hintText: "La Paz, Santa Cruz, Montero.....",
                           hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Medium",
                           ),
                           suffixIcon: Padding(
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1247,7 +1253,7 @@ class _PricesPageState extends State<PricesPage> {
                         ),
                       ),
                     ),
-                    Divider(color: notifire.getgreycolor),
+                    Divider(color: Theme.of(context).colorScheme.primary),
                     const SizedBox(height: 4),
                     Text(
                       "País",
@@ -1266,14 +1272,14 @@ class _PricesPageState extends State<PricesPage> {
                         decoration: InputDecoration(
                           hintText: "Bolivia .....",
                           hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Medium",
                           ),
                           suffixIcon: Padding(
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1288,15 +1294,15 @@ class _PricesPageState extends State<PricesPage> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Divider(color: notifire.getgreycolor),
+                    Divider(color: Theme.of(context).colorScheme.primary),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: GestureDetector(
                         onTap: null,
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1367,7 +1373,7 @@ class _PricesPageState extends State<PricesPage> {
           titletext,
           style: TextStyle(
               fontSize: 14,
-              color: notifire.getgreycolor,
+              color: Theme.of(context).colorScheme.primary,
               fontFamily: "Gilroy Medium"),
         ),
       ],

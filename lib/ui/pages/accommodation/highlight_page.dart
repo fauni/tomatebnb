@@ -184,7 +184,7 @@ class _HighlightPageState extends State<HighlightPage> {
                     //   Radius.circular(50),
                     // ),
                     // color: Color(0xFF000000),
-                    color: _currentPage == i ? Darkblue : greyColor,
+                    color: _currentPage == i ? Theme.of(context).colorScheme.primary : greyColor,
                   ),
                   margin: const EdgeInsets.only(right: 8),
                   curve: Curves.easeIn,
@@ -265,7 +265,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -279,8 +279,8 @@ class _HighlightPageState extends State<HighlightPage> {
                     },
                     child: Container(
                         decoration: BoxDecoration(
-                            color: Darkblue,
-                            borderRadius: BorderRadius.circular(50)),
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(25)),
                         height: 50,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Center(
@@ -483,7 +483,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -508,8 +508,8 @@ class _HighlightPageState extends State<HighlightPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -642,7 +642,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -658,8 +658,8 @@ class _HighlightPageState extends State<HighlightPage> {
                           },
                     child: Container(
                         decoration: BoxDecoration(
-                            color: Darkblue,
-                            borderRadius: BorderRadius.circular(50)),
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(25)),
                         height: 50,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Center(
@@ -707,25 +707,32 @@ class _HighlightPageState extends State<HighlightPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: notifire.getdarkmodecolor),
-              child: TextField(
-                controller: _titleController,
-                minLines: 2,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                // controller: adressController,
-                decoration: InputDecoration(
-                  hintText: "Alojamiento.....",
-                  hintStyle: TextStyle(
-                    color: notifire.getgreycolor,
-                    fontFamily: "Gilroy Medium",
-                  ),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xffE2E4EA),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _titleController,
+                    minLines: 2,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(fontSize: 35, color: Theme.of(context).colorScheme.primary),
+                    // controller: adressController,
+                    decoration: InputDecoration(
+                      hintText: "Alojamiento.....",
+                      hintStyle: TextStyle(
+                        color: notifire.getgreycolor,
+                        fontSize: 25.0,
+                        fontFamily: "Gilroy Medium",
                       ),
-                      borderRadius: BorderRadius.circular(15)),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xffE2E4EA),
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -746,7 +753,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -783,8 +790,8 @@ class _HighlightPageState extends State<HighlightPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -983,7 +990,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -1008,8 +1015,8 @@ class _HighlightPageState extends State<HighlightPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1060,25 +1067,33 @@ class _HighlightPageState extends State<HighlightPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: notifire.getdarkmodecolor),
-              child: TextField(
-                controller: _descriptionController,
-                minLines: 5,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                // controller: adressController,
-                decoration: InputDecoration(
-                  hintText: "Alojamiento espacioso.....",
-                  hintStyle: TextStyle(
-                    color: notifire.getgreycolor,
-                    fontFamily: "Gilroy Medium",
-                  ),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xffE2E4EA),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _descriptionController,
+                    minLines: 5,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.primary),
+                    // controller: adressController,
+                    decoration: InputDecoration(
+                      hintText: "Alojamiento espacioso.....",
+                      
+                      hintStyle: TextStyle(
+                        color: notifire.getgreycolor,
+                        fontFamily: "Gilroy Medium",
+                        fontSize: 20
                       ),
-                      borderRadius: BorderRadius.circular(15)),
+                      border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xffE2E4EA),
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -1099,7 +1114,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -1132,8 +1147,8 @@ class _HighlightPageState extends State<HighlightPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1224,7 +1239,7 @@ class _HighlightPageState extends State<HighlightPage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1263,7 +1278,7 @@ class _HighlightPageState extends State<HighlightPage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1303,7 +1318,7 @@ class _HighlightPageState extends State<HighlightPage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1325,8 +1340,8 @@ class _HighlightPageState extends State<HighlightPage> {
                         onTap: null,
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(

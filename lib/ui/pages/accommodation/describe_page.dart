@@ -181,7 +181,7 @@ class _DescribePageState extends State<DescribePage> {
                     //   Radius.circular(50),
                     // ),
                     // color: Color(0xFF000000),
-                    color: _currentPage == i ? Darkblue : greyColor,
+                    color: _currentPage == i ? Theme.of(context).colorScheme.primary : greyColor,
                   ),
                   margin: const EdgeInsets.only(right: 8),
                   curve: Curves.easeIn,
@@ -262,7 +262,7 @@ class _DescribePageState extends State<DescribePage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -276,8 +276,8 @@ class _DescribePageState extends State<DescribePage> {
                     },
                     child: Container(
                         decoration: BoxDecoration(
-                            color: Darkblue,
-                            borderRadius: BorderRadius.circular(50)),
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(25)),
                         height: 50,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Center(
@@ -350,9 +350,9 @@ class _DescribePageState extends State<DescribePage> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 1.5,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 5,
+                            childAspectRatio: 1.3,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -432,7 +432,7 @@ class _DescribePageState extends State<DescribePage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -468,8 +468,8 @@ class _DescribePageState extends State<DescribePage> {
                               },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -595,7 +595,7 @@ class _DescribePageState extends State<DescribePage> {
                                           ),
                                           subtitle: Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 8),
+                                                const EdgeInsets.only(top: 8,bottom: 12.0),
                                             child: SizedBox(
                                                 width: MediaQuery.of(context)
                                                         .size
@@ -640,7 +640,7 @@ class _DescribePageState extends State<DescribePage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -676,8 +676,8 @@ class _DescribePageState extends State<DescribePage> {
                               },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -724,7 +724,9 @@ class _DescribePageState extends State<DescribePage> {
             Padding(
               padding: EdgeInsets.all(12.0),
               child: AppButton(
-                  buttontext: "Ingresa tu direccón", onclick: bottomsheet),
+                buttontext: "Ingresa tu direccón",
+                onclick: bottomsheet,
+                context: context),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             BlocConsumer<LocalizationBloc, LocalizationState>(
@@ -758,8 +760,8 @@ class _DescribePageState extends State<DescribePage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Center(
@@ -773,7 +775,7 @@ class _DescribePageState extends State<DescribePage> {
                             )),
                       ),
                        (accommodationRequestModel?.latitude?? 0) != 0  && (accommodationRequestModel?.longitude?? 0) != 0
-                          ? Icon(Icons.check_circle_outlined, color: Darkblue)
+                          ? Icon(Icons.check_circle_outlined, color: Theme.of(context).colorScheme.primary)
                           :Icon(Icons.circle_outlined, color: Colors.grey)
                        
                     ],
@@ -804,7 +806,7 @@ class _DescribePageState extends State<DescribePage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -855,8 +857,8 @@ class _DescribePageState extends State<DescribePage> {
                               },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -996,7 +998,7 @@ class _DescribePageState extends State<DescribePage> {
                         "Atras",
                         style: TextStyle(
                             fontSize: 18,
-                            color: Darkblue,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Bold"),
                       )),
                 ),
@@ -1041,8 +1043,8 @@ class _DescribePageState extends State<DescribePage> {
                               },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1136,7 +1138,7 @@ class _DescribePageState extends State<DescribePage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1175,7 +1177,7 @@ class _DescribePageState extends State<DescribePage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1215,7 +1217,7 @@ class _DescribePageState extends State<DescribePage> {
                             padding: const EdgeInsets.all(6),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Darkblue,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           border: const OutlineInputBorder(
@@ -1249,8 +1251,8 @@ class _DescribePageState extends State<DescribePage> {
                               },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Darkblue,
-                                borderRadius: BorderRadius.circular(50)),
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(25)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
