@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/finish_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
@@ -48,8 +49,8 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const HighlightPage()
     ),
     GoRoute(
-      path: '/finish',
-      builder: (context, state) => const FinishPage()
+      path: '/prices',
+      builder: (context, state) => const PricesPage()
     )
   ]
 );

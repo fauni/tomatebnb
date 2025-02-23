@@ -75,7 +75,7 @@ class _DescribePageState extends State<DescribePage> {
           PageView(
             controller: _pageController,
             onPageChanged: _handlingOnPageChanged,
-            physics: const BouncingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               BlocBuilder<AccommodationBloc, AccommodationState>(
                 builder: (context, state) {
@@ -614,9 +614,11 @@ class _DescribePageState extends State<DescribePage> {
                                           ),
                                     ],
                                   ),
-                                ));
+                                )
+                                );
                           },
                         ),
+                     
                       );
                     },
                   ),

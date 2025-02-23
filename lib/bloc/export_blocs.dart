@@ -41,3 +41,13 @@ export 'package:tomatebnb/bloc/aspect_bloc/aspect_state.dart';
 export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_event.dart';
 export 'package:tomatebnb/bloc/accommodation_aspect_bloc/accommodation_aspect_state.dart';
+
+//bloca para precios pos alojamiento
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_event.dart';
+export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_state.dart';
+
+//bloca para descuentos pos alojamiento
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_event.dart';
+export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_state.dart';

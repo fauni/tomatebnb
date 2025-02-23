@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/repository/accommodation_aspect_repository.dart';
+import 'package:tomatebnb/repository/accommodation_price_repository.dart';
+import 'package:tomatebnb/repository/accommodation_discount_repository.dart';
 import 'package:tomatebnb/repository/accommodation_service_repository.dart';
 import 'package:tomatebnb/repository/accommodation_type_repository.dart';
 import 'package:tomatebnb/repository/aspect_repository.dart';
@@ -26,6 +28,8 @@ class Blocs {
   static final AccommodationServiceBloc accommodationServiceBloc = AccommodationServiceBloc(AccommodationServiceRepository(),);
   static final AspectBloc aspectBloc = AspectBloc(AspectRepository(),);
   static final AccommodationAspectBloc accommodationAspectBloc = AccommodationAspectBloc(AccommodationAspectRepository(),);
+  static final AccommodationPriceBloc accommodationPriceBloc = AccommodationPriceBloc(AccommodationPriceRepository(),);
+  static final AccommodationDiscountBloc accommodationDiscountBloc = AccommodationDiscountBloc(AccommodationDiscountRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -38,6 +42,8 @@ class Blocs {
     BlocProvider<AccommodationServiceBloc>(create: (context) => accommodationServiceBloc),
     BlocProvider<AspectBloc>(create: (context) => aspectBloc),
     BlocProvider<AccommodationAspectBloc>(create: (context) => accommodationAspectBloc),
+    BlocProvider<AccommodationPriceBloc>(create: (context) => accommodationPriceBloc),
+    BlocProvider<AccommodationDiscountBloc>(create: (context) => accommodationDiscountBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -51,6 +57,8 @@ class Blocs {
     accommodationServiceBloc.close();
     aspectBloc.close();
     accommodationAspectBloc.close();
+    accommodationPriceBloc.close();
+    accommodationDiscountBloc.close();
   }
 
 

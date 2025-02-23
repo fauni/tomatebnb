@@ -84,12 +84,12 @@ Future<ApiResponse<AccommodationAspectResponseModel>> createAccommodationAspect(
     }
   }
 
-Future<ApiResponse<AccommodationAspectResponseModel>> delete(int accommodationId, int serviceId) async {
+Future<ApiResponse<AccommodationAspectResponseModel>> delete(int accommodationId, int aspectId) async {
     try{
       final prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("token")??"";
       final response = await http.delete(
-        Uri.parse('$_baseUrl/v1/accommodation_services/$accommodationId/$serviceId'),
+        Uri.parse('$_baseUrl/v1/accommodation_aspects/$accommodationId/$aspectId'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept' : 'application/json',
