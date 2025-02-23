@@ -2,30 +2,30 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tomatebnb/ui/pages/huesped/explorar_page.dart';
-import 'package:tomatebnb/ui/pages/huesped/favorito_page.dart';
+import 'package:tomatebnb/ui/pages/anfitrion/anuncio_page.dart';
+import 'package:tomatebnb/ui/pages/anfitrion/calendario_page.dart';
+import 'package:tomatebnb/ui/pages/anfitrion/home_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/profile_page.dart';
-import 'package:tomatebnb/ui/pages/huesped/viaje_page.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 int selectedIndex = 0;
 
-class MenuPage extends StatefulWidget {
-  const MenuPage({super.key});
+class MenuAnfitrionPage extends StatefulWidget {
+  const MenuAnfitrionPage({super.key});
 
   @override
-  State<MenuPage> createState() => _MenuPageState();
+  State<MenuAnfitrionPage> createState() => _MenuAnfitrionPageState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class _MenuAnfitrionPageState extends State<MenuAnfitrionPage> {
   // late int _lastTimeBackButtonWasTapped;
   // static const exitTimeInMillis = 2000;
 
   final _pageOption = [
-    const ExplorarPage(),
-    const FavoritoPage(),
-    const ViajePage(),
+    const HomeAnfitrionPage(),
+    const CalendarioPage(),
+    const AnuncioPage(),
     const ProfilePage(),
   ];
 
@@ -55,17 +55,17 @@ class _MenuPageState extends State<MenuPage> {
         showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.searchOutline, color: selectedIndex == 0 ? Darkblue : greyColor),
-              label: 'Explora'),
+              icon: Icon(EvaIcons.homeOutline, color: selectedIndex == 0 ? Darkblue : greyColor,),
+              label: 'Inicio'),
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.heart, color: selectedIndex == 1 ? Darkblue : greyColor),
-              label: 'Favoritos'),
+              icon: Icon(EvaIcons.calendarOutline, color: selectedIndex == 1 ? Darkblue : greyColor),
+              label: 'Calendario'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.airplane_ticket_outlined, color: selectedIndex == 3 ? Darkblue : greyColor),
-              label: 'Viajes s'),
+            icon: Icon(EvaIcons.archiveOutline, color: selectedIndex == 2 ? Darkblue : greyColor),
+            label: 'Anuncios'),
           BottomNavigationBarItem(
-            icon: Icon(EvaIcons.person, color: selectedIndex == 3 ? Darkblue : greyColor),
-            label: 'Perfil',
+            icon: Icon(EvaIcons.menu, color: selectedIndex == 3 ? Darkblue : greyColor,),
+            label: 'Menu',
           ),
         ],
         onTap: (index) {

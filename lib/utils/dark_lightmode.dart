@@ -31,4 +31,5 @@ class ColorNotifire with ChangeNotifier {
   get getdarkbluecolor => isDark ? Darkblue : Darkblue;
   get getdarkscolor => isDark ? BlackColor : bgcolor;
   get getdarkwhitecolor => isDark ? WhiteColor : WhiteColor;
+  get getfloatingbuttonblackcolor => isDark ? WhiteColor: BlackColor;
 }

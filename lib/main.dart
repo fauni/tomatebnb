@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:tomatebnb/bloc/blocs.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/router/app_router.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 
@@ -32,7 +33,15 @@ class MyApp extends StatelessWidget {
           routerConfig: appRouter,
           theme: ThemeData(
             fontFamily: 'SofiaRegular',
-            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primaryLightColor,
+              primary: AppColors.primaryDarkColor,
+              secondary: AppColors.accentColor,
+              tertiary: AppColors.primaryColor,
+              surface: AppColors.bgColor,
+              inverseSurface: AppColors.greyColor              
+            ),
+            useMaterial3: true,
             splashColor: Colors.transparent,
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,

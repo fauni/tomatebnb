@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               listener: (context, state) {
                 if (state is AuthLoginSuccess) {
-                  context.push('/menu');
+                  context.push('/menu-viajero');
                 } else if (state is AuthLoginError) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(state.message),
