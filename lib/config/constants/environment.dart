@@ -6,4 +6,5 @@ class Environment {
   // static String UrlApi = dotenv.env['URL_API_LOCAL'] ?? 'No hay url';
   // ignore: non_constant_identifier_names
   static String UrlApi = dotenv.env['URL_API_REMOTE'] ?? 'No hay url';
+  static String UrlImg = dotenv.env['URL_IMAGES_REMOTE'] ?? 'No hay url';
 }

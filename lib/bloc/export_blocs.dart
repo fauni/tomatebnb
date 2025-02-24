@@ -51,3 +51,7 @@ export 'package:tomatebnb/bloc/accommodation_price_bloc/accommodation_price_stat
 export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_event.dart';
 export 'package:tomatebnb/bloc/accommodation_discount_bloc/accommodation_discount_state.dart';
+
+export 'package:tomatebnb/bloc/accommodation_photo_bloc/accommodation_photo_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_photo_bloc/accommodation_photo_event.dart';
+export 'package:tomatebnb/bloc/accommodation_photo_bloc/accommodation_photo_state.dart';

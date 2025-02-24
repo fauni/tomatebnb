@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/finish_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
@@ -81,6 +80,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/detail_ads',
       builder: (context, state) => const DetalleAnuncioPage(),
-    )
+    ), 
+    GoRoute(
+      path: '/finish',
+      builder: (context, state) => const FinishPage()
+    ),
   ]
 );
