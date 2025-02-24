@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-class ItemListExplore extends StatelessWidget {
-  const ItemListExplore({super.key});
+class ItemListExplore extends StatefulWidget {
+  
+  const ItemListExplore({super.key, required this.onTap});
 
+  final VoidCallback onTap;
+
+  @override
+  State<ItemListExplore> createState() => _ItemListExploreState();
+}
+
+class _ItemListExploreState extends State<ItemListExplore> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) =>
-        //         const hoteldetailpage(),
-        //   ),
-        // );
-      },
+      onTap: widget.onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         width: 280,

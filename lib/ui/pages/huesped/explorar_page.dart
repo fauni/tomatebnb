@@ -102,7 +102,9 @@ class _ExplorarPageState extends State<ExplorarPage> {
           Expanded(
             child: ListView.separated(
               itemBuilder: (context, index) {
-                return ItemListExplore();
+                return ItemListExplore(onTap: () {
+                  context.push('/detail_ads');
+                },);
               }, 
               separatorBuilder: (context, index) {
                 return Divider();
