@@ -24,33 +24,33 @@ DescribeResponseModel describeResponseModelFromJson(String str) => DescribeRespo
 String describeResponseModelToJson(DescribeResponseModel data) => json.encode(data.toJson());
 
 class DescribeResponseModel {
-    int id;
-    String describe;
-    bool status;
-    DateTime createdAt;
-    DateTime updatedAt;
+    int? id;
+    String? describe;
+    bool? status;
+    DateTime? createdAt;
+    DateTime? updatedAt;
 
     DescribeResponseModel({
-        required this.id,
-        required this.describe,
-        required this.status,
-        required this.createdAt,
-        required this.updatedAt,
+         this.id,
+         this.describe,
+         this.status,
+         this.createdAt,
+         this.updatedAt,
     });
 
     factory DescribeResponseModel.fromJson(Map<String, dynamic> json) => DescribeResponseModel(
-        id: json["id"],
-        describe: json["describe"],
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        id: json["id"]??0,
+        describe: json["describe"]??'',
+        status: json["status"]??false,
+        createdAt: DateTime.parse(json["created_at"]??'2000-01-01'),
+        updatedAt: DateTime.parse(json["updated_at"]??'2000-01-01'),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "describe": describe,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
     };
 }

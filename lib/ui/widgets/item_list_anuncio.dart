@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
+import 'package:tomatebnb/utils/customwidget.dart';
 
 class ItemListAnuncio extends StatelessWidget {
   final AccommodationResponseModel anuncio;
@@ -98,9 +100,17 @@ class ItemListAnuncio extends StatelessWidget {
                     ],
                   ),
                 ],
-              )
+              ),
+             (anuncio.priceNight ?? 0.0) > 0
+              ?Icon(Icons.check)
+              :IconButton(onPressed: (){
+                    context.push('/describe',
+                      extra: anuncio.id);
+              }, 
+              icon: Icon(Icons.edit_document))
             ],
           ),
+           
         ],
       ),
     );

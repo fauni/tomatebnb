@@ -10,6 +10,7 @@ import 'package:tomatebnb/models/accommodation/accommodation_discount_response_m
 import 'package:tomatebnb/models/accommodation/accommodation_price_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_price_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 
 import 'package:tomatebnb/utils/Colors.dart';
@@ -31,7 +32,7 @@ class _PricesPageState extends State<PricesPage> {
     context.read<ServiceBloc>().add(ServiceGetEvent());
 
     accommodationRequestModel = AccommodationRequestModel();
-    accommodationResponseModel = AccommodationResponseModel();
+    accommodationResponseModel = AccommodationResponseCompleteModel();
   }
 
   late ColorNotifire notifire;
@@ -70,7 +71,7 @@ class _PricesPageState extends State<PricesPage> {
   List<bool> selectedServices = [];
 
   late AccommodationRequestModel? accommodationRequestModel;
-  late AccommodationResponseModel? accommodationResponseModel;
+  late AccommodationResponseCompleteModel? accommodationResponseModel;
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +98,9 @@ class _PricesPageState extends State<PricesPage> {
                 listener: (context, state) {
                   if (state is AccommodationGetByIdSuccess) {
                     accommodationResponseModel = state.responseAccommodation;
-                    accommodationRequestModel =
-                        accommodationResponseModel?.toRequestModel();
-
+                    accommodationRequestModel =accommodationResponseModel?.toRequestModel();
+                    _priceController.text = accommodationResponseModel!.prices!.first.priceNight.toString() ;
+                    _priceWeekendController.text= accommodationResponseModel!.prices!.first.priceWeekend.toString();
                     
                   }
                 },

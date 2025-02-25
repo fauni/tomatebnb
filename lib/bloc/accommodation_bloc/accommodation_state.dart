@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 
 
@@ -55,7 +56,7 @@ class AccommodationCreateError extends AccommodationState {
 class AccommodationGetByIdLoading extends AccommodationState {}
 
 class AccommodationGetByIdSuccess extends AccommodationState {
-  final AccommodationResponseModel responseAccommodation;
+  final AccommodationResponseCompleteModel responseAccommodation;
   AccommodationGetByIdSuccess(
     this.responseAccommodation
   );

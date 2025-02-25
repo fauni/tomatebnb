@@ -40,7 +40,7 @@ class AccommodationResponseModel {
     int? numberRooms;
     int? numberBathrooms;
     int? numberBeds;
-    int? priceNight;
+    double? priceNight;
     bool? status;
     DateTime? updatedAt;
     DateTime? createdAt;
@@ -85,7 +85,7 @@ class AccommodationResponseModel {
         int? numberRooms,
         int? numberBathrooms,
         int? numberBeds,
-        int? priceNight,
+        double? priceNight,
         bool? status,
         DateTime? updatedAt,
         DateTime? createdAt
@@ -130,7 +130,7 @@ class AccommodationResponseModel {
         numberRooms: json["number_rooms"],
         numberBathrooms: json["number_bathrooms"],
         numberBeds: json["number_beds"],
-        priceNight: json["price_night"],
+        priceNight: double.tryParse(json["price_night"]??'0.0'),
         status: json["status"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),

@@ -24,7 +24,7 @@ class AccommodationRequestModel {
     int? numberRooms;
     int? numberBathrooms;
     int? numberBeds;
-    int? priceNight;
+    double? priceNight;
     bool? status;
 
     AccommodationRequestModel({
@@ -63,7 +63,7 @@ class AccommodationRequestModel {
         int? numberRooms,
         int? numberBathrooms,
         int? numberBeds,
-        int? priceNight,
+        double? priceNight,
         bool? status,
     }) => 
         AccommodationRequestModel(
@@ -102,7 +102,7 @@ class AccommodationRequestModel {
         numberRooms: json["number_rooms"],
         numberBathrooms: json["number_bathrooms"],
         numberBeds: json["number_beds"],
-        priceNight: json["price_night"],
+        priceNight: double.parse(json["price_night"]??'00.00'),
         status: json["status"],
     );
 
