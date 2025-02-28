@@ -37,6 +37,7 @@ class _StartPageState extends State<StartPage> {
             if(state is AccommodationDiscountCreateSuccess){
               context.push('/describe',
                         extra: accommodationResponseModel.id);
+              
             }
             if(state is AccommodationDiscountCreateError){
                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -55,8 +56,8 @@ class _StartPageState extends State<StartPage> {
                   BlocConsumer<AccommodationPriceBloc, AccommodationPriceState>(
                 listener: (context, state) {
                   if (state is AccommodationPriceCreateSuccess) {
-                    // context.push('/describe',
-                    //     extra: accommodationResponseModel.id);
+                    context.push('/describe',
+                        extra: accommodationResponseModel.id);
                      context.read<AccommodationDiscountBloc>().add(
                               AccommodationDiscountCreateEvent(
                                   AccommodationDiscountRequestModel(
@@ -205,7 +206,8 @@ class _StartPageState extends State<StartPage> {
                                 context
                                     .read<AccommodationBloc>()
                                     .add(AccommodationCreateEvent());
-                                // context.push("/describe");
+                                //  context.push('/describe',
+                                //         extra: 147);
                               },
                               context: context
                             ));

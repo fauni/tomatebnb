@@ -9,7 +9,8 @@ import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
-import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
+// import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/aspect_response_model.dart';
 
 import 'package:tomatebnb/models/service_response_model.dart';
@@ -32,7 +33,7 @@ class _HighlightPageState extends State<HighlightPage> {
     super.initState();
     context.read<ServiceBloc>().add(ServiceGetEvent());
     accommodationRequestModel = AccommodationRequestModel();
-    accommodationResponseModel = AccommodationResponseModel();
+    accommodationResponseModel = AccommodationResponseCompleteModel();
     addEmptyPhoto();
   }
 
@@ -61,7 +62,7 @@ class _HighlightPageState extends State<HighlightPage> {
   List<bool> selectedAspects = [];
 
   late AccommodationRequestModel? accommodationRequestModel;
-  late AccommodationResponseModel? accommodationResponseModel;
+  late AccommodationResponseCompleteModel? accommodationResponseModel;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +85,12 @@ class _HighlightPageState extends State<HighlightPage> {
                 listener: (context, state) {
                   if (state is AccommodationGetByIdSuccess) {
                     accommodationResponseModel = state.responseAccommodation;
+                    photos = accommodationResponseModel!.photos??[];
+                    addEmptyPhoto();
                     accommodationRequestModel =
                         accommodationResponseModel?.toRequestModel();
+                    _titleController.text = accommodationResponseModel!.title??'';
+                    _descriptionController.text = accommodationResponseModel!.description??'';
 
                     context.read<AspectBloc>().add(AspectGetByDescribeEvent(
                         accommodationResponseModel?.describeId ?? 0));
@@ -351,9 +356,17 @@ class _HighlightPageState extends State<HighlightPage> {
                       }
                       if (state is ServiceGetSuccess) {
                         services = state.responseServices;
-                        for (int i = 0; i < services.length; i++) {
-                          selectedServices.add(false);
-                        }
+                            for (int i = 0; i < services.length; i++) {
+                              bool esElegido= false;
+                                for(int j  = 0; j < accommodationResponseModel!.services!.length; j++)
+                                {
+                                  if(services[i].id == accommodationResponseModel!.services![j].serviceId)
+                                    {
+                                      esElegido =true;
+                                    }
+                                }
+                              selectedServices.add(esElegido);
+                            }
                       }
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.63,
@@ -413,7 +426,15 @@ class _HighlightPageState extends State<HighlightPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: notifire.getdarkmodecolor),
+                                        color: notifire.getdarkmodecolor,
+                                        border: 
+                                        selectedServices[index]
+                                          ?Border(
+                                            top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
+                                          :Border(),),
                                     child: Column(
                                       children: [
                                         ListTile(
@@ -435,32 +456,22 @@ class _HighlightPageState extends State<HighlightPage> {
                                                           _accommodationId ?? 0,
                                                           services[index].id));
                                             }
-                                            // selectedServices[index] =
-                                            //     !selectedServices[index];
-                                            // setState(() {});
+                                          
                                           },
-                                          // leading: Image.asset(
-                                          //     "assets/images/home-2.png",
-                                          //     height: 35),
-                                          trailing: selectedServices[index]
-                                              // || accommodationResponseModel?.describeId == describes[index].id
-                                              ? Icon(Icons.check_circle,
-                                                  color:
-                                                      notifire.getdarkbluecolor)
-                                              : SizedBox.shrink(),
-
                                           title: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12.0),
                                             child: Icon(Icons.bed),
                                           ),
-                                          subtitle: Text(
-                                            services[index].name,
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                fontSize: 16,
-                                                color: notifire
-                                                    .getwhiteblackcolor),
+                                          subtitle: Center(
+                                            child: Text(
+                                              services[index].name,
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  fontSize: 16,
+                                                  color: notifire
+                                                      .getwhiteblackcolor),
+                                            ),
                                           ),
                                           // isThreeLine: true,
                                         ),
@@ -596,13 +607,14 @@ class _HighlightPageState extends State<HighlightPage> {
                                 children: [
                                   ListTile(
                                     onTap: bottomsheet,
+                                    title: SizedBox(height: 15.0,),
                                     subtitle: Center(
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 1.0),
                                         child: Icon(
                                           Icons.add_a_photo_outlined,
-                                          size: 50.0,
+                                          size: 70.0,
                                         ),
                                       ),
                                     ),
@@ -648,6 +660,7 @@ class _HighlightPageState extends State<HighlightPage> {
                       _countPhotos++;
                       photos.removeLast();
                       photos.add(state.responseAccommodationPhoto);
+                      // accommodationResponseModel?.photos?.add(state.responseAccommodationPhoto);
                       addEmptyPhoto();
                       setState(() { });
                     }
@@ -872,9 +885,20 @@ class _HighlightPageState extends State<HighlightPage> {
                       }
                       if (state is AspectGetByDescribeSuccess) {
                         aspects = state.responseAspects;
-                        for (int i = 0; i < aspects.length; i++) {
-                          selectedAspects.add(false);
-                        }
+                        // for (int i = 0; i < aspects.length; i++) {
+                        //   selectedAspects.add(false);
+                        // }
+                          for (int i = 0; i < aspects.length; i++) {
+                              bool esElegido= false;
+                                for(int j  = 0; j < accommodationResponseModel!.aspects!.length; j++)
+                                {
+                                  if(aspects[i].id == accommodationResponseModel!.aspects![j].aspectId)
+                                    {
+                                      esElegido =true;
+                                    }
+                                }
+                              selectedAspects.add(esElegido);
+                            }
                       }
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.63,
@@ -934,7 +958,15 @@ class _HighlightPageState extends State<HighlightPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: notifire.getdarkmodecolor),
+                                        color: notifire.getdarkmodecolor,
+                                         border: 
+                                        selectedAspects[index]
+                                          ?Border(
+                                            top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                            right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
+                                          :Border(),),
                                     child: Column(
                                       children: [
                                         ListTile(
@@ -958,25 +990,26 @@ class _HighlightPageState extends State<HighlightPage> {
                                             }
                                           },
 
-                                          trailing: selectedAspects[index]
-                                              // || accommodationResponseModel?.describeId == describes[index].id
-                                              ? Icon(Icons.check_circle,
-                                                  color:
-                                                      notifire.getdarkbluecolor)
-                                              : SizedBox.shrink(),
+                                          // trailing: selectedAspects[index]
+                                          //     ? Icon(Icons.check_circle,
+                                          //         color:
+                                          //             notifire.getdarkbluecolor)
+                                          //     : SizedBox.shrink(),
 
                                           title: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12.0),
                                             child: Icon(Icons.bed),
                                           ),
-                                          subtitle: Text(
-                                            aspects[index].description,
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                fontSize: 16,
-                                                color: notifire
-                                                    .getwhiteblackcolor),
+                                          subtitle: Center(
+                                            child: Text(
+                                              aspects[index].description,
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  fontSize: 16,
+                                                  color: notifire
+                                                      .getwhiteblackcolor),
+                                            ),
                                           ),
                                           // isThreeLine: true,
                                         ),
@@ -1374,10 +1407,10 @@ class _HighlightPageState extends State<HighlightPage> {
 
   addEmptyPhoto() {
     photos.add(AccommodationPhotoResponseModel(
-        accommodationId: "0",
+        accommodationId: 0,
         photoUrl: "",
-        mainPhoto: "",
-        order: "",
+        mainPhoto: false,
+        order: 0,
         // status: "",
         updatedAt: DateTime.parse("2000-01-01"),
         createdAt: DateTime.parse("2000-01-01"),

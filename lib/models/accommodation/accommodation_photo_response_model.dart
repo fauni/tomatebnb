@@ -24,10 +24,10 @@ AccommodationPhotoResponseModel accommodationPhotoResponseModelFromJson(String s
 String accommodationPhotoResponseModelToJson(AccommodationPhotoResponseModel data) => json.encode(data.toJson());
 
 class AccommodationPhotoResponseModel {
-    String accommodationId;
+    int accommodationId;
     String photoUrl;
-    String mainPhoto;
-    String order;
+    bool mainPhoto;
+    int order;
     // String status;
     DateTime updatedAt;
     DateTime createdAt;
@@ -45,10 +45,10 @@ class AccommodationPhotoResponseModel {
     });
 
     factory AccommodationPhotoResponseModel.fromJson(Map<String, dynamic> json) => AccommodationPhotoResponseModel(
-        accommodationId: json["accommodation_id"],
+        accommodationId: int.parse(json["accommodation_id"].toString()),
         photoUrl: json["photo_url"],
-        mainPhoto: json["mainPhoto"],
-        order: json["order"],
+        mainPhoto: json["mainPhoto"]=='1'?true:false,
+        order: int.parse(json["order"].toString()) ,
         // status: json["status"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),

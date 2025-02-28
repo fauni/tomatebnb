@@ -46,7 +46,7 @@ class AccommodationBloc extends Bloc<AccommodationEvent, AccommodationState> {
   Future<void> _onAccommodationGetById(AccommodationGetByIdEvent event, Emitter<AccommodationState> emit) async {
     emit(AccommodationGetByIdLoading());
     try{
-      final response = await accommodationRepository.getById(event.id);
+      final response = await accommodationRepository.getByIdComplete(event.id);
       if(response.status){
         //await accommodationRepository.setUserData(response.data!);
         emit(AccommodationGetByIdSuccess(response.data!));
