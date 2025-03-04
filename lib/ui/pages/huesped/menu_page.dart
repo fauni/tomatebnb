@@ -62,7 +62,7 @@ class _MenuPageState extends State<MenuPage> {
               label: 'Favoritos'),
           BottomNavigationBarItem(
               icon: Icon(Icons.airplane_ticket_outlined, color: selectedIndex == 3 ? Darkblue : greyColor),
-              label: 'Viajes s'),
+              label: 'Viajes'),
           BottomNavigationBarItem(
             icon: Icon(EvaIcons.person, color: selectedIndex == 3 ? Darkblue : greyColor),
             label: 'Perfil',

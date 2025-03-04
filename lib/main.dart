@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               secondary: AppColors.accentColor,
               tertiary: AppColors.primaryColor,
               surface: AppColors.bgColor,
-              inverseSurface: AppColors.greyColor              
+              inverseSurface: AppColors.greyColor,
             ),
             useMaterial3: true,
             splashColor: Colors.transparent,
