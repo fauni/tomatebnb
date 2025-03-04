@@ -15,7 +15,7 @@ class AccommodationInitial extends AccommodationState {}
 class AccommodationLoading extends AccommodationState {}
 
 class AccommodationGetSuccess extends AccommodationState {
-  final List<AccommodationResponseModel> responseAccommodations;
+  final List<AccommodationResponseCompleteModel> responseAccommodations;
   AccommodationGetSuccess(
     this.responseAccommodations
   );

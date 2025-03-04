@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_anuncio.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
@@ -14,7 +15,7 @@ class AnuncioPage extends StatefulWidget {
 }
 
 class _AnuncioPageState extends State<AnuncioPage> {
-  List<AccommodationResponseModel> ads = [];
+  List<AccommodationResponseCompleteModel> ads = [];
   @override
   void initState() {
     super.initState();

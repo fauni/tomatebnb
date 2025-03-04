@@ -16,6 +16,7 @@ class AuthRepository {
     await prefs.setString('name', user.name!);
     await prefs.setString('token', user.token!);
     await prefs.setString('tokenType', user.tokenType!);
+    await prefs.setString('profilePhoto', user.profilePhoto??"");
   }
 
   Future<void> clearUsarData() async {
@@ -25,6 +26,7 @@ class AuthRepository {
     await prefs.remove('name');
     await prefs.remove('token');
     await prefs.remove('tokenType');
+    await prefs.remove('profilePhoto');
   }
 
   Future<ApiResponse<LoginResponseModel>> login(String email, String password) async {

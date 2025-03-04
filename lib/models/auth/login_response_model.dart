@@ -14,6 +14,7 @@ class LoginResponseModel {
     final String? name;
     final String? email;
     final String? tokenType;
+    final String? profilePhoto;
 
     LoginResponseModel({
         this.id,
@@ -21,6 +22,7 @@ class LoginResponseModel {
         this.name,
         this.email,
         this.tokenType,
+        this.profilePhoto
     });
 
     LoginResponseModel copyWith({
@@ -29,6 +31,7 @@ class LoginResponseModel {
         String? name,
         String? email,
         String? tokenType,
+        String? profilePhoto,
     }) => 
         LoginResponseModel(
             id: id ?? this.id,
@@ -36,6 +39,7 @@ class LoginResponseModel {
             name: name ?? this.name,
             email: email ?? this.email,
             tokenType: tokenType ?? this.tokenType,
+            profilePhoto: profilePhoto ?? this.profilePhoto,
         );
 
     factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
@@ -44,6 +48,7 @@ class LoginResponseModel {
         name: json["name"],
         email: json["email"],
         tokenType: json["tokenType"],
+        profilePhoto:json["profile_photo"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -52,5 +57,6 @@ class LoginResponseModel {
         "name": name,
         "email": email,
         "tokenType": tokenType,
+        "profile_photo":profilePhoto
     };
 }

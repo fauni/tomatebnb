@@ -118,28 +118,22 @@ class _FinishPageState extends State<FinishPage> {
                             'Sin título',
                         16.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    BlocListener<AccommodationBloc, AccommodationState>(
-                      listener: (context, state) {
-                        if (state is AccommodationUpdate2Success){
-                          context.pushReplacement('/menu-anfitrion');
-                        }
-                      },
-                      child: Center(
+                    Center(
                           child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: AppButton(
                             buttontext: 'Pagina Principal',
                             onclick: () {
-                              accommodationRequestModel.priceNight =
-                              accommodationResponseModel!.prices!.first.priceNight;
-                              
+                              // accommodationRequestModel.priceNight =
+                              // accommodationResponseModel!.prices!.first.priceNight;
+                              context.pushReplacement('/menu-anfitrion');
                                context
                                 .read<AccommodationBloc>()
-                                .add(AccommodationUpdate2Event(_accommodationId,accommodationRequestModel));
+                                .add(AccommodationGetEvent());
                             },
                             context: context),
                       )),
-                    ),
+                    
                   ],
                 ),
               );

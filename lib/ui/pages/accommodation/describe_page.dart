@@ -284,7 +284,7 @@ class _DescribePageState extends State<DescribePage> {
                     child: Container(
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(25)),
+                            borderRadius: BorderRadius.circular(15)),
                         height: 50,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Center(
@@ -486,7 +486,7 @@ class _DescribePageState extends State<DescribePage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -704,7 +704,7 @@ class _DescribePageState extends State<DescribePage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -863,9 +863,10 @@ class _DescribePageState extends State<DescribePage> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: GestureDetector(
-                        onTap: adressController.text.isEmpty ||
-                                cityController.text.isEmpty ||
-                                countryController.text.isEmpty||
+                        onTap: 
+                        // adressController.text.isEmpty ||
+                        //         cityController.text.isEmpty ||
+                        //         countryController.text.isEmpty||
                                 (accommodationRequestModel?.latitude??0)==0||
                                 (accommodationRequestModel?.longitude??0)==0
                             ? null
@@ -885,7 +886,7 @@ class _DescribePageState extends State<DescribePage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1081,7 +1082,7 @@ class _DescribePageState extends State<DescribePage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1264,11 +1265,13 @@ class _DescribePageState extends State<DescribePage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: GestureDetector(
-                        onTap: adressController.text.isEmpty ||
-                                cityController.text.isEmpty ||
-                                countryController.text.isEmpty
-                            ? null
-                            : () {
+                        onTap: 
+                        // adressController.text.isEmpty ||
+                        //         cityController.text.isEmpty ||
+                        //         countryController.text.isEmpty
+                        //     ? null
+                        //     : 
+                            () {
                                 accommodationRequestModel?.address =
                                     adressController.text;
                                 accommodationRequestModel?.city =

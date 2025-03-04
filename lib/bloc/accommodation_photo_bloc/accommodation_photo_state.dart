@@ -50,23 +50,65 @@ class AccommodationPhotoCreateError extends AccommodationPhotoState {
   List<Object> get props => [message];
 }
 
-//estados para eliminar servicios de alojamiento
-// class AccommodationPhotoDeleteLoading extends AccommodationPhotoState {}
+//estados para eliminar foto de alojamiento
+class AccommodationPhotoDeleteLoading extends AccommodationPhotoState {}
 
-// class AccommodationPhotoDeleteSuccess extends AccommodationPhotoState {
-//   final AccommodationPhotoResponseModel responseAccommodationPhoto;
-//   AccommodationPhotoDeleteSuccess(
-//     this.responseAccommodationPhoto
-//   );
-//   @override
-//   List<Object> get props => [responseAccommodationPhoto];
-// }
+class AccommodationPhotoDeleteSuccess extends AccommodationPhotoState {
+  final AccommodationPhotoResponseModel responseAccommodationPhoto;
+  AccommodationPhotoDeleteSuccess(
+    this.responseAccommodationPhoto
+  );
+  @override
+  List<Object> get props => [responseAccommodationPhoto];
+}
 
-// class AccommodationPhotoDeleteError extends AccommodationPhotoState {
-//   final String message;
-//   AccommodationPhotoDeleteError(
-//     this.message
-//   );
-//   @override
-//   List<Object> get props => [message];
-// }
+class AccommodationPhotoDeleteError extends AccommodationPhotoState {
+  final String message;
+  AccommodationPhotoDeleteError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
+//Estados para actualizar foto de alojamiento por id
+class AccommodationPhotoUpdateLoading extends AccommodationPhotoState {}
+
+class AccommodationPhotoUpdateSuccess extends AccommodationPhotoState {
+  final bool status;
+  AccommodationPhotoUpdateSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class AccommodationPhotoUpdateError extends AccommodationPhotoState {
+  final String message;
+  AccommodationPhotoUpdateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
+//Estados para obtencion de foto Principal de alojamiento por id de alojamiento
+class AccommodationPhotoGetMainByAccommodationLoading extends AccommodationPhotoState {}
+
+class AccommodationPhotoGetMainByAccommodationSuccess extends AccommodationPhotoState {
+  final AccommodationPhotoResponseModel responseAccommodationPhoto;
+  AccommodationPhotoGetMainByAccommodationSuccess(
+    this.responseAccommodationPhoto
+  );
+  @override
+  List<Object> get props => [responseAccommodationPhoto];
+}
+
+class AccommodationPhotoGetMainByAccommodationError extends AccommodationPhotoState {
+  final String message;
+  AccommodationPhotoGetMainByAccommodationError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

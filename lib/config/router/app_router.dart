@@ -14,6 +14,7 @@ import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
 import 'package:tomatebnb/ui/pages/auth/login_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/menu_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/search_page.dart';
+import 'package:tomatebnb/ui/pages/user/my_profile_page.dart';
 
 // Simulación de estado de autentificación
 bool isAuthenticated = false;
@@ -81,6 +82,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/finish',
       builder: (context, state) => const FinishPage()
+    ),
+    GoRoute(
+      path: '/my_profile',
+      builder: (context, state) => const MyProfilePage()
     ),
   ]
 );

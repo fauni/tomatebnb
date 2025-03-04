@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
@@ -25,7 +26,7 @@ class _AdsPageState extends State<AdsPage> {
   }
 
   late ColorNotifire notifire;
-  List<AccommodationResponseModel> ads=[]; 
+  List<AccommodationResponseCompleteModel> ads=[]; 
 
   @override
   Widget build(BuildContext context) {

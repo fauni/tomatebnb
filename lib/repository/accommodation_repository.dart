@@ -11,7 +11,7 @@ import 'package:tomatebnb/models/response/api_response.dart';
 class AccommodationRepository {
   final String _baseUrl = Environment.UrlApi;
 
-  Future<api_response_list.ApiResponse<AccommodationResponseModel>> getByUser() async {
+  Future<api_response_list.ApiResponse<AccommodationResponseCompleteModel>> getByUser() async {
     try{
       final prefs = await SharedPreferences.getInstance();
       int hostId = prefs.getInt("userId")??0;
@@ -26,20 +26,20 @@ class AccommodationRepository {
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body); 
-        return api_response_list.ApiResponse<AccommodationResponseModel>(
+        return api_response_list.ApiResponse<AccommodationResponseCompleteModel>(
           status: true,
           message: data['message'],
-          data: AccommodationsResponseModel.fromJsonList(data['data']).items,
+          data: AccommodationsResponseCompleteModel.fromJsonList(data['data']).items,
         ); 
       } else {
         final data = json.decode(response.body); 
-        return api_response_list.ApiResponse<AccommodationResponseModel>(
+        return api_response_list.ApiResponse<AccommodationResponseCompleteModel>(
           status: false,
           message: data['message']
         ); 
       }
     } catch (e) {
-      return api_response_list.ApiResponse<AccommodationResponseModel>(
+      return api_response_list.ApiResponse<AccommodationResponseCompleteModel>(
         status: false, 
         message: e.toString()
       );

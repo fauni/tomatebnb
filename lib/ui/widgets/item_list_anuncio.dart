@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
-import 'package:tomatebnb/utils/customwidget.dart';
+import 'package:tomatebnb/config/constants/environment.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
+// import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
+// import 'package:tomatebnb/utils/customwidget.dart';
 
 class ItemListAnuncio extends StatelessWidget {
-  final AccommodationResponseModel anuncio;
+  final AccommodationResponseCompleteModel anuncio;
+  
   const ItemListAnuncio({super.key, required this.anuncio});
 
   @override
   Widget build(BuildContext context) {
+    String imgsUrl = Environment.UrlImg;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -28,7 +32,12 @@ class ItemListAnuncio extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset("assets/images/BoutiqueHotel.jpg"),
+              child:
+                anuncio.photos!.isNotEmpty
+                ?FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/load.gif', 
+                  image: '$imgsUrl/accommodations/${anuncio.photos?.first.photoUrl}')              
+                :Image.asset("assets/images/BoutiqueHotel.jpg"),
             ),
           ),
           Column(
@@ -42,11 +51,16 @@ class ItemListAnuncio extends StatelessWidget {
               ),
               // const SizedBox(height: 6),
               SizedBox(height: MediaQuery.of(context).size.height * 0.006),
-              Text(
-                anuncio.description??"Sin descripción",
-                style: TextStyle(
-                    fontSize: 13,
-                    fontFamily: "Gilroy Medium"),
+              SizedBox(
+                width: MediaQuery.of(context).size.width*0.65 ,
+                child: Text(
+                  anuncio.description??"Sin descripción",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis, 
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: "Gilroy Medium"),
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Row(

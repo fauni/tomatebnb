@@ -293,7 +293,7 @@ class _HighlightPageState extends State<HighlightPage> {
                     child: Container(
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(25)),
+                            borderRadius: BorderRadius.circular(15)),
                         height: 50,
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: Center(
@@ -528,7 +528,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -594,7 +594,29 @@ class _HighlightPageState extends State<HighlightPage> {
                     itemCount: photos.length,
                     itemBuilder: (BuildContext context, int index) {
                       if (photos[index].id > 0) {
-                        return Image.network('$_imgsUrl/accommodations/${photos[index].photoUrl}');  
+                        return Stack(
+                          children:<Widget> [
+                            FadeInImage.assetNetwork(
+                              placeholder: 'assets/images/load.gif', 
+                              image: '$_imgsUrl/accommodations/${photos[index].photoUrl}'),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton.outlined(
+                                    
+                                    color: Theme.of(context).colorScheme.error,
+
+                                    onPressed: (){
+                                      context.read<AccommodationPhotoBloc>().add(
+                                        AccommodationPhotoDeleteEvent(photos[index].id ));
+                                    },
+                                    icon: Icon(Icons.delete,
+                                    // color: Theme.of(context).colorScheme.error,
+                                    ))
+                                ],
+                              )
+                              ]
+                        );  
                         // Text('foto ');
                       } else {
                         return Padding(
@@ -668,9 +690,36 @@ class _HighlightPageState extends State<HighlightPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(state.message)));
                     }
+
+                    if(state is AccommodationPhotoDeleteSuccess){
+                    //  photos.removeLast();
+                     photos.remove(state.responseAccommodationPhoto);
+                     int removeId = 0;
+                     for (var photo in photos) {
+                       if(photo.id == state.responseAccommodationPhoto.id){
+                         removeId = photo.id;
+                       }
+                     }
+                     if (removeId!=0) {
+                      photos.removeWhere((photo)=>photo.id==removeId);  
+                     }
+                     _countPhotos--;
+                    //photos.add(state.responseAccommodationPhoto);
+                      // accommodationResponseModel?.photos?.add(state.responseAccommodationPhoto);
+                      // addEmptyPhoto();
+                       setState(() { });
+                    }
+                    if(state is AccommodationPhotoDeleteError){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message)));
+                    }
+
                   },
                   builder: (context, state) {
                     if(state is AccommodationPhotoCreateLoading){
+                      return Center(child:CircularProgressIndicator());
+                    }
+                    if(state is AccommodationPhotoDeleteLoading){
                       return Center(child:CircularProgressIndicator());
                     }
                     return Padding(
@@ -686,7 +735,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -715,130 +764,136 @@ class _HighlightPageState extends State<HighlightPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getwhiteblackcolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            const SizedBox(height: 4),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _titleController,
-                    minLines: 2,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    style: TextStyle(
-                        fontSize: 35,
-                        color: Theme.of(context).colorScheme.primary),
-                    // controller: adressController,
-                    decoration: InputDecoration(
-                      hintText: "Alojamiento.....",
-                      hintStyle: TextStyle(
-                        color: notifire.getgreycolor,
-                        fontSize: 25.0,
-                        fontFamily: "Gilroy Medium",
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              const SizedBox(height: 4),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.55,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: notifire.getdarkmodecolor),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _titleController,
+                      minLines: 2,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      style: TextStyle(
+                          fontSize: 35,
+                          color: Theme.of(context).colorScheme.primary),
+                      // controller: adressController,
+                      decoration: InputDecoration(
+                        hintText: "Alojamiento.....",
+                        hintStyle: TextStyle(
+                          color: notifire.getgreycolor,
+                          fontSize: 25.0,
+                          fontFamily: "Gilroy Medium",
+                        ),
+                        border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xffE2E4EA),
+                            ),
+                            borderRadius: BorderRadius.circular(15)),
                       ),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xffE2E4EA),
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: BlocConsumer<AccommodationBloc, AccommodationState>(
-                    listener: (context, state) {
-                      if (state is AccommodationUpdate2Success) {
-                        _pageController.nextPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      } else if (state is AccommodationUpdate2Error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(state.message),
-                        ));
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AccommodationUpdate2Loading) {
-                        return Center(child: const CircularProgressIndicator());
-                      }
-                      return GestureDetector(
-                        onTap: _titleController.text.isEmpty
-                            ? null
-                            : () {
-                                accommodationRequestModel?.title =
-                                    _titleController.text;
-                                context.read<AccommodationBloc>().add(
-                                    AccommodationUpdate2Event(
-                                        _accommodationId ?? 0,
-                                        accommodationRequestModel!));
-                              },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      );
-                    },
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          // context.pop();
+                          removeFocus();
+                          _pageController.previousPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Text(
+                          "Atras",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: "Gilroy Bold"),
+                        )),
                   ),
-                )
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlocConsumer<AccommodationBloc, AccommodationState>(
+                      listener: (context, state) {
+                        if (state is AccommodationUpdate2Success) {
+                           removeFocus();
+                          _pageController.nextPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        } else if (state is AccommodationUpdate2Error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                          ));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AccommodationUpdate2Loading) {
+                          return Center(child: const CircularProgressIndicator());
+                        }
+                        return GestureDetector(
+                          onTap: 
+                          // _titleController.text.isEmpty
+                              // ? null
+                              // : 
+                              () {
+                                  accommodationRequestModel?.title =
+                                      _titleController.text;
+                                  context.read<AccommodationBloc>().add(
+                                      AccommodationUpdate2Event(
+                                          _accommodationId ?? 0,
+                                          accommodationRequestModel!));
+                                },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(15)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text(
+                                  "Siguiente",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: WhiteColor,
+                                      fontFamily: "Gilroy Bold"),
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1032,6 +1087,7 @@ class _HighlightPageState extends State<HighlightPage> {
                   child: GestureDetector(
                       onTap: () {
                         // context.pop();
+                        
                         _pageController.previousPage(
                             duration: const Duration(microseconds: 300),
                             curve: Curves.easeIn);
@@ -1066,7 +1122,7 @@ class _HighlightPageState extends State<HighlightPage> {
                         child: Container(
                             decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(15)),
                             height: 50,
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(
@@ -1095,127 +1151,130 @@ class _HighlightPageState extends State<HighlightPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getwhiteblackcolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            const SizedBox(height: 4),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _descriptionController,
-                    minLines: 5,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Theme.of(context).colorScheme.primary),
-                    // controller: adressController,
-                    decoration: InputDecoration(
-                      hintText: "Alojamiento espacioso.....",
-                      hintStyle: TextStyle(
-                          color: notifire.getgreycolor,
-                          fontFamily: "Gilroy Medium",
-                          fontSize: 20),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xffE2E4EA),
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              const SizedBox(height: 4),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.55,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: notifire.getdarkmodecolor),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _descriptionController,
+                      minLines: 5,
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: Theme.of(context).colorScheme.primary),
+                      // controller: adressController,
+                      decoration: InputDecoration(
+                        hintText: "Alojamiento espacioso.....",
+                        hintStyle: TextStyle(
+                            color: notifire.getgreycolor,
+                            fontFamily: "Gilroy Medium",
+                            fontSize: 20),
+                        border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xffE2E4EA),
+                            ),
+                            borderRadius: BorderRadius.circular(15)),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: BlocConsumer<AccommodationBloc, AccommodationState>(
-                    listener: (context, state) {
-                      if (state is AccommodationUpdate2Success) {
-                        context.push('/prices', extra: _accommodationId);
-                      } else if (state is AccommodationUpdate2Error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(state.message),
-                        ));
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AccommodationUpdate2Loading) {
-                        return Center(child: const CircularProgressIndicator());
-                      }
-                      return GestureDetector(
-                        onTap: _descriptionController.text.isEmpty
-                            ? null
-                            : () {
-                                accommodationRequestModel!.description =
-                                    _descriptionController.text;
-                                context.read<AccommodationBloc>().add(
-                                    AccommodationUpdate2Event(
-                                        _accommodationId ?? 0,
-                                        accommodationRequestModel!));
-                              },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      );
-                    },
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          // context.pop();
+                          removeFocus();
+                          _pageController.previousPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Text(
+                          "Atras",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: "Gilroy Bold"),
+                        )),
                   ),
-                )
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlocConsumer<AccommodationBloc, AccommodationState>(
+                      listener: (context, state) {
+                        if (state is AccommodationUpdate2Success) {
+                          context.push('/prices', extra: _accommodationId);
+                        } else if (state is AccommodationUpdate2Error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                          ));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AccommodationUpdate2Loading) {
+                          return Center(child: const CircularProgressIndicator());
+                        }
+                        return GestureDetector(
+                          onTap: _descriptionController.text.isEmpty
+                              ? null
+                              : () {
+                                  accommodationRequestModel!.description =
+                                      _descriptionController.text;
+                                  context.read<AccommodationBloc>().add(
+                                      AccommodationUpdate2Event(
+                                          _accommodationId ?? 0,
+                                          accommodationRequestModel!));
+                                },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(15)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text(
+                                  "Siguiente",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: WhiteColor,
+                                      fontFamily: "Gilroy Bold"),
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1416,4 +1475,13 @@ class _HighlightPageState extends State<HighlightPage> {
         createdAt: DateTime.parse("2000-01-01"),
         id: 0));
   }
+
+ removeFocus(){
+     FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+      }
+   
+ }
+
 }
