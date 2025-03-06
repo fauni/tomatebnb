@@ -21,3 +21,12 @@ class UserUpdateEvent extends UserEvent {
   List<Object?> get props => [userRequest];
 }
 
+class UserPhotoUpdateEvent extends UserEvent {
+  
+  final bool camera ;
+  final String column;
+  UserPhotoUpdateEvent(this.camera,this.column);
+  @override
+  List<Object?> get props => [camera,camera];
+}
+

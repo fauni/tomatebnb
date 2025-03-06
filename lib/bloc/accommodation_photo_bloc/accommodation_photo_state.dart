@@ -29,7 +29,7 @@ class AccommodationPhotoInitial extends AccommodationPhotoState {}
 //   List<Object> get props => [message];
 // }
 
-//estados para guardar servicios de alojamiento
+//estados para crear foto de alojamiento
 class AccommodationPhotoCreateLoading extends AccommodationPhotoState {}
 
 class AccommodationPhotoCreateSuccess extends AccommodationPhotoState {
@@ -71,7 +71,7 @@ class AccommodationPhotoDeleteError extends AccommodationPhotoState {
   List<Object> get props => [message];
 }
 
-//Estados para actualizar foto de alojamiento por id
+//Estados para actualizar registro de la foto de alojamiento por id
 class AccommodationPhotoUpdateLoading extends AccommodationPhotoState {}
 
 class AccommodationPhotoUpdateSuccess extends AccommodationPhotoState {

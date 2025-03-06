@@ -55,4 +55,26 @@ class UserUpdateError extends UserState {
   List<Object> get props => [message];
 }
 
+//estados para crear foto de usuario ya se perfil o de documentos
+class UserPhotoUpdateLoading extends UserState {}
+
+class UserPhotoUpdateSuccess extends UserState {
+  final UserResponseModel responseUserPhoto;
+  UserPhotoUpdateSuccess(
+    this.responseUserPhoto
+  );
+  @override
+  List<Object> get props => [responseUserPhoto];
+}
+
+class UserPhotoUpdateError extends UserState {
+  final String message;
+  UserPhotoUpdateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
+
 

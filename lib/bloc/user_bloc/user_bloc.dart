@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/repository/user_repository.dart';
 
@@ -8,9 +11,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc(this.userRepository) : super(UserInitial()){
    on<UserGetByIdEvent>(_onUserGetById);
    on<UserUpdateEvent>(_onUserUpdate); 
+   on<UserPhotoUpdateEvent>(_onUserPhotoUpdate); 
   }
-
-  
 
   Future<void> _onUserGetById(UserGetByIdEvent event, Emitter<UserState> emit) async {
     emit(UserGetByIdLoading());
@@ -42,6 +44,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  Future<void> _onUserPhotoUpdate(UserPhotoUpdateEvent event, Emitter<UserState> emit) async {
+    emit(UserPhotoUpdateLoading());
+    try{
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: event.camera
+                                                           ?ImageSource.camera
+                                                           :ImageSource.gallery);
+      File file = File(image!.path);                                                           
+      final response = await userRepository.updateUserPhoto(event.column, file);
+      
+      if(response.status){
+        await userRepository.setUserData(response.data!);
+        emit(UserPhotoUpdateSuccess(response.data!));
+      } else {
+        emit(UserPhotoUpdateError(response.message));
+      }
+    } catch(e){
+      emit(UserPhotoUpdateError(e.toString()));
+      
+    }
+  }
 
 }
 
