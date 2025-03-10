@@ -45,6 +45,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   final _documentTypeController = TextEditingController();
   final _documentPhotoFrontController = TextEditingController();
   final _documentPhotoBackController = TextEditingController();
+
   final _confirmPhotoController = TextEditingController();
   void getMode() async {
     final prefs = await SharedPreferences.getInstance();
@@ -392,7 +393,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
                               user = state.responseUserPhoto;
-                              profilePhoto = user.profilePhoto??"";
+                              _documentPhotoFrontController.text = user.documentPhotoFront??"";
                               setState(() {
                               });
                             }
@@ -458,7 +459,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
                               user = state.responseUserPhoto;
-                              profilePhoto = user.profilePhoto??"";
+                              _documentPhotoBackController.text = user.documentPhotoBack??"";
                               setState(() {
                               });
                             }
@@ -524,7 +525,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
                               user = state.responseUserPhoto;
-                              profilePhoto = user.profilePhoto??"";
+                              _confirmPhotoController.text = user.confirmPhoto??"";
                               setState(() {
                               });
                             }
@@ -578,6 +579,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             ));
                           }
                           if (state is UserUpdateSuccess) {
+                            
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Datos actualizados"),
                             ));

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_aspect_response_model.dart';
-import 'package:tomatebnb/models/accommodation/accommodation_service_response_model.dart';
+// import 'package:tomatebnb/models/accommodation/accommodation_service_response_model.dart';
 
 abstract class AccommodationAspectState extends Equatable {
   @override

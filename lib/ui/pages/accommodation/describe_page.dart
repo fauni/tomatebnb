@@ -1050,7 +1050,9 @@ class _DescribePageState extends State<DescribePage> {
                       // _pageController.nextPage(
                       //     duration: const Duration(microseconds: 300),
                       //     curve: Curves.easeIn);
-                       context.push('/highlight',extra: _accommodationId);
+                      if(_currentPage==4){
+                        context.push('/highlight',extra: _accommodationId);
+                      }
                     } else if (state is AccommodationUpdateError) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(state.message),

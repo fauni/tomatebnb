@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_service_response_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_servicec_response_model.dart';
 
 import 'package:tomatebnb/models/response/api_response_list.dart' as api_response_list;
 import 'package:tomatebnb/models/response/api_response.dart';
@@ -39,6 +40,40 @@ class AccommodationServiceRepository {
       }
     } catch (e) {
       return api_response_list.ApiResponse<AccommodationServiceResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+   Future<api_response_list.ApiResponse<AccommodationServicecResponseModel>> getbyCompleteByAccommodation(int accommodationId) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      final response = await http.get(
+        Uri.parse('$_baseUrl/v1/accommodation_services/$accommodationId/accommodation'),
+        headers: <String, String>{
+          'Content-Service': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        }
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return api_response_list.ApiResponse<AccommodationServicecResponseModel>(
+          status: true,
+          message: data['message'],
+          data: AccommodationServicecsResponseModel.fromJsonList(data['data']).items,
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return api_response_list.ApiResponse<AccommodationServicecResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return api_response_list.ApiResponse<AccommodationServicecResponseModel>(
         status: false, 
         message: e.toString()
       );
@@ -117,8 +152,4 @@ Future<ApiResponse<AccommodationServiceResponseModel>> delete(int accommodationI
       );
     }
   }
-
-
-
-  
 }

@@ -12,6 +12,13 @@ class AccommodationServiceGetEvent extends AccommodationServiceEvent {
   List<Object?> get props => [accommodationId];
 }
 
+class AccommodationServicecGetEvent extends AccommodationServiceEvent {
+  final int accommodationId;
+  AccommodationServicecGetEvent(this.accommodationId);
+  @override
+  List<Object?> get props => [accommodationId];
+}
+
 class AccommodationServiceCreateEvent extends AccommodationServiceEvent {
   final int accommodationId, serviceId;
   AccommodationServiceCreateEvent(this.accommodationId,this.serviceId);

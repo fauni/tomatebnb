@@ -120,7 +120,7 @@ class _PricesPageState extends State<PricesPage> {
               ),
               _buildPage2(),
               _buildPage3(),
-              _buildPage4(),
+              // _buildPage4(),
             ],
           ),
           Positioned(
@@ -192,7 +192,7 @@ class _PricesPageState extends State<PricesPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              for (int i = 0; i < 4; i++)
+              for (int i = 0; i < 3; i++)
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
@@ -351,152 +351,154 @@ class _PricesPageState extends State<PricesPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['title'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                  height: MediaQuery.of(context).size.height *
+                      0.02), //upar thi jagiya mukeli che
+              // ignore: sized_box_for_whitespace
+          
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['title'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getwhiteblackcolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['subtitle'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getblackgreycolor), //heding Text
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['subtitle'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getblackgreycolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _priceController,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      prefixText: 'Bs.',
-                      hintText: "0",
-                      hintStyle: TextStyle(
-                        fontSize: 50.0,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontFamily: "Gilroy Medium",
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: notifire.getdarkmodecolor),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _priceController,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixText: 'Bs.',
+                        hintText: "0",
+                        hintStyle: TextStyle(
+                          fontSize: 50.0,
+                          color: Theme.of(context).colorScheme.primary,
+                          fontFamily: "Gilroy Medium",
+                        ),
+                        border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xffE2E4EA),
+                            ),
+                            borderRadius: BorderRadius.circular(15)),
                       ),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xffE2E4EA),
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          // context.pop();
+                          _pageController.previousPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Text(
+                          "Atras",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: "Gilroy Bold"),
+                        )),
+                  ),
+                  BlocConsumer<AccommodationPriceBloc, AccommodationPriceState>(
+                    listener: (context, state) {
+                      if (state is AccommodationPriceUpdateSuccess) {
+                        accommodationPriceResponseModel.priceNight =
+                            double.parse(_priceController.text);
+                        _pageController.nextPage(
                             duration: const Duration(microseconds: 300),
                             curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
-                ),
-                BlocConsumer<AccommodationPriceBloc, AccommodationPriceState>(
-                  listener: (context, state) {
-                    if (state is AccommodationPriceUpdateSuccess) {
-                      accommodationPriceResponseModel.priceNight =
-                          double.parse(_priceController.text);
-                      _pageController.nextPage(
-                          duration: const Duration(microseconds: 300),
-                          curve: Curves.easeIn);
-                    } else if (state is AccommodationPriceUpdateError) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(state.message)));
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is AccommodationPriceUpdateLoading) {
-                      return Center(child: const CircularProgressIndicator());
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.read<AccommodationPriceBloc>().add(
-                              AccommodationPriceUpdateEvent(
-                                  accommodationPriceResponseModel.id,
-                                  AccommodationPriceRequestModel(
-                                      accommodationId:
-                                          accommodationPriceResponseModel
-                                              .accommodationId,
-                                      priceNight:
-                                          double.parse(_priceController.text),
-                                      priceWeekend:
-                                          accommodationPriceResponseModel
-                                              .priceWeekend,
-                                      type:
-                                          accommodationPriceResponseModel.type,
-                                      status: accommodationPriceResponseModel
-                                          .status)));
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+                      } else if (state is AccommodationPriceUpdateError) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(state.message)));
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AccommodationPriceUpdateLoading) {
+                        return Center(child: const CircularProgressIndicator());
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.read<AccommodationPriceBloc>().add(
+                                AccommodationPriceUpdateEvent(
+                                    accommodationPriceResponseModel.id,
+                                    AccommodationPriceRequestModel(
+                                        accommodationId:
+                                            accommodationPriceResponseModel
+                                                .accommodationId,
+                                        priceNight:
+                                            double.parse(_priceController.text),
+                                        priceWeekend:
+                                            accommodationPriceResponseModel
+                                                .priceWeekend,
+                                        type:
+                                            accommodationPriceResponseModel.type,
+                                        status: accommodationPriceResponseModel
+                                            .status)));
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(25)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text(
+                                  "Siguiente",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: WhiteColor,
+                                      fontFamily: "Gilroy Bold"),
+                                ),
+                              )),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -507,152 +509,155 @@ class _PricesPageState extends State<PricesPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['title'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                  height: MediaQuery.of(context).size.height *
+                      0.02), //upar thi jagiya mukeli che
+              // ignore: sized_box_for_whitespace
+          
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['title'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getwhiteblackcolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['subtitle'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getblackgreycolor), //heding Text
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['subtitle'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getblackgreycolor), //heding Text
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _priceWeekendController,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.numberWithOptions(),
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
-                    decoration: InputDecoration(
-                      prefixText: 'Bs.',
-                      hintText: "0",
-                      hintStyle: TextStyle(
-                        fontSize: 50.0,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontFamily: "Gilroy Medium",
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: notifire.getdarkmodecolor),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _priceWeekendController,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                      decoration: InputDecoration(
+                        prefixText: 'Bs.',
+                        hintText: "0",
+                        hintStyle: TextStyle(
+                          fontSize: 50.0,
+                          color: Theme.of(context).colorScheme.primary,
+                          fontFamily: "Gilroy Medium",
+                        ),
+                        border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xffE2E4EA),
+                            ),
+                            borderRadius: BorderRadius.circular(15)),
                       ),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xffE2E4EA),
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
-                ),
-                BlocConsumer<AccommodationPriceBloc, AccommodationPriceState>(
-                  listener: (context, state) {
-                    if (state is AccommodationPriceUpdateSuccess) {
-                      accommodationPriceResponseModel.priceWeekend =
-                          double.parse(_priceWeekendController.text);
-                      _pageController.nextPage(
-                          duration: const Duration(microseconds: 300),
-                          curve: Curves.easeIn);
-                    } else if (state is AccommodationPriceUpdateError) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(state.message)));
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is AccommodationPriceUpdateLoading) {
-                      return Center(child: const CircularProgressIndicator());
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GestureDetector(
                         onTap: () {
-                          context.read<AccommodationPriceBloc>().add(
-                              AccommodationPriceUpdateEvent(
-                                  accommodationPriceResponseModel.id,
-                                  AccommodationPriceRequestModel(
-                                      accommodationId:
-                                          accommodationPriceResponseModel
-                                              .accommodationId,
-                                      priceNight:
-                                          accommodationPriceResponseModel
-                                              .priceNight,
-                                      priceWeekend: double.parse(
-                                          _priceWeekendController.text),
-                                      type:
-                                          accommodationPriceResponseModel.type,
-                                      status: accommodationPriceResponseModel
-                                          .status)));
+                          // context.pop();
+                          _pageController.previousPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
                         },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+                        child: Text(
+                          "Atras",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: "Gilroy Bold"),
+                        )),
+                  ),
+                  BlocConsumer<AccommodationPriceBloc, AccommodationPriceState>(
+                    listener: (context, state) {
+                      if (state is AccommodationPriceUpdateSuccess) {
+                        accommodationPriceResponseModel.priceWeekend =
+                            double.parse(_priceWeekendController.text);
+                        // _pageController.nextPage(
+                        //     duration: const Duration(microseconds: 300),
+                        //     curve: Curves.easeIn);
+                        context.push('/finish', extra: _accommodationId);
+                      } else if (state is AccommodationPriceUpdateError) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(state.message)));
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AccommodationPriceUpdateLoading) {
+                        return Center(child: const CircularProgressIndicator());
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.read<AccommodationPriceBloc>().add(
+                                AccommodationPriceUpdateEvent(
+                                    accommodationPriceResponseModel.id,
+                                    AccommodationPriceRequestModel(
+                                        accommodationId:
+                                            accommodationPriceResponseModel
+                                                .accommodationId,
+                                        priceNight:
+                                            accommodationPriceResponseModel
+                                                .priceNight,
+                                        priceWeekend: double.parse(
+                                            _priceWeekendController.text),
+                                        type:
+                                            accommodationPriceResponseModel.type,
+                                        status: accommodationPriceResponseModel
+                                            .status)));
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(25)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text(
+                                  "Siguiente",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: WhiteColor,
+                                      fontFamily: "Gilroy Bold"),
+                                ),
+                              )),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -663,344 +668,346 @@ class _PricesPageState extends State<PricesPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['title'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage]['subtitle'] ?? '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getblackgreycolor), //heding Text
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            const SizedBox(height: 4),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: notifire.getdarkmodecolor),
-              child: BlocConsumer<AccommodationDiscountBloc,
-                  AccommodationDiscountState>(
-                listener: (context, state) {
-                  if (state is AccommodationDiscountGetByAccommodationSuccess) {
-                    accommodationDiscountResponseModel =
-                        state.responseAccommodationDiscounts.first;
-                  } else if (state
-                      is AccommodationDiscountGetByAccommodationError) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(state.message),
-                    ));
-                  }
-                },
-                builder: (context, state) {
-                  if (state is AccommodationDiscountGetByAccommodationLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is AccommodationDiscountGetByAccommodationSuccess) {
-                    accommodationDiscountResponseModel =
-                        state.responseAccommodationDiscounts.first;
-                  }
-                  
-                   
-                    return ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: notifire.getdarkmodecolor,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: notifire.getdarkbluecolor,
-                                      width: 2.0),
-                                  top: BorderSide(
-                                      color: notifire.getdarkbluecolor,
-                                      width: 2.0)),
-                            ),
-                            child: Column(
-                              children: [
-                                BlocConsumer<AccommodationDiscountBloc, AccommodationDiscountState>(
-                                  listener: (context, state) {
-                                    if (state is AccommodationDiscountUpdateSuccess) {
-                                      accommodationDiscountResponseModel.discountValueb = 10.0;
-                                      setState(() {});
-                                    }else if(state is AccommodationDiscountUpdateError){
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-                                    }
-
-                                  },
-                                  builder: (context, state) {
-                                    if (state is AccommodationDiscountUpdateLoading) {
-                                      return Center(child: CircularProgressIndicator(),);
-                                    }
-                                    return ListTile(
-                                        onTap: () {
-                                           context.read<AccommodationDiscountBloc>().add(
-                              AccommodationDiscountUpdateEvent(
-                                  accommodationDiscountResponseModel.id,
-                                  AccommodationDiscountRequestModel(
-                                      accommodationId: accommodationPriceResponseModel.accommodationId,
-                                      discountValuea: 0,
-                                      discountValueb:accommodationDiscountResponseModel.discountValueb>0?0:10,
-                                      discountValuec:accommodationDiscountResponseModel.discountValuec,
-                                      discountValued:accommodationDiscountResponseModel.discountValued,
-                                      status:true
-                                    )));
-                                        },
-                                        trailing:
-                                            accommodationDiscountResponseModel
-                                                        .discountValueb >
-                                                    0
-                                                ? Icon(Icons.check_circle,
-                                                    color:
-                                                        notifire
-                                                            .getdarkbluecolor)
-                                                : Icon(Icons.circle_outlined,
-                                                    color: notifire
-                                                        .getdarkbluecolor),
-                                        leading: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                          child: Text(
-                                            '10%',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontSize: 30.0),
-                                          ),
-                                        ),
-                                        title: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                          child: Text(
-                                            'Descuento por semana',
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                fontSize: 16,
-                                                color: notifire
-                                                    .getwhiteblackcolor),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.61,
-                                              child: Text('Para 7 noches o más',
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: greyColor,
-                                                      fontFamily:
-                                                          "Gilroy Medium"))),
-                                        )
-                                        // isThreeLine: true,
-                                        );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                        ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: notifire.getdarkmodecolor,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: notifire.getdarkbluecolor,
-                                      width: 2.0),
-                                  top: BorderSide(
-                                      color: notifire.getdarkbluecolor,
-                                      width: 2.0)),
-                            ),
-                            child: Column(
-                              children: [
-                                BlocConsumer<AccommodationDiscountBloc, AccommodationDiscountState>(
-                                  listener: (context, state) {
-                                    if (state is AccommodationDiscountUpdateSuccess) {
-                                      accommodationDiscountResponseModel.discountValuec = 20.0;
-                                      setState((){});
-                                    }else if(state is AccommodationDiscountUpdateError){
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-                                    }
-
-                                  },
-                                  builder: (context, state) {
-                                    if (state is AccommodationDiscountUpdateLoading) {
-                                      return Center(child: CircularProgressIndicator(),);
-                                    }
-                                    return ListTile(
-                                        onTap: () {
-                                           context.read<AccommodationDiscountBloc>().add(
-                              AccommodationDiscountUpdateEvent(
-                                  accommodationDiscountResponseModel.id,
-                                  AccommodationDiscountRequestModel(
-                                      accommodationId: accommodationPriceResponseModel.accommodationId,
-                                      discountValuea: 0,
-                                      discountValueb:accommodationDiscountResponseModel.discountValueb,
-                                      discountValuec:accommodationDiscountResponseModel.discountValuec>0?0:20,
-                                      discountValued:accommodationDiscountResponseModel.discountValued,
-                                      status: true
-                                    )));
-                                        },
-                                        trailing:
-                                            accommodationDiscountResponseModel
-                                                        .discountValuec >
-                                                    0
-                                                ? Icon(Icons.check_circle,
-                                                    color:
-                                                        notifire
-                                                            .getdarkbluecolor)
-                                                : Icon(Icons.circle_outlined,
-                                                    color: notifire
-                                                        .getdarkbluecolor),
-                                        leading: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                          child: Text(
-                                            '20%',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontSize: 30.0),
-                                          ),
-                                        ),
-                                        title: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                          child: Text(
-                                            'Descuento mensual',
-                                            style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                fontSize: 16,
-                                                color: notifire
-                                                    .getwhiteblackcolor),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.61,
-                                              child: Text('Para 28 noches o más',
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: greyColor,
-                                                      fontFamily:
-                                                          "Gilroy Medium"))),
-                                        )
-                                        // isThreeLine: true,
-                                        );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ]
-                    );
-                  
-                 
-                },
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['title'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getwhiteblackcolor), //heding Text
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: BlocConsumer<AccommodationBloc, AccommodationState>(
-                    listener: (context, state) {
-                      if (state is AccommodationUpdate2Success) {
-                        _pageController.nextPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      } else if (state is AccommodationUpdate2Error) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(state.message),
-                        ));
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AccommodationUpdate2Loading) {
-                        return Center(child: const CircularProgressIndicator());
-                      }
-                      return GestureDetector(
-                        onTap: () {
-                            //   _pageController.nextPage(
-                            // duration: const Duration(microseconds: 300),
-                            // curve: Curves.easeIn);
-                            context.push('/finish', extra: _accommodationId);
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding: const EdgeInsets.symmetric(),
+                child: Text(
+                  _titles[_currentPage]['subtitle'] ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Gilroy Bold",
+                      color: notifire.getblackgreycolor), //heding Text
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              const SizedBox(height: 4),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: notifire.getdarkmodecolor),
+                child: BlocConsumer<AccommodationDiscountBloc,
+                    AccommodationDiscountState>(
+                  listener: (context, state) {
+                    if (state is AccommodationDiscountGetByAccommodationSuccess) {
+                      accommodationDiscountResponseModel =
+                          state.responseAccommodationDiscounts.first;
+                    } else if (state
+                        is AccommodationDiscountGetByAccommodationError) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message),
+                      ));
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AccommodationDiscountGetByAccommodationLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
                       );
-                    },
+                    }
+                    if (state is AccommodationDiscountGetByAccommodationSuccess) {
+                      accommodationDiscountResponseModel =
+                          state.responseAccommodationDiscounts.first;
+                    }
+                    
+                     
+                      return ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: notifire.getdarkmodecolor,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: notifire.getdarkbluecolor,
+                                        width: 2.0),
+                                    top: BorderSide(
+                                        color: notifire.getdarkbluecolor,
+                                        width: 2.0)),
+                              ),
+                              child: Column(
+                                children: [
+                                  BlocConsumer<AccommodationDiscountBloc, AccommodationDiscountState>(
+                                    listener: (context, state) {
+                                      if (state is AccommodationDiscountUpdateSuccess) {
+                                        accommodationDiscountResponseModel.discountValueb = 10.0;
+                                        setState(() {});
+                                      }else if(state is AccommodationDiscountUpdateError){
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                                      }
+          
+                                    },
+                                    builder: (context, state) {
+                                      if (state is AccommodationDiscountUpdateLoading) {
+                                        return Center(child: CircularProgressIndicator(),);
+                                      }
+                                      return ListTile(
+                                          onTap: () {
+                                             context.read<AccommodationDiscountBloc>().add(
+                                AccommodationDiscountUpdateEvent(
+                                    accommodationDiscountResponseModel.id,
+                                    AccommodationDiscountRequestModel(
+                                        accommodationId: accommodationPriceResponseModel.accommodationId,
+                                        discountValuea: 0,
+                                        discountValueb:accommodationDiscountResponseModel.discountValueb>0?0:10,
+                                        discountValuec:accommodationDiscountResponseModel.discountValuec,
+                                        discountValued:accommodationDiscountResponseModel.discountValued,
+                                        status:true
+                                      )));
+                                          },
+                                          trailing:
+                                              accommodationDiscountResponseModel
+                                                          .discountValueb >
+                                                      0
+                                                  ? Icon(Icons.check_circle,
+                                                      color:
+                                                          notifire
+                                                              .getdarkbluecolor)
+                                                  : Icon(Icons.circle_outlined,
+                                                      color: notifire
+                                                          .getdarkbluecolor),
+                                          leading: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12.0),
+                                            child: Text(
+                                              '10%',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontSize: 30.0),
+                                            ),
+                                          ),
+                                          title: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12.0),
+                                            child: Text(
+                                              'Descuento por semana',
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  fontSize: 16,
+                                                  color: notifire
+                                                      .getwhiteblackcolor),
+                                            ),
+                                          ),
+                                          subtitle: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8),
+                                            child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.61,
+                                                child: Text('Para 7 noches o más',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: greyColor,
+                                                        fontFamily:
+                                                            "Gilroy Medium"))),
+                                          )
+                                          // isThreeLine: true,
+                                          );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                          ),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: notifire.getdarkmodecolor,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: notifire.getdarkbluecolor,
+                                        width: 2.0),
+                                    top: BorderSide(
+                                        color: notifire.getdarkbluecolor,
+                                        width: 2.0)),
+                              ),
+                              child: Column(
+                                children: [
+                                  BlocConsumer<AccommodationDiscountBloc, AccommodationDiscountState>(
+                                    listener: (context, state) {
+                                      if (state is AccommodationDiscountUpdateSuccess) {
+                                        accommodationDiscountResponseModel.discountValuec = 20.0;
+                                        setState((){});
+                                      }else if(state is AccommodationDiscountUpdateError){
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                                      }
+          
+                                    },
+                                    builder: (context, state) {
+                                      if (state is AccommodationDiscountUpdateLoading) {
+                                        return Center(child: CircularProgressIndicator(),);
+                                      }
+                                      return ListTile(
+                                          onTap: () {
+                                             context.read<AccommodationDiscountBloc>().add(
+                                AccommodationDiscountUpdateEvent(
+                                    accommodationDiscountResponseModel.id,
+                                    AccommodationDiscountRequestModel(
+                                        accommodationId: accommodationPriceResponseModel.accommodationId,
+                                        discountValuea: 0,
+                                        discountValueb:accommodationDiscountResponseModel.discountValueb,
+                                        discountValuec:accommodationDiscountResponseModel.discountValuec>0?0:20,
+                                        discountValued:accommodationDiscountResponseModel.discountValued,
+                                        status: true
+                                      )));
+                                          },
+                                          trailing:
+                                              accommodationDiscountResponseModel
+                                                          .discountValuec >
+                                                      0
+                                                  ? Icon(Icons.check_circle,
+                                                      color:
+                                                          notifire
+                                                              .getdarkbluecolor)
+                                                  : Icon(Icons.circle_outlined,
+                                                      color: notifire
+                                                          .getdarkbluecolor),
+                                          leading: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12.0),
+                                            child: Text(
+                                              '20%',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontSize: 30.0),
+                                            ),
+                                          ),
+                                          title: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12.0),
+                                            child: Text(
+                                              'Descuento mensual',
+                                              style: TextStyle(
+                                                  fontFamily: "Gilroy Bold",
+                                                  fontSize: 16,
+                                                  color: notifire
+                                                      .getwhiteblackcolor),
+                                            ),
+                                          ),
+                                          subtitle: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8),
+                                            child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.61,
+                                                child: Text('Para 28 noches o más',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: greyColor,
+                                                        fontFamily:
+                                                            "Gilroy Medium"))),
+                                          )
+                                          // isThreeLine: true,
+                                          );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]
+                      );
+                    
+                   
+                  },
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          // context.pop();
+                          _pageController.previousPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Text(
+                          "Atras",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: "Gilroy Bold"),
+                        )),
                   ),
-                )
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlocConsumer<AccommodationBloc, AccommodationState>(
+                      listener: (context, state) {
+                        if (state is AccommodationUpdate2Success) {
+                          _pageController.nextPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                        } else if (state is AccommodationUpdate2Error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                          ));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AccommodationUpdate2Loading) {
+                          return Center(child: const CircularProgressIndicator());
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                              //   _pageController.nextPage(
+                              // duration: const Duration(microseconds: 300),
+                              // curve: Curves.easeIn);
+                              context.push('/finish', extra: _accommodationId);
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(25)),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text(
+                                  "Siguiente",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: WhiteColor,
+                                      fontFamily: "Gilroy Bold"),
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

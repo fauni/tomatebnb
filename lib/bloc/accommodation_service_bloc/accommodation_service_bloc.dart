@@ -7,9 +7,9 @@ class AccommodationServiceBloc extends Bloc<AccommodationServiceEvent, Accommoda
 
   AccommodationServiceBloc(this.accommodationServiceRepository) : super(AccommodationServiceInitial()){
     on<AccommodationServiceGetEvent>(_onAccommodationServiceGet);
+    on<AccommodationServicecGetEvent>(_onAccommodationServicecGet);
     on<AccommodationServiceCreateEvent>(_onAccommodationServiceCreate);
     on<AccommodationServiceDeleteEvent>(_onAccommodationServiceDelete);
-    
   }
 
   Future<void> _onAccommodationServiceGet(AccommodationServiceGetEvent event, Emitter<AccommodationServiceState> emit) async {
@@ -24,6 +24,21 @@ class AccommodationServiceBloc extends Bloc<AccommodationServiceEvent, Accommoda
       }
     } catch(e){
       emit(AccommodationServiceGetError(e.toString()));
+    }
+  }
+
+    Future<void> _onAccommodationServicecGet(AccommodationServicecGetEvent event, Emitter<AccommodationServiceState> emit) async {
+    emit(AccommodationServicecGetLoading());
+    try{
+      final response = await accommodationServiceRepository.getbyCompleteByAccommodation(event.accommodationId);
+      if(response.status){
+        //await DescribeRepository.setUserData(response.data!);
+        emit(AccommodationServicecGetSuccess(response.data!));
+      } else {
+        emit(AccommodationServicecGetError(response.message));
+      }
+    } catch(e){
+      emit(AccommodationServicecGetError(e.toString()));
     }
   }
 

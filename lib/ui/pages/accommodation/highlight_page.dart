@@ -1230,7 +1230,9 @@ class _HighlightPageState extends State<HighlightPage> {
                     child: BlocConsumer<AccommodationBloc, AccommodationState>(
                       listener: (context, state) {
                         if (state is AccommodationUpdate2Success) {
+                          if(_currentPage==5){
                           context.push('/prices', extra: _accommodationId);
+                          }
                         } else if (state is AccommodationUpdate2Error) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(state.message),

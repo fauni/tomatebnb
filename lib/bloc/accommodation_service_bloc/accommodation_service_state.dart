@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_service_response_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_servicec_response_model.dart';
 
 abstract class AccommodationServiceState extends Equatable {
   @override
@@ -27,6 +28,28 @@ class AccommodationServiceGetError extends AccommodationServiceState {
   @override
   List<Object> get props => [message];
 }
+
+//estados para obtener servicios de alojamiento con datos del servicio especifico
+class AccommodationServicecGetLoading extends AccommodationServiceState {}
+
+class AccommodationServicecGetSuccess extends AccommodationServiceState {
+  final List<AccommodationServicecResponseModel> responseAccommodationServices;
+  AccommodationServicecGetSuccess(
+    this.responseAccommodationServices
+  );
+  @override
+  List<Object> get props => [responseAccommodationServices];
+}
+
+class AccommodationServicecGetError extends AccommodationServiceState {
+  final String message;
+  AccommodationServicecGetError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
 
 //estados para guardar servicios de alojamiento
 class AccommodationServiceCreateLoading extends AccommodationServiceState {}
