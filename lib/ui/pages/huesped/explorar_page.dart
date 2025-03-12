@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_explore.dart';
 import 'package:tomatebnb/ui/widgets/search_home_widget.dart';
 
@@ -25,6 +28,16 @@ class _ExplorarPageState extends State<ExplorarPage> {
     {'title': 'Vistas increíbles', 'icon': Icons.landscape},
     {'title': 'Islas', 'icon': Icons.beach_access},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerAnunciosCercanos();
+  }
+
+  void obtenerAnunciosCercanos() {
+    context.read<ExploreAccommodationBloc>().add(NearbyAccommodationGetEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +66,17 @@ class _ExplorarPageState extends State<ExplorarPage> {
                 scrollDirection: Axis.horizontal,
                 itemCount: _categories.length,
                 separatorBuilder: (context, index) {
-                  return SizedBox(width: 15,);
+                  return SizedBox(
+                    width: 15,
+                  );
                 },
                 itemBuilder: (context, index) {
                   final category = _categories[index];
                   final isSelected = _selectedIndex == index;
                   final color = isSelected ? Colors.black : Colors.grey;
-            
+
                   return InkWell(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         _selectedIndex = index;
                       });
@@ -72,20 +87,17 @@ class _ExplorarPageState extends State<ExplorarPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            category['icon'], 
-                            color: isSelected 
-                              ? Colors.black
-                              : Theme.of(context).colorScheme.primary ),
+                          Icon(category['icon'],
+                              color: isSelected
+                                  ? Colors.black
+                                  : Theme.of(context).colorScheme.primary),
                           Text(
                             category['title'],
                             style: TextStyle(
-                              fontFamily: "Gilroy Thin",
-                              fontSize: 12
-                            ),
+                                fontFamily: "Gilroy Thin", fontSize: 12),
                           ),
                           // Barra negra debajo del ítem seleccionado
-                          if(isSelected)
+                          if (isSelected)
                             Container(
                               height: 2,
                               width: 40,
@@ -100,16 +112,42 @@ class _ExplorarPageState extends State<ExplorarPage> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return ItemListExplore(onTap: () {
-                  context.push('/detail_ads');
-                },);
-              }, 
-              separatorBuilder: (context, index) {
-                return Divider();
-              }, 
-              itemCount: 8
+            child: BlocConsumer<ExploreAccommodationBloc,
+                ExploreAccommodationState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                if (state is GetAccommodationNearbyLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is GetAccommodationNearbySuccess) {
+                  
+                  return ListView.separated(
+                      itemBuilder: (context, index) {
+                        AccommodationResponseCompleteModel accommodation = state.accommodations[index];
+                        return ItemListExplore(
+                          accommodation: accommodation,
+                          onTap: () {
+                            context.push('/detail_ads');
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                      itemCount: state.accommodations.length);
+                } else if (state is GetAccommodationNearbyError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
+                } else {
+                  return Center(
+                    child: Text('Error desconocido'),
+                  );
+                }
+              },
             ),
           )
         ],

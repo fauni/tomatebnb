@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tomatebnb/config/constants/environment.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 
 class ItemListExplore extends StatefulWidget {
   
-  const ItemListExplore({super.key, required this.onTap});
+  const ItemListExplore({super.key, required this.accommodation, required this.onTap});
 
+  final AccommodationResponseCompleteModel accommodation;
   final VoidCallback onTap;
 
   @override
@@ -11,6 +14,7 @@ class ItemListExplore extends StatefulWidget {
 }
 
 class _ItemListExploreState extends State<ItemListExplore> {
+  String imgsUrl = Environment.UrlImg;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -33,11 +37,11 @@ class _ItemListExploreState extends State<ItemListExplore> {
                     width: double.infinity,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Image.asset(
-                        'assets/images/SagamoreResort.jpg',
-                        height: 120,
-                        fit: BoxFit.fill,
-                      ),
+                      child: widget.accommodation.photos!.isNotEmpty 
+                      ?  FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/load.gif', 
+                        image: '$imgsUrl/accommodations/${widget.accommodation.photos?.first.photoUrl}')
+                      : Image.asset("assets/images/BoutiqueHotel.jpg"),
                     ),
                   ),
                   Align(
@@ -46,15 +50,15 @@ class _ItemListExploreState extends State<ItemListExplore> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                           height: 30,
-                          width: 90,
+                          width: 100,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(20),
                               color: Colors.black),
                           child: Center(
                             child: Text(
-                              "Bs. 185/Noche",
+                              "Bs. ${widget.accommodation.priceNight}/Noche",
                               style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 13,
                                   color: Colors.white,
                                   fontFamily: "Gilroy Medium"),
                             ),
@@ -65,7 +69,7 @@ class _ItemListExploreState extends State<ItemListExplore> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text(
-                "Titulo del Anuncio",
+                widget.accommodation.title!,
                 style: TextStyle(
                     fontSize: 15,
                     fontFamily: "Gilroy Bold",
@@ -73,7 +77,7 @@ class _ItemListExploreState extends State<ItemListExplore> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
-                "Dirección del anuncio, número 223",
+                widget.accommodation.address!,
                 style: TextStyle(
                     fontSize: 12,
                     color: Theme.of(context).colorScheme.primary,

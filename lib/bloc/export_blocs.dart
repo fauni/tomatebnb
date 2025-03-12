@@ -59,3 +59,8 @@ export 'package:tomatebnb/bloc/accommodation_photo_bloc/accommodation_photo_stat
 export 'package:tomatebnb/bloc/user_bloc/user_bloc.dart';
 export 'package:tomatebnb/bloc/user_bloc/user_event.dart';
 export 'package:tomatebnb/bloc/user_bloc/user_state.dart';
+
+// Bloc para el Apartado Explorar
+export 'package:tomatebnb/bloc/explore_accommodation_bloc/explore_accommodation_bloc.dart';
+export 'package:tomatebnb/bloc/explore_accommodation_bloc/explore_accommodation_event.dart';
+export 'package:tomatebnb/bloc/explore_accommodation_bloc/explore_accommodation_state.dart';

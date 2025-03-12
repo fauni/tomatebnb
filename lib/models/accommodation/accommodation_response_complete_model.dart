@@ -90,37 +90,49 @@ class AccommodationResponseCompleteModel {
          this.discounts,
     });
 
-    factory AccommodationResponseCompleteModel.fromJson(Map<String, dynamic> json) => AccommodationResponseCompleteModel(
-        id: json["id"],
-        hostId: json["host_id"],
-        title: json["title"],
-        description: json["description"],
-        typeId: json["type_id"],
-        describeId: json["describe_id"],
-        address: json["address"],
-        city: json["city"],
-        postalCode: json["postal_code"],
-        country: json["country"],
-        latitude: double.parse(json["latitude"]??"0.0"),
-        longitude: double.parse(json["longitude"]??"0.0"),
-        guestCapacity: json["guest_capacity"],
-        numberRooms: json["number_rooms"],
-        numberBathrooms: json["number_bathrooms"],
-        numberBeds: json["number_beds"],
-        priceNight: double.parse(json["price_night"]??'0.0'),
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        type: AccommodationTypeResponseModel.fromJson(json["type"]??AccommodationTypeResponseModel().toJson()),
-        describe: DescribeResponseModel.fromJson(json["describe"]??DescribeResponseModel().toJson()),
-        aspects: List<AccommodationAspectResponseModel>.from(json["aspects"].map((x) => AccommodationAspectResponseModel.fromJson(x))),
-        services: List<AccommodationServiceResponseModel>.from(json["services"].map((x) => AccommodationServiceResponseModel.fromJson(x))),
-        prices: List<AccommodationPriceResponseModel>.from(json["prices"].map((x) => AccommodationPriceResponseModel.fromJson(x))),
-        photos: List<AccommodationPhotoResponseModel>.from(json["photos"].map((x) => AccommodationPhotoResponseModel.fromJson(x))),
-        discounts: List<AccommodationDiscountResponseModel>.from(json["discounts"].map((x) => AccommodationDiscountResponseModel.fromJson(x))),
+    factory AccommodationResponseCompleteModel.fromJson(Map<String, dynamic> json) {
+    return AccommodationResponseCompleteModel(
+      id: json["id"],
+      hostId: json["host_id"],
+      title: json["title"],
+      description: json["description"],
+      typeId: json["type_id"],
+      describeId: json["describe_id"],
+      address: json["address"],
+      city: json["city"],
+      postalCode: json["postal_code"],
+      country: json["country"],
+      latitude: double.tryParse(json["latitude"]?.toString() ?? "0.0"),
+      longitude: double.tryParse(json["longitude"]?.toString() ?? "0.0"),
+      guestCapacity: json["guest_capacity"],
+      numberRooms: json["number_rooms"],
+      numberBathrooms: json["number_bathrooms"],
+      numberBeds: json["number_beds"],
+      priceNight: double.tryParse(json["price_night"]?.toString() ?? "0.0"),
+      status: json["status"] == true || json["status"] == "true",
+      createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
+      updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
+      type: json["type"] != null ? AccommodationTypeResponseModel.fromJson(json["type"]) : null,
+      describe: json["describe"] != null ? DescribeResponseModel.fromJson(json["describe"]) : null,
+      aspects: (json["aspects"] as List<dynamic>?)
+          ?.map((x) => AccommodationAspectResponseModel.fromJson(x))
+          .toList() ?? [],
+      services: (json["services"] as List<dynamic>?)
+          ?.map((x) => AccommodationServiceResponseModel.fromJson(x))
+          .toList() ?? [],
+      prices: (json["prices"] as List<dynamic>?)
+          ?.map((x) => AccommodationPriceResponseModel.fromJson(x))
+          .toList() ?? [],
+      photos: (json["photos"] as List<dynamic>?)
+          ?.map((x) => AccommodationPhotoResponseModel.fromJson(x))
+          .toList() ?? [],
+      discounts: (json["discounts"] as List<dynamic>?)
+          ?.map((x) => AccommodationDiscountResponseModel.fromJson(x))
+          .toList() ?? [],
     );
+  }
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "host_id": hostId,
         "title": title,
@@ -143,29 +155,30 @@ class AccommodationResponseCompleteModel {
         "updated_at": updatedAt?.toIso8601String(),
         "type": type?.toJson(),
         "describe": describe?.toJson(),
-        "aspects": aspects == null ? [] : List<dynamic>.from(aspects!.map((x) => x.toJson())),
-        "services": services == null ?[]:List<dynamic>.from(services!.map((x) => x.toJson())),
-        "prices":prices == null ? []: List<dynamic>.from(prices!.map((x) => x.toJson())),
-        "photos":photos == null ? []: List<dynamic>.from(photos!.map((x) => x.toJson())),
-        "discounts":discounts== null ? []: List<dynamic>.from(discounts!.map((x) => x.toJson())),
-    };
-     AccommodationRequestModel toRequestModel() => AccommodationRequestModel(
-        hostId: hostId,
-        title: title,
-        description: description,
-        typeId: typeId,
-        describeId: describeId,
-        address: address,
-        city: city,
-        postalCode: postalCode,
-        country: country,
-        latitude: latitude,
-        longitude: longitude,
-        guestCapacity: guestCapacity,
-        numberRooms: numberRooms,
-        numberBathrooms: numberBathrooms,
-        numberBeds: numberBeds,
-        priceNight: priceNight,
-        status: status,
-    );
+        "aspects": aspects?.map((x) => x.toJson()).toList() ?? [],
+        "services": services?.map((x) => x.toJson()).toList() ?? [],
+        "prices": prices?.map((x) => x.toJson()).toList() ?? [],
+        "photos": photos?.map((x) => x.toJson()).toList() ?? [],
+        "discounts": discounts?.map((x) => x.toJson()).toList() ?? [],
+      };
+
+  AccommodationRequestModel toRequestModel() => AccommodationRequestModel(
+    hostId: hostId,
+    title: title,
+    description: description,
+    typeId: typeId,
+    describeId: describeId,
+    address: address,
+    city: city,
+    postalCode: postalCode,
+    country: country,
+    latitude: latitude,
+    longitude: longitude,
+    guestCapacity: guestCapacity,
+    numberRooms: numberRooms,
+    numberBathrooms: numberBathrooms,
+    numberBeds: numberBeds,
+    priceNight: priceNight,
+    status: status,
+  );
 }
