@@ -42,6 +42,7 @@ class AccommodationResponseModel {
     int? numberBeds;
     double? priceNight;
     bool? status;
+    bool? published;
     DateTime? updatedAt;
     DateTime? createdAt;
 
@@ -64,6 +65,7 @@ class AccommodationResponseModel {
         this.numberBeds,
         this.priceNight,
         this.status,
+        this.published,
         this.updatedAt,
         this.createdAt,
     });
@@ -87,6 +89,7 @@ class AccommodationResponseModel {
         int? numberBeds,
         double? priceNight,
         bool? status,
+        bool? published,
         DateTime? updatedAt,
         DateTime? createdAt
     }) => 
@@ -109,6 +112,7 @@ class AccommodationResponseModel {
             numberBeds: numberBeds?? this.numberBeds,
             priceNight: priceNight?? this.priceNight,
             status: status?? this.status,
+            published: published?? this.published,
             updatedAt: updatedAt?? this.updatedAt,
             createdAt: createdAt?? this.createdAt
         );
@@ -132,6 +136,7 @@ class AccommodationResponseModel {
         numberBeds: json["number_beds"],
         priceNight: double.tryParse(json["price_night"]??'0.0'),
         status: json["status"],
+        published: json["published"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
     );
@@ -155,6 +160,7 @@ class AccommodationResponseModel {
         "number_beds": numberBeds,
         "price_night": priceNight,
         "status": status,
+        "published": published,
         "updated_at": updatedAt?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),
     };
@@ -177,5 +183,6 @@ class AccommodationResponseModel {
         numberBeds: numberBeds,
         priceNight: priceNight,
         status: status,
+        published: published,
     );
 }

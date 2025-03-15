@@ -6,6 +6,7 @@ import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_servicec_response_model.dart';
 import 'package:tomatebnb/models/user/user_response_model.dart';
@@ -33,9 +34,10 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
   int _accommodationId = 0;
   final String _imgsUrl = Environment.UrlImg;
   late ColorNotifire notifire;
-  late AccommodationResponseCompleteModel accommodation;
+  late AccommodationResponseCompleteModel accommodation=AccommodationResponseCompleteModel();
   List<AccommodationServicecResponseModel> services = [];
   UserResponseModel user = UserResponseModel();
+  AccommodationRequestModel requestModel =AccommodationRequestModel();
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -73,6 +75,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                 );
               }
               if (state is AccommodationGetByIdSuccess) {
+                accommodation = state.responseAccommodation;
                 return SliverAppBar(
                   elevation: 0,
                   backgroundColor: notifire.getbgcolor,
@@ -120,6 +123,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                     }
 
                     if (state is AccommodationGetByIdSuccess) {
+                      accommodation = state.responseAccommodation;
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 12),
@@ -292,7 +296,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Location",
+                                      "Localización",
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: "Gilroy Bold",
@@ -345,8 +349,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                                   0.01,
                                             ),
                                             Text(
-                                              "Haight "
-                                              "Streetm Purwokerto, Karang Lewas",
+                                              "${accommodation.address}, ${accommodation.city}",
                                               style: TextStyle(
                                                   color: notifire.getgreycolor,
                                                   fontFamily: "Gilroy Medium"),
@@ -354,20 +357,44 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                           ],
                                         ),
                                         const SizedBox(height: 6),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            "View Details",
-                                            style: TextStyle(
-                                              color: notifire.getdarkbluecolor,
-                                              fontFamily: "Gilroy Medium",
-                                            ),
-                                          ),
-                                        )
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(left: 4),
+                                        //   child: Text(
+                                        //     "View Details",
+                                        //     style: TextStyle(
+                                        //       color: notifire.getdarkbluecolor,
+                                        //       fontFamily: "Gilroy Medium",
+                                        //     ),
+                                        //   ),
+                                        // )
                                       ],
                                     ),
                                   ),
+                                ),
+                                 SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        if(_accommodationId!=0){
+                                        context.push('/instructions',
+                                            extra: _accommodationId);
+                                        }
+                                      },
+                                      child: Text(
+                                            "Ver Instrucciones",
+                                            style: TextStyle(
+                                                 fontSize: 16,
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkbluecolor),
+                                          ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height:
@@ -391,6 +418,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                     },
                                   ),
                                 ),
+                               
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.035),
@@ -416,95 +444,187 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                       ),
                     ],
                   ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 70,
-                          child: CircleAvatar(
-                            radius: 33,
-                            // ignore: sort_child_properties_last
-                            child: IconButton(
-                              onPressed: () {
-                                context.replace('/describe');
-                              },
-                              color: Theme.of(context).colorScheme.tertiary,
-                              icon: Icon(Icons.edit_document),
-                              iconSize: 35.0,
-                            ),
-                            backgroundColor: notifire.getbgcolor,
-                          ),
-                        ),
-                        BlocConsumer<UserBloc, UserState>(
-                          listener: (context, state) {
-                            if (state is UserGetByIdSuccess) {
-                              user = state.responseUser;
-                            }
-                            if (state is UserGetByIdError) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(state.message),
-                              ));
-                            }
-                          },
-                          builder: (context, state) {
-                            if (state is UserGetByIdLoading) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            if(state is UserGetByIdSuccess){
-                            return InkWell(
-                              onTap: () {
-                                bool repacc=accommodationDataComplete();
-                                bool repuser=userDataComplete();
-                                if(!repacc && !repuser){
-                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    duration: Duration(seconds: 3),
-                                    content: Text("Datos del alojamiento y usuario incompletos "),
-                                    backgroundColor: Theme.of(context).colorScheme.error,));
-                                  }else if(!repacc){
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text("Datos del alojamiento incompletos"),
-                                    backgroundColor: Theme.of(context).colorScheme.error));}
-                                    else if(!repuser)
-                                {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text("Datos personales Incompletos"),
-                                      backgroundColor: Theme.of(context).colorScheme.error));
-                                  }else{
-                                    print('publicarlo en este lugar ');
-                                  }
-                                
-                              },
-                              child: Container(
-                                height: 63,
-                                width: MediaQuery.of(context).size.width / 1.3,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                child: Center(
-                                  child: Text(
-                                    "Publicar",
-                                    style: TextStyle(
-                                      color: WhiteColor,
-                                      fontSize: 18,
-                                      fontFamily: "Gilroy Bold",
-                                    ),
-                                  ),
+                  child: BlocConsumer<AccommodationBloc, AccommodationState>(
+                    listener: (context, state) {
+                      if (state is AccommodationPublishError) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                        ));
+                      }
+                      if (state is AccommodationPublishSuccess) {
+                        accommodation.priceNight = requestModel.priceNight;
+                        
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: 
+                          (accommodation.priceNight??0) ==0  
+                          ?Text("Se quitó la publicación")
+                          :Text("Anuncio Publicado"),
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                        ));
+                        context.pop();
+                        
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AccommodationPublishLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              height: 70,
+                              child: CircleAvatar(
+                                radius: 33,
+                                // ignore: sort_child_properties_last
+                                child: IconButton(
+                                  onPressed: () {
+                                    context.replace('/describe');
+                                  },
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  icon: Icon(Icons.edit_document),
+                                  iconSize: 35.0,
                                 ),
+                                backgroundColor: notifire.getbgcolor,
                               ),
-                            );
-                            }else{
-                              return Text('No data') ;
-                            }
-                          },
-                        )
-                      ],
-                    ),
+                            ),
+                            BlocConsumer<UserBloc, UserState>(
+                              listener: (context, state) {
+                                if (state is UserGetByIdSuccess) {
+                                  user = state.responseUser;
+                                }
+                                if (state is UserGetByIdError) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(state.message),
+                                  ));
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is UserGetByIdLoading) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (state is UserGetByIdSuccess) {
+                                  return accommodation.published??false
+                                  ?InkWell(
+                                    onTap: () {
+                                     
+                                        requestModel.priceNight = 0;
+                                            
+                                        context.read<AccommodationBloc>().add(
+                                            AccommodationPublishEvent(
+                                                _accommodationId,
+                                                requestModel.priceNight!,
+                                                false));
+                                      
+                                    },
+                                    child: Container(
+                                      height: 63,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.3,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                      child: Center(
+                                        child: Text(
+                                          "Quitar Publicacion",
+                                          style: TextStyle(
+                                            color: WhiteColor,
+                                            fontSize: 18,
+                                            fontFamily: "Gilroy Bold",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                
+                                  :InkWell(
+                                    onTap: () {
+                                      bool repacc = accommodationDataComplete();
+                                      bool repuser = userDataComplete();
+                                      if (!repacc && !repuser) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          duration: Duration(seconds: 3),
+                                          content: Text(
+                                              "Datos del alojamiento y usuario incompletos "),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .error,
+                                        ));
+                                      } else if (!repacc) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Complete los datos del anuncio"),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .error));
+                                      } else if (!repuser) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Complete sus datos personales"),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .error));
+                                      } else{
+                                        
+                                        requestModel.priceNight = accommodation
+                                            .prices?.first.priceNight;
+                                        context.read<AccommodationBloc>().add(
+                                            AccommodationPublishEvent(
+                                                _accommodationId,
+                                                requestModel.priceNight!,
+                                                true));
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 63,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.3,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                      child: Center(
+                                        child: Text(
+                                          "Publicar",
+                                          style: TextStyle(
+                                            color: WhiteColor,
+                                            fontSize: 18,
+                                            fontFamily: "Gilroy Bold",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                
+                                } else {
+                                  return Text('No data');
+                                }
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -524,31 +644,32 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
       notifire.setIsDark = previusstate;
     }
   }
-  bool userDataComplete(){
-    return user.name != null 
-        && user.lastname != null 
-        && user.phone != null 
-        && user.email != null
-        && user.documentPhotoBack != null 
-        && user.documentPhotoFront != null
-        && user.confirmPhoto != null 
-        && user.documentType != null
-        && user.documentNumber != null;
-  }
-  bool accommodationDataComplete(){
-    return accommodation.title != null 
-        && accommodation.description != null 
-        && accommodation.address != null 
-        && accommodation.city != null
-        && accommodation.prices != null 
-        && accommodation.prices!.isNotEmpty 
-        && accommodation.photos!.isNotEmpty
-        && accommodation.guestCapacity!= null
-        && accommodation.numberBathrooms!= null
-        && accommodation.numberBeds!= null
-        && accommodation.guestCapacity!= null
-        && accommodation.latitude!= null
-        && accommodation.longitude!= null;
 
+  bool userDataComplete() {
+    return user.name != null &&
+        user.lastname != null &&
+        user.phone != null &&
+        user.email != null &&
+        user.documentPhotoBack != null &&
+        user.documentPhotoFront != null &&
+        user.confirmPhoto != null &&
+        user.documentType != null &&
+        user.documentNumber != null;
+  }
+
+  bool accommodationDataComplete() {
+    return accommodation.title != null &&
+        accommodation.description != null &&
+        accommodation.address != null &&
+        accommodation.city != null &&
+        accommodation.prices != null &&
+        accommodation.prices!.isNotEmpty &&
+        accommodation.photos!.isNotEmpty &&
+        accommodation.guestCapacity != null &&
+        accommodation.numberBathrooms != null &&
+        accommodation.numberBeds != null &&
+        accommodation.guestCapacity != null &&
+        accommodation.latitude != null &&
+        accommodation.longitude != null;
   }
 }

@@ -50,6 +50,7 @@ class AccommodationResponseCompleteModel {
     int? numberBeds;
     double? priceNight;
     bool? status;
+    bool? published;
     DateTime? createdAt;
     DateTime? updatedAt;
     AccommodationTypeResponseModel? type;
@@ -79,6 +80,7 @@ class AccommodationResponseCompleteModel {
          this.numberBeds,
          this.priceNight,
          this.status,
+         this.published,
          this.createdAt,
          this.updatedAt,
          this.type,
@@ -110,6 +112,7 @@ class AccommodationResponseCompleteModel {
       numberBeds: json["number_beds"],
       priceNight: double.tryParse(json["price_night"]?.toString() ?? "0.0"),
       status: json["status"] == true || json["status"] == "true",
+      published: json["published"] == true || json["published"] == "true",
       createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
       updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
       type: json["type"] != null ? AccommodationTypeResponseModel.fromJson(json["type"]) : null,
@@ -151,6 +154,7 @@ class AccommodationResponseCompleteModel {
         "number_beds": numberBeds,
         "price_night": priceNight,
         "status": status,
+        "published": published,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "type": type?.toJson(),
@@ -180,5 +184,6 @@ class AccommodationResponseCompleteModel {
     numberBeds: numberBeds,
     priceNight: priceNight,
     status: status,
+    published: published,
   );
 }

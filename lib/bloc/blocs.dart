@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/repository/accommodation_aspect_repository.dart';
+import 'package:tomatebnb/repository/accommodation_instruction_repository.dart';
 import 'package:tomatebnb/repository/accommodation_photo_repository.dart';
 import 'package:tomatebnb/repository/accommodation_price_repository.dart';
 import 'package:tomatebnb/repository/accommodation_discount_repository.dart';
@@ -36,6 +37,7 @@ class Blocs {
   static final AccommodationPhotoBloc accommodationPhotoBloc = AccommodationPhotoBloc(AccommodationPhotoRepository(),);
   static final UserBloc userBloc = UserBloc(UserRepository(),);
   static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
+  static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -53,6 +55,7 @@ class Blocs {
     BlocProvider<AccommodationPhotoBloc>(create: (context) => accommodationPhotoBloc),
     BlocProvider<UserBloc>(create: (context) => userBloc),
     BlocProvider<ExploreAccommodationBloc>(create: (context) => exploreAccommodationBloc),
+    BlocProvider<AccommodationInstructionBloc>(create: (context) => accommodationInstructionBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -71,6 +74,7 @@ class Blocs {
     accommodationPhotoBloc.close();
     userBloc.close();
     exploreAccommodationBloc.close();
+    accommodationInstructionBloc.close();
   }
 
 

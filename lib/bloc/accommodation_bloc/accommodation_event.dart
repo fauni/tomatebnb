@@ -41,3 +41,12 @@ class AccommodationUpdate2Event extends AccommodationEvent {
   @override
   List<Object?> get props => [id,accommodationRequest];
 }
+
+class AccommodationPublishEvent extends AccommodationEvent {
+  final double priceNight;
+  final int id;
+  final bool publish;
+  AccommodationPublishEvent(this.id,this.priceNight,this.publish);
+  @override
+  List<Object?> get props => [id,priceNight,publish];
+}
