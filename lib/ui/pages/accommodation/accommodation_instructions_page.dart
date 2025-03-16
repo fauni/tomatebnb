@@ -45,7 +45,7 @@ class _AccommodationInstructionsPageState
         backgroundColor: notifire.getbgcolor,
         leading: BackButton(color: notifire.getwhiteblackcolor),
         title: Text(
-          "Mi Perfil",
+          "Instrucciones",
           style: TextStyle(
               color: notifire.getwhiteblackcolor, fontFamily: "Gilroy Bold"),
         ),

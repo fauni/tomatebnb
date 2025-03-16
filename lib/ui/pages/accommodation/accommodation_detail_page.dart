@@ -218,6 +218,26 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.03),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        if(_accommodationId!=0){
+                                        context.push('/rules',
+                                            extra: _accommodationId);
+                                        }
+                                      },
+                                      child: Text(
+                                            "Ver Reglas",
+                                            style: TextStyle(
+                                                 fontSize: 16,
+                                                fontFamily: "Gilroy Bold",
+                                                color: notifire.getdarkbluecolor),
+                                          ),
+                                    ),
+                                  ],
+                                ),
                                 BlocConsumer<AccommodationServiceBloc,
                                     AccommodationServiceState>(
                                   listener: (context, state) {

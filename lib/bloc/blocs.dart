@@ -7,6 +7,7 @@ import 'package:tomatebnb/repository/accommodation_instruction_repository.dart';
 import 'package:tomatebnb/repository/accommodation_photo_repository.dart';
 import 'package:tomatebnb/repository/accommodation_price_repository.dart';
 import 'package:tomatebnb/repository/accommodation_discount_repository.dart';
+import 'package:tomatebnb/repository/accommodation_rule_repository.dart';
 import 'package:tomatebnb/repository/accommodation_service_repository.dart';
 import 'package:tomatebnb/repository/accommodation_type_repository.dart';
 import 'package:tomatebnb/repository/aspect_repository.dart';
@@ -38,6 +39,7 @@ class Blocs {
   static final UserBloc userBloc = UserBloc(UserRepository(),);
   static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
   static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
+  static final AccommodationRuleBloc accommodationRuleBloc = AccommodationRuleBloc(AccommodationRuleRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -56,6 +58,7 @@ class Blocs {
     BlocProvider<UserBloc>(create: (context) => userBloc),
     BlocProvider<ExploreAccommodationBloc>(create: (context) => exploreAccommodationBloc),
     BlocProvider<AccommodationInstructionBloc>(create: (context) => accommodationInstructionBloc),
+    BlocProvider<AccommodationRuleBloc>(create: (context) => accommodationRuleBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -75,6 +78,7 @@ class Blocs {
     userBloc.close();
     exploreAccommodationBloc.close();
     accommodationInstructionBloc.close();
+    accommodationRuleBloc.close();
   }
 
 
