@@ -1,56 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tomatebnb/utils/Colors.dart';
+import 'package:tomatebnb/utils/dark_lightmode.dart';
 
-class DetalleAnuncioPage extends StatelessWidget {
+class DetalleAnuncioPage extends StatefulWidget {
   const DetalleAnuncioPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<DetalleAnuncioPage> createState() => _DetalleAnuncioPageState();
+}
+
+class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
+  bool _pinned = true;
+  bool _snap = false;
+  bool _floating = false;
+
+  @override
+  void initState() {
+    getdarkmodepreviousstate();
+    super.initState();
+  }
+    late ColorNotifire notifire;
+  @override
+   Widget build(BuildContext context) {
+    notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
+          color: notifire.getdarkmodecolor,
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: notifire.getdarkmodecolor,
               blurRadius: 10,
               spreadRadius: 10,
-              blurStyle: BlurStyle.normal
-            )
-          ]
+              blurStyle: BlurStyle.normal,
+            ),
+          ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-                )
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 70,
+                child: CircleAvatar(
+                  radius: 33,
+                  // ignore: sort_child_properties_last
+                  child: Image.asset(
+                    "assets/images/Chat.png",
+                    height: 35,
+                    color: notifire.getwhitebluecolor,
+                  ),
+                  backgroundColor: notifire.getbgcolor,
+                ),
               ),
-              onPressed: (){
-                
-              }, 
-              label: Text('Comprobar disponibilidad'),
-              icon: Icon(Icons.verified_outlined, color: Theme.of(context).colorScheme.onPrimary,),
-            ),
+              InkWell(
+                onTap: () {
+                  // Navigator.of(context)
+                  //     .push(MaterialPageRoute(
+                  //         builder: (context) => const chackout()))
+                  //     .then((value) => print('ok Navigat'));
+                },
+                child: Container(
+                  height: 63,
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50), color: Darkblue),
+                  child: Center(
+                    child: Text(
+                      "Book Now",
+                      style: TextStyle(
+                        color: WhiteColor,
+                        fontSize: 18,
+                        fontFamily: "Gilroy Bold",
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
+      backgroundColor: notifire.getbgcolor,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             elevation: 0,
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: notifire.getbgcolor,
             leading: Padding(
               padding: const EdgeInsets.only(top: 8, left: 12),
               child: CircleAvatar(
-                backgroundColor: Color(0xff202427),
+                backgroundColor: notifire.getlightblackcolor,
                 child: BackButton(
-                  color: Colors.white,
+                  color: notifire.getdarkwhitecolor,
                 ),
               ),
             ),
@@ -61,28 +107,31 @@ class DetalleAnuncioPage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 22,
-                      backgroundColor: Color(0xff202427),
+                      backgroundColor: notifire.getlightblackcolor,
                       child: Image.asset(
                         "assets/images/share.png",
-                        color: Colors.white,
+                        color: notifire.getdarkwhitecolor,
                         height: 30,
                       ),
                     ),
                     const SizedBox(width: 20),
                     CircleAvatar(
                       radius: 22,
-                      backgroundColor: Color(0xff202427),
+                      backgroundColor: notifire.getlightblackcolor,
                       child: Image.asset(
                         "assets/images/heart.png",
-                        color: Colors.white,
+                        color: notifire.getdarkwhitecolor,
                         height: 25,
                       ),
                     ),
                     const SizedBox(width: 20),
                   ],
                 ),
-              )
+              ),
             ],
+            pinned: _pinned,
+            snap: _snap,
+            floating: _floating,
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
@@ -97,7 +146,8 @@ class DetalleAnuncioPage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   child: Stack(
                     children: [
                       Column(
@@ -108,7 +158,7 @@ class DetalleAnuncioPage extends StatelessWidget {
                             "Diamond Heart Hotel",
                             style: TextStyle(
                               fontSize: 18,
-                              // color: notifire.getwhiteblackcolor,
+                              color: notifire.getwhiteblackcolor,
                               fontFamily: "Gilroy Bold",
                             ),
                           ),
@@ -125,12 +175,12 @@ class DetalleAnuncioPage extends StatelessWidget {
                                   Image.asset(
                                     "assets/images/Maplocation.png",
                                     height: 20,
-                                    color: Colors.blue// notifire.getdarkbluecolor,
+                                    color: notifire.getdarkbluecolor,
                                   ),
                                   Text(
                                     "Purwokerto, Karang Lewas",
                                     style: TextStyle(
-                                        color: Colors.blueGrey,// notifire.getgreycolor,
+                                        color: notifire.getgreycolor,
                                         fontSize: 14,
                                         fontFamily: "Gilroy Medium"),
                                   )
@@ -144,7 +194,7 @@ class DetalleAnuncioPage extends StatelessWidget {
                                     "4.2",
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.blue,// notifire.getdarkbluecolor,
+                                      color: notifire.getdarkbluecolor,
                                       fontFamily: "Gilroy Bold",
                                     ),
                                   ),
@@ -152,7 +202,7 @@ class DetalleAnuncioPage extends StatelessWidget {
                                     "(84 Reviews)",
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.grey,// notifire.getgreycolor,
+                                      color: notifire.getgreycolor,
                                       fontFamily: "Gilroy Medium",
                                     ),
                                   ),
@@ -160,16 +210,369 @@ class DetalleAnuncioPage extends StatelessWidget {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.015,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "\$46 ",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: notifire.getdarkbluecolor,
+                                  fontFamily: "Gilroy Bold",
+                                ),
+                              ),
+                              Text(
+                                "Per Night",
+                                style: TextStyle(
+                                  fontFamily: "Gilroy Medium",
+                                  fontSize: 14,
+                                  color: notifire.getwhiteblackcolor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.015),
+                          ReadMoreText(
+                            "Diamond Heart Hotel is high rated hotels in Middle Java Purwokerto with 120+ reviews and have high attitude service.",
+                            trimLines: 2,
+                            trimMode: TrimMode.Line,
+                            style: TextStyle(
+                                color: notifire.getgreycolor,
+                                fontFamily: "Gilroy Medium"),
+                            trimCollapsedText: 'Show more',
+                            trimExpandedText: 'Show less',
+                            lessStyle:
+                                TextStyle(color: notifire.getdarkbluecolor),
+                            moreStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: notifire.getdarkbluecolor),
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.03),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Image.asset("assets/images/wifi.png",
+                                      height: 30,
+                                      color: notifire.getwhiteblackcolor),
+                                  Text(
+                                    "Wifi",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: notifire.getgreycolor,
+                                        fontFamily: "Gilroy Medium"),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/shower.png",
+                                    height: 30,
+                                    color: notifire.getwhiteblackcolor,
+                                  ),
+                                  Text(
+                                    "shower",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: notifire.getgreycolor,
+                                        fontFamily: "Gilroy Medium"),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/breakfast.png",
+                                    height: 30,
+                                    color: notifire.getwhiteblackcolor,
+                                  ),
+                                  Text(
+                                    "Breakfast",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: notifire.getgreycolor,
+                                        fontFamily: "Gilroy Medium"),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/gym.png",
+                                    height: 30,
+                                    color: notifire.getwhiteblackcolor,
+                                  ),
+                                  Text(
+                                    "Gym",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: notifire.getgreycolor,
+                                        fontFamily: "Gilroy Medium"),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.025),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Location",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "Gilroy Bold",
+                                    color: notifire.getwhiteblackcolor),
+                              ),
+                              Text(
+                                "View Detail",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: notifire.getdarkbluecolor,
+                                    fontFamily: "Gilroy Medium"),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          Card(
+                            elevation: 0,
+                            color: notifire.getdarkmodecolor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset("assets/images/googlemap.png"),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.01,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                          "assets/images/Maplocation.png",
+                                          height: 20,),
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.01,),
+                                      Text(
+                                        "Haight "
+                                        "Streetm Purwokerto, Karang Lewas",
+                                        style: TextStyle(
+                                            color: notifire.getgreycolor,
+                                            fontFamily: "Gilroy Medium"),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4),
+                                    child: Text(
+                                      "View Details",
+                                      style: TextStyle(
+                                        color: notifire.getdarkbluecolor,
+                                        fontFamily: "Gilroy Medium",
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Reviews",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "Gilroy Bold",
+                                    color: notifire.getwhiteblackcolor),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (context) => const review(),
+                                  // ));
+                                },
+                                child: Text(
+                                  "See All",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: notifire.getdarkbluecolor,
+                                      fontFamily: "Gilroy Medium"),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.035),
+                          Container(
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemCount: 10,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  children: [
+                                    // Row(
+                                    //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   // crossAxisAlignment: CrossAxisAlignment.start,
+                                    //   children: [
+                                    //     CircleAvatar(
+                                    //       backgroundColor: WhiteColor,
+                                    //       backgroundImage: AssetImage(
+                                    //           hotelList4[index]["img"]
+                                    //               .toString()),
+                                    //       radius: 25,
+                                    //     ),
+                                    //     const SizedBox(width: 8),
+                                    //     Column(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         Row(
+                                    //           mainAxisAlignment:
+                                    //               MainAxisAlignment
+                                    //                   .spaceBetween,
+                                    //           crossAxisAlignment:
+                                    //               CrossAxisAlignment.end,
+                                    //           children: [
+                                    //             Padding(
+                                    //               padding:
+                                    //                   const EdgeInsets.only(
+                                    //                       top: 8),
+                                    //               child: SizedBox(
+                                    //                 width:
+                                    //                     MediaQuery.of(context)
+                                    //                             .size
+                                    //                             .width *
+                                    //                         0.54,
+                                    //                 child: Text(
+                                    //                   hotelList4[index]["title"]
+                                    //                       .toString(),
+                                    //                   style: TextStyle(
+                                    //                       fontSize: 15,
+                                    //                       color: notifire
+                                    //                           .getwhiteblackcolor,
+                                    //                       fontFamily:
+                                    //                           "Gilroy Bold"),
+                                    //                 ),
+                                    //               ),
+                                    //             ),
+                                    //             SizedBox(
+                                    //                 width:
+                                    //                     MediaQuery.of(context)
+                                    //                             .size
+                                    //                             .width *
+                                    //                         0.10),
+                                    //             Image.asset(
+                                    //                 "assets/images/star.png",
+                                    //                 height: 20),
+                                    //             InkWell(
+                                    //                 onTap: () {
+                                    //                   Navigator.of(context)
+                                    //                       .push(MaterialPageRoute(
+                                    //                           builder: (context) =>
+                                    //                               const review()))
+                                    //                       .then((value) => print(
+                                    //                           'ok Navigat'));
+                                    //                 },
+                                    //                 child: Text(
+                                    //                     hotelList4[index]
+                                    //                             ["review"]
+                                    //                         .toString(),
+                                    //                     style: TextStyle(
+                                    //                         fontSize: 15,
+                                    //                         fontFamily:
+                                    //                             "Gilroy Bold",
+                                    //                         color: notifire
+                                    //                             .getwhiteblackcolor)))
+                                    //           ],
+                                    //         ),
+                                    //         SizedBox(
+                                    //             height: MediaQuery.of(context)
+                                    //                     .size
+                                    //                     .height *
+                                    //                 0.007),
+                                    //         SizedBox(
+                                    //           height: 40,
+                                    //           width: MediaQuery.of(context)
+                                    //                   .size
+                                    //                   .width *
+                                    //               0.70,
+                                    //           child: Text(
+                                    //             hotelList4[index]["massage"]
+                                    //                 .toString(),
+                                    //             style: TextStyle(
+                                    //                 fontSize: 14,
+                                    //                 color:
+                                    //                     notifire.getgreycolor,
+                                    //                 fontFamily:
+                                    //                     "Gilroy Medium"),
+                                    //             maxLines: 2,
+                                    //             overflow: TextOverflow.ellipsis,
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                   
+                                    Divider(
+                                      color: notifire.getgreycolor,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
+   
     );
+  }
+
+
+   getdarkmodepreviousstate() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? previusstate = prefs.getBool("setIsDark");
+    if (previusstate == null) {
+      notifire.setIsDark = false;
+    } else {
+      notifire.setIsDark = previusstate;
+    }
   }
 }

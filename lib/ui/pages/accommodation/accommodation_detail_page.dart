@@ -235,9 +235,11 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                                 fontFamily: "Gilroy Bold",
                                                 color: notifire.getdarkbluecolor),
                                           ),
+                                          
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 12.0,),
                                 BlocConsumer<AccommodationServiceBloc,
                                     AccommodationServiceState>(
                                   listener: (context, state) {

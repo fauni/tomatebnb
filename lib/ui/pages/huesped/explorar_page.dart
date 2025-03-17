@@ -130,7 +130,7 @@ class _ExplorarPageState extends State<ExplorarPage> {
                         return ItemListExplore(
                           accommodation: accommodation,
                           onTap: () {
-                            context.push('/detail_ads');
+                            context.push('/detail_ads',extra: accommodation.id);
                           },
                         );
                       },

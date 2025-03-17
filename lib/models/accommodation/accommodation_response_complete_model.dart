@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'package:tomatebnb/models/accommodation/accommodation_aspect_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_discount_response_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_instruction_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_price_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_rule_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_service_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_type_response_model.dart';
 import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
@@ -55,11 +57,13 @@ class AccommodationResponseCompleteModel {
     DateTime? updatedAt;
     AccommodationTypeResponseModel? type;
     DescribeResponseModel? describe;
-    List<AccommodationAspectResponseModel>? aspects;
-    List<AccommodationServiceResponseModel>? services;
-    List<AccommodationPriceResponseModel>? prices;
-    List<AccommodationPhotoResponseModel>? photos;
-    List<AccommodationDiscountResponseModel>? discounts;
+    List<AccommodationAspectResponseModel>? aspects=[];
+    List<AccommodationServiceResponseModel>? services=[];
+    List<AccommodationPriceResponseModel>? prices=[];
+    List<AccommodationPhotoResponseModel>? photos=[];
+    List<AccommodationDiscountResponseModel>? discounts=[];
+    List<AccommodationRuleResponseModel>? rules=[];
+    List<AccommodationInstructionResponseModel>?instructions=[];
 
     AccommodationResponseCompleteModel({
          this.id,
@@ -90,6 +94,8 @@ class AccommodationResponseCompleteModel {
          this.prices,
          this.photos,
          this.discounts,
+         this.rules,
+         this.instructions
     });
 
     factory AccommodationResponseCompleteModel.fromJson(Map<String, dynamic> json) {
@@ -132,6 +138,12 @@ class AccommodationResponseCompleteModel {
       discounts: (json["discounts"] as List<dynamic>?)
           ?.map((x) => AccommodationDiscountResponseModel.fromJson(x))
           .toList() ?? [],
+      rules: (json["rules"] as List<dynamic>?)
+          ?.map((x) => AccommodationRuleResponseModel.fromJson(x))
+          .toList() ?? [],
+      instructions: (json["instructions"] as List<dynamic>?)
+          ?.map((x) => AccommodationInstructionResponseModel.fromJson(x))
+          .toList() ?? [],    
     );
   }
 
@@ -164,6 +176,8 @@ class AccommodationResponseCompleteModel {
         "prices": prices?.map((x) => x.toJson()).toList() ?? [],
         "photos": photos?.map((x) => x.toJson()).toList() ?? [],
         "discounts": discounts?.map((x) => x.toJson()).toList() ?? [],
+        "rules": discounts?.map((x) => x.toJson()).toList() ?? [],
+        "instructions": discounts?.map((x) => x.toJson()).toList() ?? [],
       };
 
   AccommodationRequestModel toRequestModel() => AccommodationRequestModel(
