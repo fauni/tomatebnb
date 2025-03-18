@@ -43,7 +43,7 @@ class _DescribePageState extends State<DescribePage> {
 
   final adressController = TextEditingController();
   final cityController = TextEditingController();
-  final countryController = TextEditingController();
+  final countryController = TextEditingController(text:'Bolivia');
 
   int _guestCounter = 0;
   int _roomCounter = 0;

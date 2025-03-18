@@ -83,6 +83,7 @@ class ItemListAnuncio extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+                        Text('Bs.'),
                         Text(
                           anuncio.prices!.isNotEmpty
                           ?anuncio.prices?.first.priceNight.toString() ?? "0.0"
