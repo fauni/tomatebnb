@@ -80,7 +80,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                   //     .push(MaterialPageRoute(
                   //         builder: (context) => const chackout()))
                   //     .then((value) => print('ok Navigat'));
-                  context.push('/create_reserve',extra: accommodation);
+                  context.push('/select_date',extra: accommodation);
                 },
                 child: Container(
                   height: 63,

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
+import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
+import 'package:scrollable_clean_calendar/utils/enums.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_anuncio.dart';
 import 'package:tomatebnb/utils/Colors.dart';
@@ -16,12 +21,28 @@ class CreateReservePage extends StatefulWidget {
 }
 
 class _CreateReservePageState extends State<CreateReservePage> {
-   int _counter = 0;
+ CalendarFormat _calendarFormat = CalendarFormat.month;
+ RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOn;
+  
+  int _counter = 0;
   int _counter1 = 0;
   int _counter2 = 0;
+  int _nights=0;
+
+  String _selectedDate = '';
+  String _dateCount = '';
+  String _range = '';
+  String _rangeCount = '';
+  DateTime? _selectedDay=DateTime.now();
+  DateTime? _focusedDay=DateTime.now() ;
+  DateTime? _rangeStart=DateTime.now();
+  DateTime? _rangeEnd=DateTime.now();
 
   bool isChecked = false;
   bool isChecked1 = false;
+
+ 
 
   @override
   void initState() {
@@ -37,6 +58,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     _accommodation = GoRouterState.of(context).extra as AccommodationResponseCompleteModel;
+    _nights = daysBetween(_accommodation.createdAt??DateTime.now(), _accommodation.updatedAt??DateTime.now());
     return Scaffold(
       backgroundColor: notifire.getbgcolor,
       appBar: PreferredSize(
@@ -58,31 +80,99 @@ class _CreateReservePageState extends State<CreateReservePage> {
             children: [
               ItemListAnuncio(anuncio: _accommodation),
               const SizedBox(height: 15),
-              selectdetail(
-                heding: "Dates",
-                image: "assets/images/calendar.png",
-                text: "Select Dates",
-                icon: Icons.keyboard_arrow_down,
-                onclick: () {
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //   builder: (context) => Calander(),
-                  // ));
-                },
+              Row(children: <Widget>[
+                  Text(
+             "Fechas",
+              style: TextStyle(
+              fontSize: 16,
+              color: notifire.getwhiteblackcolor,
+              fontFamily: "Gilroy Bold"),
               ),
+               
+              ],),
+               Text(
+             "${_accommodation.createdAt.toString().substring(0,10)} - ${_accommodation.updatedAt.toString().substring(0,10)}",
+              style: TextStyle(
+              fontSize: 16,
+              color: notifire.getwhiteblackcolor,
+              fontFamily: "Gilroy Bold"),
+              ),
+        //      TableCalendar(
+               
+        //         firstDay: DateTime.now(),
+        //         lastDay: DateTime.now().add(Duration(days: 365)),
+        //         focusedDay: DateTime.now().add(Duration(days: 5)),
+        //         selectedDayPredicate: (day) {
+        //           if(day.day >21 && day.day <25){
+        //             return false;
+        //           }else{
+        //             return true;
+        //           }
+        //           // return isSameDay(_selectedDay, day);
+        //         },
+        //          rangeStartDay: _rangeStart,
+        //         rangeEndDay: _rangeEnd,
+        //         calendarFormat: _calendarFormat,
+        //         rangeSelectionMode: _rangeSelectionMode,
+        //         onDaySelected: (selectedDay, focusedDay) {
+        //             if (!isSameDay(_selectedDay, selectedDay)) {
+        //               setState(() {
+        //                 _selectedDay = selectedDay;
+        //                 _focusedDay = focusedDay;
+        //                 _rangeStart = null; // Important to clean those
+        //                 _rangeEnd = null;
+        //                 _rangeSelectionMode = RangeSelectionMode.toggledOff;
+        //               });
+        //             }
+        //         },
+        //          onRangeSelected: (start, end, focusedDay) {
+        //           setState(() {
+        //             _selectedDay = null;
+        //             _focusedDay = focusedDay;
+        //             _rangeStart = start;
+        //             _rangeEnd = end;
+        //             _rangeSelectionMode = RangeSelectionMode.toggledOn;
+        //             print(_rangeStart);
+        //             print(_rangeEnd);
+        //           });
+        //         },
+        //          onFormatChanged: (format) {
+        //   if (_calendarFormat != format) {
+        //     setState(() {
+        //       _calendarFormat = format;
+        //     });
+        //   }
+        // },
+        //       ),
+             
               const SizedBox(height: 10),
-              selectdetail(
-                  heding: "Guests",
-                  image: "assets/images/guest.png",
-                  text: "Select Guest",
-                  icon: Icons.keyboard_arrow_down,
-                  onclick: guestbottomsheet,),
-              const SizedBox(height: 10),
-              selectdetail(
-                  heding: "Promo",
-                  image: "assets/images/promo.png",
-                  text: "Promo Used",
-                  icon: Icons.keyboard_arrow_right,
-                  onclick: promomodelbottomsheet),
+          //      Text(
+          // "Huespedes",
+          //     style: TextStyle(
+          //         fontSize: 16,
+          //         color: notifire.getwhiteblackcolor,
+          //         fontFamily: "Gilroy Bold"),
+          //   ),
+             SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  Room(
+                      text: "Huespedes",
+                      titletext: "Mayores de 5 años",
+                      onclick1: () {
+                        setState(() {
+                          if(_counter2>1){
+                            _counter2--;
+                          }
+                        });
+                      },
+                      middeltext: "$_counter2",
+                      onclick2: () {
+                        setState(() {
+                          if(_counter2 < (_accommodation.guestCapacity ?? 0)){
+                            _counter2++;
+                          }
+                        });
+                      }),
+                  
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
               Divider(
                 color: notifire.getgreycolor,
@@ -92,7 +182,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Payment Details",
+                  Text("Detalles del costo",
                       style: TextStyle(
                           fontSize: 16,
                           color: notifire.getwhiteblackcolor,
@@ -102,14 +192,14 @@ class _CreateReservePageState extends State<CreateReservePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$46 x 3 Nights",
+                        "\$${_accommodation.prices?.first.priceNight } x $_nights Nights",
                         style: TextStyle(
                             fontSize: 14,
                             fontFamily: "Gilroy Medium",
                             color: notifire.getgreycolor),
                       ),
                       Text(
-                        "\$138",
+                        "\$${_accommodation.prices!.first.priceNight*_nights}",
                         style: TextStyle(
                             fontSize: 14,
                             color: notifire.getgreycolor,
@@ -118,30 +208,30 @@ class _CreateReservePageState extends State<CreateReservePage> {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Cleaning Fee",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Gilroy Medium",
-                              color: notifire.getgreycolor)),
-                      Text("\$4",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Gilroy Medium",
-                              color: notifire.getgreycolor)),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text("Costo de limpieza",
+                  //         style: TextStyle(
+                  //             fontSize: 14,
+                  //             fontFamily: "Gilroy Medium",
+                  //             color: notifire.getgreycolor)),
+                  //     Text("\$0",
+                  //         style: TextStyle(
+                  //             fontSize: 14,
+                  //             fontFamily: "Gilroy Medium",
+                  //             color: notifire.getgreycolor)),
+                  //   ],
+                  // ),
                   const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total (USD)",
+                      Text("Total (Bs.)",
                           style: TextStyle(
                               fontFamily: "Gilroy Bold",
                               color: notifire.getwhiteblackcolor,),),
-                      Text("\$142",
+                      Text("\$${_accommodation.prices!.first.priceNight*_nights}",
                           style: TextStyle(
                               fontFamily: "Gilroy Bold",
                               color: notifire.getwhiteblackcolor,),),
@@ -179,58 +269,6 @@ class _CreateReservePageState extends State<CreateReservePage> {
     );
   }
 
-  Widget selectdetail({heding, image, text, icon, onclick}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          heding!,
-          style: TextStyle(
-              fontSize: 16,
-              color: notifire.getwhiteblackcolor,
-              fontFamily: "Gilroy Bold"),
-        ),
-        const SizedBox(height: 8),
-        InkWell(
-          onTap: onclick,
-          child: Container(
-            height: 50,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: notifire.getdarkmodecolor),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        image,
-                        height: 25,
-                        color: notifire.getdarkbluecolor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        text,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Gilroy Medium",
-                            color: notifire.getwhiteblackcolor),
-                      ),
-                    ],
-                  ),
-                  Icon(icon, color: notifire.getgreycolor)
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   guestbottomsheet() {
     return showModalBottomSheet(
       backgroundColor: notifire.getbgcolor,
@@ -257,7 +295,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Room and Guests",
+                        "Cantidad de Huespedes",
                         style: TextStyle(
                             fontFamily: "Gilroy Bold",
                             fontSize: 18,
@@ -273,51 +311,24 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           ),),
                     ],
                   ),
+                 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                  Room(
-                      text: "Room",
-                      titletext: "Minimum contains 4 people",
-                      onclick1: () {
-                        setState(() {
-                          _counter--;
-                        });
-                      },
-                      middeltext: "$_counter",
-                      onclick2: () {
-                        setState(() {
-                          _counter++;
-                        });
-                      }),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                  Room(
-                      text: "Adults",
-                      titletext: "Age 15+",
-                      onclick1: () {
-                        setState(() {
-                          _counter1--;
-                        });
-                      },
-                      middeltext: "$_counter1",
-                      onclick2: () {
-                        setState(() {
-                          _counter1++;
-                        });
-                      }),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                  Room(
-                      text: "Childern",
-                      titletext: "Age 2 - 12",
-                      onclick1: () {
-                        setState(() {
-                          _counter2--;
-                        });
-                      },
-                      middeltext: "$_counter2",
-                      onclick2: () {
-                        setState(() {
-                          _counter2++;
-                        });
-                      }),
+                 
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  // Room(
+                  //     text: "Childern",
+                  //     titletext: "Age 2 - 12",
+                  //     onclick1: () {
+                  //       setState(() {
+                  //         _counter2--;
+                  //       });
+                  //     },
+                  //     middeltext: "$_counter2",
+                  //     onclick2: () {
+                  //       setState(() {
+                  //         _counter2++;
+                  //       });
+                  //     }),
                   Spacer(),
                   AppButton(
                     context: context,
@@ -392,149 +403,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
     );
   }
 
-  promomodelbottomsheet() {
-    return showModalBottomSheet(
-      backgroundColor: notifire.getbgcolor,
-      context: context,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      builder: (context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "My Cupon",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: "Gilroy Bold",
-                                color: notifire.getwhiteblackcolor),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: notifire.getwhiteblackcolor,
-                              ))
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: 10,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 8),
-                              InkWell(
-                                onTap: () {
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => const MyCupon()));
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: notifire.getdarkmodecolor,
-                                  ),
-                                  height: 80,
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      "assets/images/promo.png",
-                                      height: 35,
-                                    ),
-                                    title: Text(
-                                      '50% Cashback',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "Gilroy Bold",
-                                        color: notifire.getwhiteblackcolor,
-                                      ),
-                                    ),
-                                    subtitle: Row(
-                                      children: [
-                                        Text(
-                                          "Expired in 2 days",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: notifire.getgreycolor,
-                                            fontFamily: "Gilroy Medium",
-                                          ),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          "See Detail",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: notifire.getdarkbluecolor,
-                                            fontFamily: "Gilroy Medium",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: Icon(
-                                      Icons.check_outlined,
-                                      color: notifire.getdarkbluecolor,
-                                    ),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  // left: 100,
-                  top: MediaQuery.of(context).size.height / 2.33,
-                  child: InkWell(
-                    onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => const MyCupon()));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Darkblue,
-                      ),
-                      height: 60,
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: Center(
-                        child: Text(
-                          "Use Cupon",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: WhiteColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-      },
-    );
-  }
-
+ 
   paymentmodelbottomsheet() {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -870,5 +739,26 @@ class _CreateReservePageState extends State<CreateReservePage> {
     } else {
       notifire.setIsDark = previusstate;
     }
+  }
+   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    setState(() {
+      if (args.value is PickerDateRange) {
+        _range = '${args.value.startDate} -'
+            // ignore: lines_longer_than_80_chars
+            ' ${args.value.endDate ?? args.value.startDate}';
+      } else if (args.value is DateTime) {
+        _selectedDate = args.value.toString();
+      } else if (args.value is List<DateTime>) {
+        _dateCount = args.value.length.toString();
+      } else {
+        _rangeCount = args.value.length.toString();
+      }
+    });
+     
+  }
+  int daysBetween(DateTime from, DateTime to) {
+     from = DateTime(from.year, from.month, from.day);
+     to = DateTime(to.year, to.month, to.day);
+   return (to.difference(from).inHours / 24).round();
   }
 }
