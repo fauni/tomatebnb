@@ -36,6 +36,8 @@ class Blocs {
   static final AccommodationPhotoBloc accommodationPhotoBloc = AccommodationPhotoBloc(AccommodationPhotoRepository(),);
   static final UserBloc userBloc = UserBloc(UserRepository(),);
   static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
+  static final ExploreAccommodationDetailBloc exploreAccommodationDetailBloc = ExploreAccommodationDetailBloc(ExploreRepository(),);
+  static final LocationBloc locationBloc = LocationBloc();
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -53,6 +55,8 @@ class Blocs {
     BlocProvider<AccommodationPhotoBloc>(create: (context) => accommodationPhotoBloc),
     BlocProvider<UserBloc>(create: (context) => userBloc),
     BlocProvider<ExploreAccommodationBloc>(create: (context) => exploreAccommodationBloc),
+    BlocProvider<ExploreAccommodationDetailBloc>(create: (context) => exploreAccommodationDetailBloc),
+    BlocProvider<LocationBloc>(create: (context) => locationBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -71,6 +75,8 @@ class Blocs {
     accommodationPhotoBloc.close();
     userBloc.close();
     exploreAccommodationBloc.close();
+    exploreAccommodationDetailBloc.close();
+    locationBloc.close();
   }
 
 
