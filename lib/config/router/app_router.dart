@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/ui/pages/accommodation/accommodation_detail_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/accommodation_instructions_page.dart';
+import 'package:tomatebnb/ui/pages/accommodation/accommodation_rules_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/describe_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/finish_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
@@ -8,12 +10,14 @@ import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
+import 'package:tomatebnb/ui/pages/huesped/create_reserve_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/detalle_anuncio_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/explorar_mapa_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
 import 'package:tomatebnb/ui/pages/auth/login_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/menu_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/search_page.dart';
+import 'package:tomatebnb/ui/pages/huesped/select_date_page.dart';
 import 'package:tomatebnb/ui/pages/user/my_profile_page.dart';
 
 // Simulación de estado de autentificación
@@ -94,6 +98,22 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/accommodation_detail',
       builder: (context, state) => const AccommodationDetailPage()
+    ),
+    GoRoute(
+      path: '/instructions',
+      builder: (context, state) => const AccommodationInstructionsPage()
+    ),
+     GoRoute(
+      path: '/rules',
+      builder: (context, state) => const AccommodationRulesPage()
+    ),
+    GoRoute(
+      path: '/create_reserve',
+      builder: (context, state) => const CreateReservePage()
+    ),
+    GoRoute(
+      path: '/select_date',
+      builder: (context, state) => const SelectDatePage()
     ),
   ]
 );

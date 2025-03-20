@@ -190,5 +190,46 @@ class AccommodationRepository {
   }
 
 
+ Future<ApiResponse<AccommodationResponseModel>> publish(int id,double priceNight,bool publish) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      int userId = prefs.getInt("userId")??0;
+      final response = await http.put(
+        Uri.parse('$_baseUrl/v1/accommodations/$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        },
+        body:jsonEncode(<String,dynamic>{
+          'price_night' : priceNight,
+          'published' : publish,
+          'host_id' : userId
+        })
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<AccommodationResponseModel>(
+          status: true,
+          message: data['message'],
+          
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<AccommodationResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<AccommodationResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+
 
 }

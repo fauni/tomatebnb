@@ -114,3 +114,24 @@ class AccommodationUpdate2Error extends AccommodationState {
   @override
   List<Object> get props => [message];
 }
+
+//Estados para PUBLICAR alojamiento por id
+class AccommodationPublishLoading extends AccommodationState {}
+
+class AccommodationPublishSuccess extends AccommodationState {
+  final bool status;
+  AccommodationPublishSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class AccommodationPublishError extends AccommodationState {
+  final String message;
+  AccommodationPublishError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

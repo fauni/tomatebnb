@@ -74,3 +74,12 @@ export 'package:tomatebnb/bloc/location_bloc/location_state.dart';
 export 'package:tomatebnb/bloc/explore_accommodation_detail/explore_accommodation_detail_bloc.dart';
 export 'package:tomatebnb/bloc/explore_accommodation_detail/explore_accommodation_detail_event.dart';
 export 'package:tomatebnb/bloc/explore_accommodation_detail/explore_accommodation_detail_state.dart';
+// Bloc para el instrucciones de alojamiento
+export 'package:tomatebnb/bloc/accommodation_instruction_bloc/accommodation_instruction_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_instruction_bloc/accommodation_instruction_event.dart';
+export 'package:tomatebnb/bloc/accommodation_instruction_bloc/accommodation_instruction_state.dart';
+
+// Bloc para el reglas de alojamiento
+export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_event.dart';
+export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_state.dart';

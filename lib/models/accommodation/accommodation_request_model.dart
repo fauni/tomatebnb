@@ -26,6 +26,7 @@ class AccommodationRequestModel {
     int? numberBeds;
     double? priceNight;
     bool? status;
+    bool? published;
 
     AccommodationRequestModel({
         this.hostId,
@@ -45,6 +46,7 @@ class AccommodationRequestModel {
         this.numberBeds,
         this.priceNight,
         this.status,
+        this.published,
     });
 
     AccommodationRequestModel copyWith({
@@ -65,6 +67,7 @@ class AccommodationRequestModel {
         int? numberBeds,
         double? priceNight,
         bool? status,
+        bool? published,
     }) => 
         AccommodationRequestModel(
             hostId: hostId?? this.hostId,
@@ -84,6 +87,7 @@ class AccommodationRequestModel {
             numberBeds: numberBeds?? this.numberBeds,
             priceNight: priceNight?? this.priceNight,
             status: status?? this.status,
+            published: published?? this.published,
         );
 
     factory AccommodationRequestModel.fromJson(Map<String, dynamic> json) => AccommodationRequestModel(
@@ -104,6 +108,7 @@ class AccommodationRequestModel {
         numberBeds: json["number_beds"],
         priceNight: double.parse(json["price_night"]??'00.00'),
         status: json["status"],
+        published: json["published"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -124,5 +129,6 @@ class AccommodationRequestModel {
         "number_beds": numberBeds,
         "price_night": priceNight,
         "status": status,
+        "published": published,
     };
 }

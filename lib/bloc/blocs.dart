@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/repository/accommodation_aspect_repository.dart';
+import 'package:tomatebnb/repository/accommodation_instruction_repository.dart';
 import 'package:tomatebnb/repository/accommodation_photo_repository.dart';
 import 'package:tomatebnb/repository/accommodation_price_repository.dart';
 import 'package:tomatebnb/repository/accommodation_discount_repository.dart';
+import 'package:tomatebnb/repository/accommodation_rule_repository.dart';
 import 'package:tomatebnb/repository/accommodation_service_repository.dart';
 import 'package:tomatebnb/repository/accommodation_type_repository.dart';
 import 'package:tomatebnb/repository/aspect_repository.dart';
@@ -38,6 +40,8 @@ class Blocs {
   static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
   static final ExploreAccommodationDetailBloc exploreAccommodationDetailBloc = ExploreAccommodationDetailBloc(ExploreRepository(),);
   static final LocationBloc locationBloc = LocationBloc();
+  static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
+  static final AccommodationRuleBloc accommodationRuleBloc = AccommodationRuleBloc(AccommodationRuleRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -57,6 +61,8 @@ class Blocs {
     BlocProvider<ExploreAccommodationBloc>(create: (context) => exploreAccommodationBloc),
     BlocProvider<ExploreAccommodationDetailBloc>(create: (context) => exploreAccommodationDetailBloc),
     BlocProvider<LocationBloc>(create: (context) => locationBloc),
+    BlocProvider<AccommodationInstructionBloc>(create: (context) => accommodationInstructionBloc),
+    BlocProvider<AccommodationRuleBloc>(create: (context) => accommodationRuleBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -77,6 +83,8 @@ class Blocs {
     exploreAccommodationBloc.close();
     exploreAccommodationDetailBloc.close();
     locationBloc.close();
+    accommodationInstructionBloc.close();
+    accommodationRuleBloc.close();
   }
 
 

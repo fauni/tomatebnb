@@ -11,6 +11,7 @@ class AccommodationBloc extends Bloc<AccommodationEvent, AccommodationState> {
     on<AccommodationGetByIdEvent>(_onAccommodationGetById);
     on<AccommodationUpdateEvent>(_onAccommodationUpdate);
     on<AccommodationUpdate2Event>(_onAccommodationUpdate2);
+    on<AccommodationPublishEvent>(_onAccommodationPublish);
   }
 
   Future<void> _onAccommodationGet(AccommodationGetEvent event, Emitter<AccommodationState> emit) async {
@@ -85,6 +86,22 @@ class AccommodationBloc extends Bloc<AccommodationEvent, AccommodationState> {
       }
     } catch(e){
       emit(AccommodationUpdate2Error(e.toString()));
+    }
+  }
+
+
+  Future<void> _onAccommodationPublish(AccommodationPublishEvent event, Emitter<AccommodationState> emit) async {
+    emit(AccommodationPublishLoading());
+    try{
+      final response = await accommodationRepository.publish(event.id,event.priceNight,event.publish);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(AccommodationPublishSuccess(response.status));
+      } else {
+        emit(AccommodationPublishError(response.message));
+      }
+    } catch(e){
+      emit(AccommodationPublishError(e.toString()));
     }
   }
 

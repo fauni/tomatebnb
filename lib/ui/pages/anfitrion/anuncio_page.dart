@@ -19,11 +19,12 @@ class _AnuncioPageState extends State<AnuncioPage> {
   @override
   void initState() {
     super.initState();
-    context.read<AccommodationBloc>().add(AccommodationGetEvent());
+    
   }
 
   @override
   Widget build(BuildContext context) {
+    context.read<AccommodationBloc>().add(AccommodationGetEvent());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -75,7 +76,12 @@ class _AnuncioPageState extends State<AnuncioPage> {
               //         fontFamily: "Gilroy Bold")),
               const SizedBox(height: 10),
               SizedBox(
-                child: BlocBuilder<AccommodationBloc, AccommodationState>(
+                child: BlocConsumer<AccommodationBloc, AccommodationState>(
+                  listener:(context, state) {
+                    if (state is AccommodationGetSuccess) {
+                      ads = state.responseAccommodations;
+                    }
+                  },
                   builder: (context, state) {
                     if (state is AccommodationLoading) {
                       return const Center(
@@ -87,8 +93,8 @@ class _AnuncioPageState extends State<AnuncioPage> {
                         child: Text(state.message),
                       );
                     }
-                    if (state is AccommodationGetSuccess) {
-                      ads = state.responseAccommodations;
+                    // if (state is AccommodationGetSuccess) {
+                      
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -165,9 +171,9 @@ class _AnuncioPageState extends State<AnuncioPage> {
                           //     ));
                         },
                       );
-                    } else {
-                      return Text('No existen anuncios creados');
-                    }
+                    // } else {
+                    //   return Text('No existen anuncios creados');
+                    // }
                   },
                 ),
               ),
