@@ -83,3 +83,13 @@ export 'package:tomatebnb/bloc/accommodation_instruction_bloc/accommodation_inst
 export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_event.dart';
 export 'package:tomatebnb/bloc/accommodation_rule_bloc/accommodation_rule_state.dart';
+
+// Bloc para el reservas de alojamiento
+export 'package:tomatebnb/bloc/reserve_bloc/reserve_bloc.dart';
+export 'package:tomatebnb/bloc/reserve_bloc/reserve_event.dart';
+export 'package:tomatebnb/bloc/reserve_bloc/reserve_state.dart';
+
+// Bloc para disponibilidad de alojamiento
+export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_event.dart';
+export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_state.dart';
