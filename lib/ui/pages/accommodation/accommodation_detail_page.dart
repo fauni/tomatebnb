@@ -508,7 +508,8 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                 // ignore: sort_child_properties_last
                                 child: IconButton(
                                   onPressed: () {
-                                    context.replace('/describe');
+                                    context.replace('/describe',
+                                     extra: _accommodationId);
                                   },
                                   color: Theme.of(context).colorScheme.tertiary,
                                   icon: Icon(Icons.edit_document),

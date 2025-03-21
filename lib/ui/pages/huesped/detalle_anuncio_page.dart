@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +27,10 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
   bool _snap = false;
   bool _floating = false;
 
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentPage = 0;
+  bool end = false;
+
   @override
   void initState() {
     getdarkmodepreviousstate();
@@ -38,8 +44,8 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
   final String _imgsUrl = Environment.UrlImg;
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
     _accommodationId = GoRouterState.of(context).extra as int;
+    notifire = Provider.of<ColorNotifire>(context, listen: true);
      context
         .read<AccommodationBloc>()
         .add(AccommodationGetByIdEvent(_accommodationId));
@@ -108,6 +114,28 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
         listener: (context, state) {
           if(state is AccommodationGetByIdSuccess){
           accommodation = state.responseAccommodation;
+
+          Timer.periodic(Duration(seconds: 5), (Timer timer) {
+                  if (_currentPage == (accommodation.photos?.length)!) {
+                    end = true;
+                  } else if (_currentPage == 0) {
+                    end = false;
+                  }
+
+                  if (end == false) {
+                    _currentPage++;
+                  } else {
+                    _currentPage--;
+                  }
+                  if(_pageController.hasClients){
+                    _pageController.animateToPage(
+                    _currentPage,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                  );
+                  }
+                });
+
             context
                     .read<AccommodationServiceBloc>()
                     .add(AccommodationServicecGetEvent(accommodation.id!));
@@ -179,6 +207,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                 flexibleSpace: FlexibleSpaceBar(
                   background:(accommodation.photos??[]).isNotEmpty 
               ?PageView.builder(
+                    controller: _pageController,
                     itemCount: (accommodation.photos??[]).length,
                     itemBuilder: (context,index){
                         return  FadeInImage.assetNetwork(

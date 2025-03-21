@@ -90,13 +90,36 @@ class _CreateReservePageState extends State<CreateReservePage> {
               ),
                
               ],),
-               Text(
-             "${_accommodation.createdAt.toString().substring(0,10)} - ${_accommodation.updatedAt.toString().substring(0,10)}",
-              style: TextStyle(
-              fontSize: 16,
-              color: notifire.getwhiteblackcolor,
-              fontFamily: "Gilroy Bold"),
-              ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                 children: [
+                  Text("del",
+                                 style: TextStyle(
+                                 fontSize: 16,
+                                 color: notifire.getwhiteblackcolor,
+                                 fontFamily: "Gilroy Bold"),
+                                 ),
+                   Text("${_accommodation.createdAt?.day}/ ${_accommodation.createdAt?.month}/ ${_accommodation.createdAt?.year}"
+                                 ,
+                                 style: TextStyle(
+                                 fontSize: 16,
+                                 color: notifire.getwhiteblackcolor,
+                                 fontFamily: "Gilroy Bold"),
+                                 ),
+                  Text("al",
+                                 style: TextStyle(
+                                 fontSize: 16,
+                                 color: notifire.getwhiteblackcolor,
+                                 fontFamily: "Gilroy Bold"),
+                                 ),               
+                  Text(" ${_accommodation.updatedAt?.day}/ ${_accommodation.updatedAt?.month}/ ${_accommodation.updatedAt?.year}",
+                                 style: TextStyle(
+                                 fontSize: 16,
+                                 color: notifire.getwhiteblackcolor,
+                                 fontFamily: "Gilroy Bold"),
+                                 ),
+                 ],
+               ),
         //      TableCalendar(
                
         //         firstDay: DateTime.now(),
@@ -254,10 +277,10 @@ class _CreateReservePageState extends State<CreateReservePage> {
             height: 50,
             width: double.infinity,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Darkblue),
+                borderRadius: BorderRadius.circular(15),
+                color: Theme.of(context).colorScheme.primary),
             child: Center(
-              child: Text("Select Payment",
+              child: Text("Reservar",
                 style: TextStyle(
                   fontSize: 16,
                   color: WhiteColor,
