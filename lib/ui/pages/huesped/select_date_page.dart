@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
-import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
-import 'package:scrollable_clean_calendar/utils/enums.dart';
+// import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
+// import 'package:scrollable_clean_calendar/utils/enums.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
-import 'package:tomatebnb/utils/Colors.dart';
+import 'package:tomatebnb/models/reserve/accommodation_availability_response_model.dart';
+
 import 'package:tomatebnb/utils/customwidget.dart';
+
 class SelectDatePage extends StatefulWidget {
   const SelectDatePage({super.key});
 
@@ -16,16 +20,14 @@ class SelectDatePage extends StatefulWidget {
 }
 
 class _SelectDatePageState extends State<SelectDatePage> {
+  List<DateTime> _activeDates = [];
+  @override
+  void initState() {
+    super.initState();
 
-List<DateTime>_activeDates =[];
-    @override
-    void initState() {
-      super.initState();
-
- 
-  DateTime today = DateTime.now();
-  today = DateTime(today.year,today.month,today.day);
-   _activeDates = [
+    DateTime today = DateTime.now();
+    today = DateTime(today.year, today.month, today.day);
+    _activeDates = [
       today,
       today.add(const Duration(days: 1)),
       today.add(const Duration(days: 2)),
@@ -34,9 +36,8 @@ List<DateTime>_activeDates =[];
       today.add(const Duration(days: 5)),
       today.add(const Duration(days: 14)),
       today.add(const Duration(days: 15)),
-      
-    ];      
-    }
+    ];
+  }
 
   final calendarController = CleanCalendarController(
     minDate: DateTime.now(),
@@ -61,11 +62,18 @@ List<DateTime>_activeDates =[];
   final DateRangePickerController _controller = DateRangePickerController();
   late AccommodationResponseCompleteModel _accommodation =
       AccommodationResponseCompleteModel();
+  List<AccommodationAvailabilityResponseModel> occupieds = [];
   @override
   Widget build(BuildContext context) {
-     _accommodation = GoRouterState.of(context).extra as AccommodationResponseCompleteModel;
+    _accommodation =
+        GoRouterState.of(context).extra as AccommodationResponseCompleteModel;
     // _accommodation.createdAt=null;
     // _accommodation.updatedAt=null;
+    if (_accommodation.id != null) {
+      context
+          .read<AccommodationAvailabilityBloc>()
+          .add(AccommodationAvailabilityGetEvent(_accommodation.id!));
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -83,68 +91,87 @@ List<DateTime>_activeDates =[];
             height: 40,
             decoration:
                 ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
-            child: IconButton(
-                onPressed: () {
-                  
-                },
-                icon: const Icon(Icons.settings)),
+            child:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
           ),
           SizedBox(
             width: 10,
           )
         ],
       ),
-      body: 
-       Column(
-         children: <Widget>[
-           Expanded(
-             child: Card(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: SfDateRangePicker(
-                      controller: _controller,
-                      view: DateRangePickerView.month,
-                      selectionMode: DateRangePickerSelectionMode.range,
-                      enablePastDates: false,
-                      minDate: DateTime.now().add(Duration(days: 1)),
-                      maxDate: DateTime.now().add(Duration(days: 365)),
-                      // initialSelectedRange:
-                      // PickerDateRange(_activeDates[0], _activeDates[5]),
-                      startRangeSelectionColor: Theme.of(context).colorScheme.primary,
-                      endRangeSelectionColor: Theme.of(context).colorScheme.primary,
-                      rangeSelectionColor: Theme.of(context).colorScheme.secondary,
-                      //  onSelectionChanged: selectionChanged,
-                      onSelectionChanged: _onSelectionChanged,
-                      selectableDayPredicate: predicateCallback,
-                      monthCellStyle: DateRangePickerMonthCellStyle(
-                          disabledDatesTextStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.error, fontSize: 13, fontFamily: 'Roboto'),
-                          ),
+      body: Column(
+        children: <Widget>[
+          BlocConsumer<AccommodationAvailabilityBloc, AccommodationAvailabilityState>(
+            listener: (context, state) {
+              // TODO: implement listener
+              if(state is AccommodationAvailabilityGetError){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.message),
+                      ));
+              }
+              if(state is AccommodationAvailabilityGetSuccess){
+                occupieds = state.responseAccommodationAvailabilitys;
+              }
+            },
+            builder: (context, state) {
+              if(state is AccommodationAvailabilityGetLoading){
+                return Center(child: CircularProgressIndicator(),);
+              }
+              return Expanded(
+                child: Card(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: SfDateRangePicker(
+                    controller: _controller,
+                    view: DateRangePickerView.month,
+                    selectionMode: DateRangePickerSelectionMode.range,
+                    enablePastDates: false,
+                    minDate: DateTime.now().add(Duration(days: 1)),
+                    maxDate: DateTime.now().add(Duration(days: 365)),
+                    // initialSelectedRange:
+                    // PickerDateRange(_activeDates[0], _activeDates[5]),
+                    startRangeSelectionColor:
+                        Theme.of(context).colorScheme.primary,
+                    endRangeSelectionColor:
+                        Theme.of(context).colorScheme.primary,
+                    rangeSelectionColor:
+                        Theme.of(context).colorScheme.secondary,
+                    //  onSelectionChanged: selectionChanged,
+                    onSelectionChanged: _onSelectionChanged,
+                    selectableDayPredicate: predicateCallback,
+                    monthCellStyle: DateRangePickerMonthCellStyle(
+                      disabledDatesTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontSize: 13,
+                          fontFamily: 'Roboto'),
                     ),
                   ),
-           ),
-                Padding(padding: EdgeInsets.all(12.0),
-                child:
-                  AppButton(
-                    context: context,
-                    onclick: (){
-                      print(_accommodation.createdAt.toString());
-                      print(_accommodation.updatedAt.toString());
+                ),
+              );
+            },
+          ),
+          Padding(
+              padding: EdgeInsets.all(12.0),
+              child: AppButton(
+                  context: context,
+                  onclick: () {
+                    print(_accommodation.createdAt.toString());
+                    print(_accommodation.updatedAt.toString());
 
-                     if((_accommodation.createdAt??DateTime.now()).isBefore(DateTime.now()) 
-                        || (_accommodation.updatedAt??DateTime.now()).isBefore(DateTime.now())){
-                           ScaffoldMessenger.of(context)
-                     .showSnackBar(
-                      SnackBar(content: Text('Elija fecha validas por favor'),
-                      backgroundColor: Theme.of(context).colorScheme.error,));
-                     }else{
-                      context.push('/create_reserve',extra: _accommodation);
-                     }
-                    },
-                    buttontext: "Continuar"
-                  )
-           )
-         ],
-       ),
+                    if ((_accommodation.createdAt ?? DateTime.now())
+                            .isBefore(DateTime.now()) ||
+                        (_accommodation.updatedAt ?? DateTime.now())
+                            .isBefore(DateTime.now())) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Elija fecha validas por favor'),
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                      ));
+                    } else {
+                      context.push('/create_reserve', extra: _accommodation);
+                    }
+                  },
+                  buttontext: "Continuar"))
+        ],
+      ),
       // ScrollableCleanCalendar(
       //   locale: 'es',
       //   calendarController: calendarController,
@@ -161,9 +188,9 @@ List<DateTime>_activeDates =[];
       // ),
     );
   }
+
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
-     
       _accommodation.createdAt = args.value.startDate;
       _accommodation.updatedAt = args.value.endDate;
       // print(_accommodation.createdAt.toString());
@@ -172,7 +199,6 @@ List<DateTime>_activeDates =[];
         _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
             // ignore: lines_longer_than_80_chars
             ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
-      
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
@@ -182,16 +208,18 @@ List<DateTime>_activeDates =[];
       }
     });
   }
-   void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
     _controller.selectedRange =
         PickerDateRange(_activeDates[0], _activeDates[5]);
   }
+
   bool predicateCallback(DateTime date) {
-    for (int i = 0; i < _activeDates.length; i++) {
-      if (_activeDates[i] == date) {
-        return true;
+    for (int i = 0; i < occupieds.length; i++) {
+      if (occupieds[i].startDate == date) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 }

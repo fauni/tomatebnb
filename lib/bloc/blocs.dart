@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:tomatebnb/bloc/accommodation_type_bloc/accommodation_type_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/repository/accommodation_aspect_repository.dart';
+import 'package:tomatebnb/repository/accommodation_availability_repository.dart';
 import 'package:tomatebnb/repository/accommodation_instruction_repository.dart';
 import 'package:tomatebnb/repository/accommodation_photo_repository.dart';
 import 'package:tomatebnb/repository/accommodation_price_repository.dart';
@@ -15,6 +16,7 @@ import 'package:tomatebnb/repository/auth_repository.dart';
 import 'package:tomatebnb/repository/accommodation_repository.dart';
 import 'package:tomatebnb/repository/describe_repository.dart';
 import 'package:tomatebnb/repository/explore_repository.dart';
+import 'package:tomatebnb/repository/reserve_respository.dart';
 import 'package:tomatebnb/repository/service_repository.dart';
 import 'package:tomatebnb/repository/user_repository.dart';
 import 'package:tomatebnb/services/location_service.dart';
@@ -42,6 +44,8 @@ class Blocs {
   static final LocationBloc locationBloc = LocationBloc();
   static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
   static final AccommodationRuleBloc accommodationRuleBloc = AccommodationRuleBloc(AccommodationRuleRepository(),);
+  static final AccommodationAvailabilityBloc accommodationAvailabilityBloc = AccommodationAvailabilityBloc(AccommodationAvailabilityRepository(),);
+  static final ReserveBloc reserveBloc = ReserveBloc(ReserveRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -63,6 +67,8 @@ class Blocs {
     BlocProvider<LocationBloc>(create: (context) => locationBloc),
     BlocProvider<AccommodationInstructionBloc>(create: (context) => accommodationInstructionBloc),
     BlocProvider<AccommodationRuleBloc>(create: (context) => accommodationRuleBloc),
+    BlocProvider<AccommodationAvailabilityBloc>(create: (context) => accommodationAvailabilityBloc),
+    BlocProvider<ReserveBloc>(create: (context) => reserveBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -85,6 +91,8 @@ class Blocs {
     locationBloc.close();
     accommodationInstructionBloc.close();
     accommodationRuleBloc.close();
+    accommodationAvailabilityBloc.close();
+    reserveBloc.close();
   }
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
@@ -7,7 +8,9 @@ import 'package:scrollable_clean_calendar/utils/enums.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
+import 'package:tomatebnb/models/reserve/reserve_request_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_anuncio.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
@@ -52,6 +55,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
 
   late AccommodationResponseCompleteModel _accommodation =
       AccommodationResponseCompleteModel();
+  ReserveRequestModel reserveRequest = ReserveRequestModel();
   late ColorNotifire notifire;
 
   @override
@@ -442,7 +446,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: MediaQuery.of(context).size.height * 0.55,
+              height: MediaQuery.of(context).size.height * 0.65,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -461,7 +465,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Payment Method",
+                              "Metodo de pago",
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: "Gilroy Bold",
@@ -594,7 +598,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                               ),
                               const SizedBox(width: 15),
                               Text(
-                                "Add Debit Card",
+                                "Agregar Tarjeta de débito",
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: "Gilroy Bold",
@@ -605,13 +609,48 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           ),
                         ),
                         Spacer(),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.12),
-                        AppButton(
+                        // SizedBox(
+                        //     height: MediaQuery.of(context).size.height * 0.1),
+                     BlocConsumer<ReserveBloc, ReserveState>(
+                      listener: (context, state) {
+                        
+                        if (state is ReserveCreateError){
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(
+                            content: Text(state.message),
+                            backgroundColor:Theme.of(context).colorScheme.error ,));
+                        }
+                        if (state is ReserveCreateSuccess){
+                          bookingSuccessfull();
+                        }
+                      },
+                      builder: (context, state) {
+                        if(state is ReserveCreateLoading){
+                          return Center(child:CircularProgressIndicator());
+                        }
+                        return  AppButton(
                           context:context,
-                          buttontext: "Confirm and Pay",
-                          onclick: BookingSuccessfull,
-                        )
+                          buttontext: "Confirmar y pagar",
+                          onclick: (){
+                            reserveRequest.accommodationId= _accommodation.id;
+                            reserveRequest.startDate=_accommodation.createdAt;
+                            reserveRequest.endDate=_accommodation.updatedAt;
+                            reserveRequest.numberGuests = _counter2;
+                            reserveRequest.totalPrice=_accommodation.prices!.first.priceNight*_nights;
+                            reserveRequest.cashDiscount=0;
+                            reserveRequest.commission =0;
+                            reserveRequest.state = 'pendiente';
+                            context.read<ReserveBloc>().
+                            add(ReserveCreateEvent(reserveRequest));
+                          }
+                          
+                          // BookingSuccessfull,
+                        );
+                      },
+                     )
+                        
+                       
                       ],
                     ),
                   ],
@@ -622,8 +661,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
         });
   }
 
-  BookingSuccessfull() {
+  bookingSuccessfull() {
     return showModalBottomSheet(
+        isDismissible: false,
         isScrollControlled: true,
         backgroundColor: notifire.getbgcolor,
         context: context,
@@ -664,7 +704,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           children: [
                             Center(
                               child: Text(
-                                "Booking Successfull",
+                                "Reserva creada",
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontFamily: "Gilroy Bold",
@@ -677,7 +717,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 1,
                               child: Text(
-                                "Congratulations! Please check in on the appropriate date. Enjoy your trip!",
+                                "¡Felicitaciones! Por favor, regístrese en la fecha correspondiente. ¡Disfrute de su viaje!",
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: notifire.getgreycolor,
@@ -693,6 +733,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           // selectedIndex = 0;
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => const homepage()));
+                          context.pop(); 
+                          context.pop();
+                          context.replace('/menu-viajero');
                         },
                         child: Container(
                           margin: const EdgeInsets.only(
@@ -704,7 +747,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             color: Darkblue,
                           ),
                           child: Center(
-                              child: Text("Close",
+                              child: Text("Terminar",
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: WhiteColor,
@@ -782,6 +825,6 @@ class _CreateReservePageState extends State<CreateReservePage> {
   int daysBetween(DateTime from, DateTime to) {
      from = DateTime(from.year, from.month, from.day);
      to = DateTime(to.year, to.month, to.day);
-   return (to.difference(from).inHours / 24).round();
+   return ((to.difference(from).inHours / 24).round())+1;
   }
 }
