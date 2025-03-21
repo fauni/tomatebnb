@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
@@ -318,21 +319,24 @@ class _ExplorarMapaPageState extends State<ExplorarMapaPage> {
                                 ),
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 10, left: 10, right: 10, bottom: 20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    state.accommodation.title!,
-                                    style: TextStyle(
-                                        fontSize: 13, fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Precio: ${state.accommodation.priceNight} Bs. noche',
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                ],
+                            InkWell(
+                              onTap: () => context.push('/detail_ads',extra: state.accommodation.id),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 10, left: 10, right: 10, bottom: 20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      state.accommodation.title!,
+                                      style: TextStyle(
+                                          fontSize: 13, fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Precio: ${state.accommodation.priceNight} Bs. noche',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
+                                  ],
+                                ),
                               ),
                             )
                           ],
