@@ -1,6 +1,11 @@
+import 'dart:typed_data';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
+import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
 
 class ItemListExplore extends StatefulWidget {
   
@@ -15,6 +20,22 @@ class ItemListExplore extends StatefulWidget {
 
 class _ItemListExploreState extends State<ItemListExplore> {
   String imgsUrl = Environment.UrlImg;
+
+  Widget buildImageSkeleton() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      width: double.infinity,
+      height: 170, // Ajusta la altura según tus necesidades
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(15),
+      ),
+    ),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -30,44 +51,71 @@ class _ItemListExploreState extends State<ItemListExplore> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
-                children: [
-                  // ignore: sized_box_for_whitespace
-                  Container(
-                    height: 170,
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: widget.accommodation.photos!.isNotEmpty 
-                      ?  FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/load.gif', 
-                        image: '$imgsUrl/accommodations/${widget.accommodation.photos?.first.photoUrl}')
-                      : Image.asset("assets/images/BoutiqueHotel.jpg"),
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 1, // Muestra una imagen a la vez
+                  ),
+                  items: widget.accommodation.photos!.isNotEmpty
+                      ? widget.accommodation.photos!.map((photo) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: 0.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: FadeInImage.memoryNetwork(
+                                    placeholder: Uint8List(0),
+                                    placeholderErrorBuilder: (context, error, stackTrace) => SkeletonImageWidget(),
+                                    image: '$imgsUrl/accommodations/${photo.photoUrl}',
+                                    fit: BoxFit.cover, // Para que la imagen cubra el contenedor
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList()
+                      : [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.asset("assets/images/BoutiqueHotel.jpg", fit: BoxFit.cover,),
+                            ),
+                          )
+                        ],
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 35,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.blueGrey,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Bs. ${widget.accommodation.priceNight} noche",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontFamily: "Gilroy Medium",
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                          height: 30,
-                          width: 100,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black),
-                          child: Center(
-                            child: Text(
-                              "Bs. ${widget.accommodation.priceNight}/Noche",
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontFamily: "Gilroy Medium"),
-                            ),
-                          )),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                )
+              ],
+            ),
+              SizedBox(height: 5),
               Text(
                 widget.accommodation.title!,
                 style: TextStyle(
@@ -91,16 +139,9 @@ class _ItemListExploreState extends State<ItemListExplore> {
               //             .size
               //             .height *
               //         0.01),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  hotelsystem(
-                      image: "assets/images/Bed.png", text: "2 Beds", radi: 3, context: context),
-                  hotelsystem(
-                      image: "assets/images/wifi.png", text: "Wifi", radi: 3, context: context),
-                  hotelsystem(
-                      image: "assets/images/gym.png", text: "Gym", radi: 0, context: context),
-                ],
+              Text(
+                '${widget.accommodation.city!} - ${widget.accommodation.country!}',
+                style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.primary,fontFamily: "Gilroy Medium")
               )
             ],
           ),
