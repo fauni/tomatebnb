@@ -38,6 +38,8 @@ class Blocs {
   static final AccommodationPhotoBloc accommodationPhotoBloc = AccommodationPhotoBloc(AccommodationPhotoRepository(),);
   static final UserBloc userBloc = UserBloc(UserRepository(),);
   static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
+  static final ExploreAccommodationDetailBloc exploreAccommodationDetailBloc = ExploreAccommodationDetailBloc(ExploreRepository(),);
+  static final LocationBloc locationBloc = LocationBloc();
   static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
   static final AccommodationRuleBloc accommodationRuleBloc = AccommodationRuleBloc(AccommodationRuleRepository(),);
 
@@ -57,6 +59,8 @@ class Blocs {
     BlocProvider<AccommodationPhotoBloc>(create: (context) => accommodationPhotoBloc),
     BlocProvider<UserBloc>(create: (context) => userBloc),
     BlocProvider<ExploreAccommodationBloc>(create: (context) => exploreAccommodationBloc),
+    BlocProvider<ExploreAccommodationDetailBloc>(create: (context) => exploreAccommodationDetailBloc),
+    BlocProvider<LocationBloc>(create: (context) => locationBloc),
     BlocProvider<AccommodationInstructionBloc>(create: (context) => accommodationInstructionBloc),
     BlocProvider<AccommodationRuleBloc>(create: (context) => accommodationRuleBloc),
   ];
@@ -77,6 +81,8 @@ class Blocs {
     accommodationPhotoBloc.close();
     userBloc.close();
     exploreAccommodationBloc.close();
+    exploreAccommodationDetailBloc.close();
+    locationBloc.close();
     accommodationInstructionBloc.close();
     accommodationRuleBloc.close();
   }
