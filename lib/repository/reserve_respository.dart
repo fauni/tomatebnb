@@ -83,4 +83,42 @@ Future<ApiResponse<ReserveResponseModel>> createReserve(ReserveRequestModel rese
       );
     }
   }
+
+  
+  Future<api_response_list.ApiResponse<ReserveResponseModel>> getByUser() async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt("userId")??0;
+      String token = prefs.getString("token")??"";
+      final response = await http.get(
+        Uri.parse('$_baseUrl/v1/reserves/$userId/user'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        }
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return api_response_list.ApiResponse<ReserveResponseModel>(
+          status: true,
+          message: data['message'],
+          data: ReservesResponseModel.fromJsonList(data['data']).items,
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return api_response_list.ApiResponse<ReserveResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return api_response_list.ApiResponse<ReserveResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+ 
 }

@@ -29,3 +29,24 @@ class ReserveCreateError extends ReserveState {
   List<Object> get props => [message];
 }
 
+// Estados para el listado de reservas por usuario
+
+class ReserveGetByUserLoading extends ReserveState {}
+
+class ReserveGetByUserSuccess extends ReserveState {
+  final List<ReserveResponseModel> responseReserves;
+  ReserveGetByUserSuccess(
+    this.responseReserves
+  );
+  @override
+  List<Object> get props => [responseReserves];
+}
+
+class ReserveGetByUserError extends ReserveState {
+  final String message;
+  ReserveGetByUserError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

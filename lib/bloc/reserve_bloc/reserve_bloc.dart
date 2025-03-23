@@ -7,6 +7,7 @@ class ReserveBloc extends Bloc<ReserveEvent, ReserveState> {
 
   ReserveBloc(this.reserveRepository) : super(ReserveInitial()){
     on<ReserveCreateEvent>(_onReserveCreate);
+    on<ReserveGetByUserEvent>(_onReserveGetByUser);
   }
 
      Future<void> _onReserveCreate(ReserveCreateEvent event, Emitter<ReserveState> emit) async {
@@ -22,6 +23,21 @@ class ReserveBloc extends Bloc<ReserveEvent, ReserveState> {
     } catch(e){
       emit(ReserveCreateError(e.toString()));
       
+    }
+  }
+
+  Future<void> _onReserveGetByUser(ReserveGetByUserEvent event, Emitter<ReserveState> emit) async {
+    emit(ReserveGetByUserLoading());
+    try{
+      final response = await reserveRepository.getByUser();
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(ReserveGetByUserSuccess(response.data!));
+      } else {
+        emit(ReserveGetByUserError(response.message));
+      }
+    } catch(e){
+      emit(ReserveGetByUserError(e.toString()));
     }
   }
 

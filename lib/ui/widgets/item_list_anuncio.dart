@@ -102,45 +102,10 @@ class ItemListAnuncio extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   children: [
-                    //     const SizedBox(
-                    //       width: 12,
-                    //     ),
-                    //     Image.asset(
-                    //       "assets/images/star.png",
-                    //       height: 20,
-                    //     ),
-                    //     const SizedBox(width: 2),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(top: 4),
-                    //       child: Row(
-                    //         children: [
-                    //           Text(
-                    //             "4.6",
-                    //             style: TextStyle(
-                    //                 fontSize: 16,
-                    //                 fontWeight: FontWeight.bold),
-                    //           ),
-                    //           Text(
-                    //             "(142 Reviews)",
-                    //             style:
-                    //                 TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
+                
                   ],
                 ),
-              //  (anuncio.priceNight ?? 0.0) > 0
-              //   ?Icon(Icons.check)
-              //   :IconButton(onPressed: (){
-              //         context.push('/describe',
-              //           extra: anuncio.id);
-              //   }, 
-              //   icon: Icon(Icons.edit_document))
+             
               ],
             ),
              
