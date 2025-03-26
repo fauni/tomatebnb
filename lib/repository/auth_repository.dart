@@ -6,6 +6,7 @@ import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/auth/login_response_model.dart';
 import 'package:tomatebnb/models/response/api_response.dart';
 import 'package:tomatebnb/models/user/user_request_model.dart';
+import 'package:tomatebnb/models/user/user_request_modelp.dart';
 import 'package:tomatebnb/models/user/user_response_model.dart';
 
 class AuthRepository {
@@ -65,7 +66,7 @@ class AuthRepository {
     }
   }
 
-   Future<ApiResponse<UserResponseModel>> create(UserRequestModel user) async {
+   Future<ApiResponse<UserResponseModel>> create(UserRequestModelp user) async {
     try{
       final response = await http.post(
         Uri.parse('$_baseUrl/register'),

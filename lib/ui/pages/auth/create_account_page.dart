@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/models/user/user_request_model.dart';
+import 'package:tomatebnb/models/user/user_request_modelp.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
@@ -174,6 +175,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ),
                     ),
                   )
+               
                 ],
               ),
               SizedBox(
@@ -211,7 +213,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => const verifyaccount()));
                             context.read<AuthBloc>()
-                            .add(AuthCreateEvent(UserRequestModel(
+                            .add(AuthCreateEvent(UserRequestModelp(
                               name: nameController.text,
                               lastname: lastnameController.text,
                               email: emailController.text,

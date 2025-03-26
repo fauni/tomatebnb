@@ -4,26 +4,26 @@
 
 import 'dart:convert';
 
-class UsersRequestModel {
-  List<UserRequestModel> items = [];
-  UsersRequestModel();
-  UsersRequestModel.fromJsonList(List<dynamic>? jsonList) {
+class UsersRequestModelp {
+  List<UserRequestModelp> items = [];
+  UsersRequestModelp();
+  UsersRequestModelp.fromJsonList(List<dynamic>? jsonList) {
     if (jsonList == null) {
       return;
     } else {
       for (var item in jsonList) {
-        final userRequest = UserRequestModel.fromJson(item);
+        final userRequest = UserRequestModelp.fromJson(item);
         items.add(userRequest);
       } 
     }
   }
 }
 
-UserRequestModel userRequestModelFromJson(String str) => UserRequestModel.fromJson(json.decode(str));
+UserRequestModelp userRequestModelFromJson(String str) => UserRequestModelp.fromJson(json.decode(str));
 
-String userRequestModelToJson(UserRequestModel data) => json.encode(data.toJson());
+String userRequestModelToJson(UserRequestModelp data) => json.encode(data.toJson());
 
-class UserRequestModel {
+class UserRequestModelp {
     
     String? name;
     String? lastname;
@@ -42,8 +42,8 @@ class UserRequestModel {
     DateTime? createdAt;
     DateTime? updatedAt;
     String? confirmPhoto;
-    
-    UserRequestModel({
+    String? password;
+    UserRequestModelp({
         this.name,
         this.lastname,
         this.email,
@@ -61,10 +61,11 @@ class UserRequestModel {
         this.createdAt,
         this.updatedAt,
         this.confirmPhoto,
+        this.password
         
     });
 
-    factory UserRequestModel.fromJson(Map<String, dynamic> json) => UserRequestModel(
+    factory UserRequestModelp.fromJson(Map<String, dynamic> json) => UserRequestModelp(
         
         name: json["name"],
         lastname: json["lastname"],
@@ -83,7 +84,7 @@ class UserRequestModel {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         confirmPhoto: json["confirm_photo"],
-        
+        password: json["password"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -104,6 +105,7 @@ class UserRequestModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "confirm_photo": confirmPhoto,
-        
+        "password":password
+       
     };
 }

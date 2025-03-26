@@ -27,6 +27,14 @@ class UserPhotoUpdateEvent extends UserEvent {
   final String column;
   UserPhotoUpdateEvent(this.camera,this.column);
   @override
-  List<Object?> get props => [camera,camera];
+  List<Object?> get props => [camera,column];
+}
+
+class UserPasswordUpdateEvent extends UserEvent {
+  
+  final String password;
+  UserPasswordUpdateEvent(this.password);
+  @override
+  List<Object?> get props => [password];
 }
 

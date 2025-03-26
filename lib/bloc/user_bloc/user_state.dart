@@ -10,9 +10,6 @@ abstract class UserState extends Equatable {
 
 class UserInitial extends UserState {}
 
-
-
-
 //Estados para obtencion de usuario por id
 class UserGetByIdLoading extends UserState {}
 
@@ -76,5 +73,25 @@ class UserPhotoUpdateError extends UserState {
   List<Object> get props => [message];
 }
 
+//Estados para actualizar contraseña por id
+class UserPasswordUpdateLoading extends UserState {}
+
+class UserPasswordUpdateSuccess extends UserState {
+  final bool status;
+  UserPasswordUpdateSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class UserPasswordUpdateError extends UserState {
+  final String message;
+  UserPasswordUpdateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
 
 

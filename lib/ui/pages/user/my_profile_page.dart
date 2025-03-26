@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
@@ -175,7 +176,21 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          
+                          TextButton(
+                            onPressed: (){
+                            context.push("/cambiar_password");
+                          }, child: Text(
+                            "Cambiar Contraseña"
+                          )),
+                        ],
+                      ),
                       Padding(
+                        
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Text(
                           "Nombre",
@@ -643,7 +658,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       //     ),
                       //   ),
                       // ),
-                      SizedBox(height: 15),
+                      
                     ],
                   ),
                   /* SizedBox(height: MediaQuery.of(context).size.height * 0.22),*/

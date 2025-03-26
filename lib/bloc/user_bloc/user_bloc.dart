@@ -12,6 +12,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
    on<UserGetByIdEvent>(_onUserGetById);
    on<UserUpdateEvent>(_onUserUpdate); 
    on<UserPhotoUpdateEvent>(_onUserPhotoUpdate); 
+   on<UserPasswordUpdateEvent>(_onUserPasswordUpdate);
   }
 
   Future<void> _onUserGetById(UserGetByIdEvent event, Emitter<UserState> emit) async {
@@ -62,6 +63,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     } catch(e){
       emit(UserPhotoUpdateError(e.toString()));
+      
+    }
+  }
+
+  Future<void> _onUserPasswordUpdate(UserPasswordUpdateEvent event, Emitter<UserState> emit) async {
+    emit(UserPasswordUpdateLoading());
+    try{
+      final response = await userRepository.updatePassword(event.password) ;
+      
+      if(response.status){
+        emit(UserPasswordUpdateSuccess(response.status));
+      } else {
+        emit(UserPasswordUpdateError(response.message));
+      }
+    } catch(e){
+      emit(UserPasswordUpdateError(e.toString()));
       
     }
   }

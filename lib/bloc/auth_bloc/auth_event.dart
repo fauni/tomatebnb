@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tomatebnb/models/user/user_request_model.dart';
+import 'package:tomatebnb/models/user/user_request_modelp.dart';
 abstract class AuthEvent extends Equatable {
   @override
   List<Object?> get props => [];
@@ -18,7 +19,7 @@ class AuthLogoutEvet extends AuthEvent {}
 // ignore: must_be_immutable
 class AuthCreateEvent extends AuthEvent {
 
-  final UserRequestModel userRequest;
+  final UserRequestModelp userRequest;
   AuthCreateEvent(this.userRequest);
   @override
   List<Object?> get props => [userRequest];

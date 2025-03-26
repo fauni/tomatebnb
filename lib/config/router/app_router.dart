@@ -20,6 +20,7 @@ import 'package:tomatebnb/ui/pages/huesped/menu_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/reserve_detail_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/search_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/select_date_page.dart';
+import 'package:tomatebnb/ui/pages/user/change_password_page.dart';
 import 'package:tomatebnb/ui/pages/user/my_profile_page.dart';
 
 // Simulación de estado de autentificación
@@ -125,5 +126,10 @@ final GoRouter appRouter = GoRouter(
       path: '/detalle_reserva',
       builder: (context, state) => const ReserveDetailPage()
     ),
+     GoRoute(
+      path: '/cambiar_password',
+      builder: (context, state) => const ChangePasswordPage()
+    ),
+
   ]
 );

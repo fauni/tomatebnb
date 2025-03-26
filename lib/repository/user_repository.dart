@@ -127,4 +127,43 @@ Future<ApiResponse<UserResponseModel>> updateUserPhoto(String column, File file)
     }
   }
 
+Future<ApiResponse<UserResponseModel>> updatePassword(String password) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      int id = prefs.getInt("userId")??0;
+      final response = await http.put(
+        Uri.parse('$_baseUrl/v1/users/$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        },
+        body:jsonEncode(<String,dynamic>{
+          "password":password
+        })  
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: true,
+          message: data['message'],
+          
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<UserResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+
 }
