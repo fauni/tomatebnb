@@ -42,6 +42,7 @@ class UserRequestModel {
     DateTime? createdAt;
     DateTime? updatedAt;
     String? confirmPhoto;
+    String? password;
     UserRequestModel({
         this.name,
         this.lastname,
@@ -60,6 +61,7 @@ class UserRequestModel {
         this.createdAt,
         this.updatedAt,
         this.confirmPhoto,
+        this.password
     });
 
     factory UserRequestModel.fromJson(Map<String, dynamic> json) => UserRequestModel(
@@ -81,6 +83,7 @@ class UserRequestModel {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         confirmPhoto: json["confirm_photo"],
+        password: json["password"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -101,5 +104,6 @@ class UserRequestModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "confirm_photo": confirmPhoto,
+        "password": password
     };
 }

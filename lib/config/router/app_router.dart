@@ -9,6 +9,7 @@ import 'package:tomatebnb/ui/pages/accommodation/highlight_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
+import 'package:tomatebnb/ui/pages/auth/create_account_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/create_reserve_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/detalle_anuncio_page.dart';
@@ -30,6 +31,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage()
+    ),
+    GoRoute(
+      path: '/create-account',
+      builder: (context, state) => const CreateAccountPage()
     ),
     GoRoute(
       path: '/menu-viajero',

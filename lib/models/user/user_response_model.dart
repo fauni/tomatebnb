@@ -80,8 +80,8 @@ class UserResponseModel {
         documentPhotoFront: json["document_photo_front"],
         documentPhotoBack: json["document_photo_back"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]??'2000-01-01'),
+        updatedAt: DateTime.parse(json["updated_at"]??'2000-01-01'),
         confirmPhoto: json["confirm_photo"],
     );
 

@@ -266,6 +266,8 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     // Navigator.of(context).push(MaterialPageRoute(
                     //     builder: (context) => const creatscreen()));
+                    context.push('/create-account');
+                    // print('object');
                   },
                   child: Text(
                     "Registrar",

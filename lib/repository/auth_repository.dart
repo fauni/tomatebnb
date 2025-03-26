@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/auth/login_response_model.dart';
 import 'package:tomatebnb/models/response/api_response.dart';
+import 'package:tomatebnb/models/user/user_request_model.dart';
+import 'package:tomatebnb/models/user/user_response_model.dart';
 
 class AuthRepository {
   final String _baseUrl = Environment.UrlApi;
@@ -57,6 +59,44 @@ class AuthRepository {
       }
     } catch (e) {
       return ApiResponse<LoginResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+   Future<ApiResponse<UserResponseModel>> create(UserRequestModel user) async {
+    try{
+      final response = await http.post(
+        Uri.parse('$_baseUrl/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'name':user.name??'',
+          'lastname': user.lastname??'',
+          'email': user.email??'',
+          'password': user.password??'',
+
+        }
+        )
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: true,
+          message: data['message'],
+          data: UserResponseModel.fromJson(data['data']),
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<UserResponseModel>(
         status: false, 
         message: e.toString()
       );

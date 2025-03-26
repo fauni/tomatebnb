@@ -1240,6 +1240,7 @@ class _DescribePageState extends State<DescribePage> {
                           borderRadius: BorderRadius.circular(15),
                           color: notifire.getdarkmodecolor),
                       child: TextField(
+                        readOnly: true,
                         controller: countryController,
                         decoration: InputDecoration(
                           hintText: "País .....",
