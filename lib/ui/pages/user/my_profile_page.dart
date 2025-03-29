@@ -582,7 +582,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
 
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
+                          height: MediaQuery.of(context).size.height * 0.15),
                       
                       BlocConsumer<UserBloc, UserState>(
                         listener: (context, state) {

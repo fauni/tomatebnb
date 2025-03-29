@@ -408,7 +408,9 @@ class _DescribePageState extends State<DescribePage> {
                                         title: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 12.0),
-                                          child: Icon(Icons.bed),
+                                          child:Image.asset("assets/images/d${describes[index].id}.png",
+                                          height: 30,width: 30,)
+                                          // Icon(Icons.bed),
                                         ),
                                         subtitle: Center(
                                           child: Text(
@@ -606,7 +608,8 @@ class _DescribePageState extends State<DescribePage> {
                                           leading: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12.0),
-                                            child: Icon(Icons.holiday_village),
+                                            child: Image.asset("assets/images/at${accommodationTypes[index].id}.png")
+                                            // Icon(Icons.holiday_village)87,
                                           ),
                                           title: Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -1243,9 +1246,9 @@ class _DescribePageState extends State<DescribePage> {
                         readOnly: true,
                         controller: countryController,
                         decoration: InputDecoration(
-                          hintText: "País .....",
+                          hintText: "Bolivia",
                           hintStyle: TextStyle(
-                            color: notifire.getgreycolor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontFamily: "Gilroy Medium",
                           ),
                           suffixIcon: Padding(
