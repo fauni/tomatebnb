@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
@@ -20,21 +19,6 @@ class ItemListExplore extends StatefulWidget {
 
 class _ItemListExploreState extends State<ItemListExplore> {
   String imgsUrl = Environment.UrlImg;
-
-  Widget buildImageSkeleton() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[300]!,
-    highlightColor: Colors.grey[100]!,
-    child: Container(
-      width: double.infinity,
-      height: 170, // Ajusta la altura según tus necesidades
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(15),
-      ),
-    ),
-  );
-}
 
   @override
   Widget build(BuildContext context) {
