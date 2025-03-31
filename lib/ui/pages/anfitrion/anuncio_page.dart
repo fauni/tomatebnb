@@ -53,6 +53,7 @@ class _AnuncioPageState extends State<AnuncioPage> {
           )
         ],
       ),
+     
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: Padding(

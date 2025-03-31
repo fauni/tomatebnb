@@ -46,6 +46,7 @@ class _AdsPageState extends State<AdsPage> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: AppButton(
+          context: context,
           buttontext: "Crear Anuncio",
           onclick: () {
             context.push('/startad');

@@ -71,6 +71,31 @@ class _DescribePageState extends State<DescribePage> {
         .add(AccommodationGetByIdEvent(_accommodationId ?? 0));
     return Scaffold(
       backgroundColor: WhiteColor,
+       appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
+        automaticallyImplyLeading: false,
+        // leading: BackButton(color: notifire.getwhiteblackcolor),
+       
+        actions: [
+          Ink(
+            height: 40,
+            decoration:
+                ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
+            child: IconButton(
+                onPressed: () {
+                  context.go('/menu-anfitrion');
+                },
+                icon: const Icon(Icons.close)),
+          ),
+          SizedBox(
+            width: 10,
+          )
+        ],
+      ),
+     
       body: Stack(
         children: <Widget>[
           PageView(
