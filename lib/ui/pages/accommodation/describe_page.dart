@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
@@ -756,179 +757,225 @@ class _DescribePageState extends State<DescribePage> {
     );
   }
 
+  // Completer para el controlador del mapa
+  late GoogleMapController mapController;
+  Set<Marker> markers = Set<Marker>();
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
   Widget _buildPage4() {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
+    LatLng currentLocation = LatLng(-17.009547, -64.832168);
     return SafeArea(
       child: Scaffold(
         backgroundColor: notifire.getbgcolor,
-        body: Column(
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: const EdgeInsets.symmetric(),
-              child: Text(
-                _titles[_currentPage],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+        body: Stack(
+          children: [
+            GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: currentLocation,
+                zoom: 6,
               ),
+              markers: markers,
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Padding(
-              padding: EdgeInsets.all(12.0),
-              child: AppButton(
-                buttontext: "Ingresa tu direccón",
-                onclick: bottomsheet,
-                context: context),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            BlocConsumer<LocalizationBloc, LocalizationState>(
-              listener: (context, state) {
-                if (state is LocalizationGetSuccess) {
-                       accommodationRequestModel?.latitude = state.latitude; 
-                       accommodationRequestModel?.longitude = state.longitude;
-                    } else if (state is LocalizationGetError) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(state.message ),
-                        backgroundColor: Colors.red[800],
-                      ));
-                    }
-              },
-              builder: (context, state) {
-                  if (state is LocalizationGetLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                    
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: ()  {
-                           context.read<LocalizationBloc>().add(
-                                    LocalizationGetEvent());
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: Center(
-                              child: Text(
-                                "Obtener mi ubicación",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
-                      ),
-                       (accommodationRequestModel?.latitude?? 0) != 0  && (accommodationRequestModel?.longitude?? 0) != 0
-                          ? Icon(Icons.check_circle_outlined, color: Theme.of(context).colorScheme.primary)
-                          :Icon(Icons.circle_outlined, color: Colors.grey)
-                       
-                    ],
-                  ),
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.50,
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        // context.pop();
-                        _pageController.previousPage(
-                            duration: const Duration(microseconds: 300),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        "Atras",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: "Gilroy Bold"),
-                      )),
+                  padding: const EdgeInsets.symmetric(),
+                  child: Text(
+                    _titles[_currentPage],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: "Gilroy Bold",
+                        color: notifire.getwhiteblackcolor), //heding Text
+                  ),
                 ),
-                BlocConsumer<AccommodationBloc, AccommodationState>(
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: AppButton(
+                    buttontext: "Ingresa tu direccón",
+                    onclick: bottomsheet,
+                    context: context),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                BlocConsumer<LocalizationBloc, LocalizationState>(
                   listener: (context, state) {
-                    if (state is AccommodationUpdateSuccess) {
-                      accommodationResponseModel?.address = accommodationRequestModel?.address;
-                      accommodationResponseModel?.city = accommodationRequestModel?.city;
-                      accommodationResponseModel?.country = accommodationRequestModel?.country;
-                      accommodationResponseModel?.latitude = accommodationRequestModel?.latitude;
-                      accommodationResponseModel?.longitude = accommodationRequestModel?.longitude;
-                      _pageController.nextPage(
-                          duration: const Duration(microseconds: 300),
-                          curve: Curves.easeIn);
-                      accommodationResponseModel?.typeId =
-                          accommodationRequestModel?.typeId;
-                    } else if (state is AccommodationUpdateError) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(state.message),
-                      ));
-                    }
+                    if (state is LocalizationGetSuccess) {
+                           accommodationRequestModel?.latitude = state.latitude; 
+                           accommodationRequestModel?.longitude = state.longitude;
+
+                           // Asignamos la latitud y longitud al google maps
+                            mapController.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: LatLng(state.latitude, state.longitude),
+                                  zoom: 14,
+                                ),
+                              ),
+                            );
+
+                            // Colocamos un marker en la ubicación actual Set<Marker>
+                            // Colocamos un marker en la ubicación actual
+                            final marker = Marker(
+                              markerId: MarkerId('current_location'),
+                              position: LatLng(state.latitude, state.longitude),
+                              infoWindow: InfoWindow(title: 'Mi ubicación actual'),
+                              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                            );
+
+                            // Actualizamos los markers del mapa
+                            setState(() {
+                              markers.clear();
+                              markers.add(marker);
+                            });
+                            
+                        } else if (state is LocalizationGetError) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message ),
+                            backgroundColor: Colors.red[800],
+                          ));
+                        }
                   },
                   builder: (context, state) {
-                    if (state is AccommodationUpdateLoading) {
-                      return Center(child: const CircularProgressIndicator());
-                    }
+                      if (state is LocalizationGetLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                        
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: 
-                        // adressController.text.isEmpty ||
-                        //         cityController.text.isEmpty ||
-                        //         countryController.text.isEmpty||
-                                (accommodationRequestModel?.latitude??0)==0||
-                                (accommodationRequestModel?.longitude??0)==0
-                            ? null
-                            : () {
-                                accommodationRequestModel?.address =
-                                    adressController.text;
-                                accommodationRequestModel?.city =
-                                    cityController.text;
-                                accommodationRequestModel?.country =
-                                    countryController.text;
-
-                                context.read<AccommodationBloc>().add(
-                                    AccommodationUpdateEvent(
-                                        _accommodationId ?? 0,
-                                        accommodationRequestModel!));
-                              },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(15)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: Center(
-                              child: Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: WhiteColor,
-                                    fontFamily: "Gilroy Bold"),
-                              ),
-                            )),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: ()  {
+                               context.read<LocalizationBloc>().add(
+                                        LocalizationGetEvent());
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(25)),
+                                height: 40,
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child: Center(
+                                  child: Text(
+                                    "Obtener mi ubicación",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: WhiteColor,
+                                        fontFamily: "Gilroy Bold"),
+                                  ),
+                                )),
+                          ),
+                           (accommodationRequestModel?.latitude?? 0) != 0  && (accommodationRequestModel?.longitude?? 0) != 0
+                              ? Icon(Icons.check_circle_outlined, color: Theme.of(context).colorScheme.primary)
+                              :Icon(Icons.circle_outlined, color: Colors.grey)
+                           
+                        ],
                       ),
                     );
                   },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.50,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            // context.pop();
+                            _pageController.previousPage(
+                                duration: const Duration(microseconds: 300),
+                                curve: Curves.easeIn);
+                          },
+                          child: Text(
+                            "Atras",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.primary,
+                                fontFamily: "Gilroy Bold"),
+                          )),
+                    ),
+                    BlocConsumer<AccommodationBloc, AccommodationState>(
+                      listener: (context, state) {
+                        if (state is AccommodationUpdateSuccess) {
+                          accommodationResponseModel?.address = accommodationRequestModel?.address;
+                          accommodationResponseModel?.city = accommodationRequestModel?.city;
+                          accommodationResponseModel?.country = accommodationRequestModel?.country;
+                          accommodationResponseModel?.latitude = accommodationRequestModel?.latitude;
+                          accommodationResponseModel?.longitude = accommodationRequestModel?.longitude;
+                          _pageController.nextPage(
+                              duration: const Duration(microseconds: 300),
+                              curve: Curves.easeIn);
+                          accommodationResponseModel?.typeId =
+                              accommodationRequestModel?.typeId;
+                        } else if (state is AccommodationUpdateError) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                          ));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AccommodationUpdateLoading) {
+                          return Center(child: const CircularProgressIndicator());
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: GestureDetector(
+                            onTap: 
+                            // adressController.text.isEmpty ||
+                            //         cityController.text.isEmpty ||
+                            //         countryController.text.isEmpty||
+                                    (accommodationRequestModel?.latitude??0)==0||
+                                    (accommodationRequestModel?.longitude??0)==0
+                                ? null
+                                : () {
+                                    accommodationRequestModel?.address =
+                                        adressController.text;
+                                    accommodationRequestModel?.city =
+                                        cityController.text;
+                                    accommodationRequestModel?.country =
+                                        countryController.text;
+            
+                                    context.read<AccommodationBloc>().add(
+                                        AccommodationUpdateEvent(
+                                            _accommodationId ?? 0,
+                                            accommodationRequestModel!));
+                                  },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(15)),
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: Center(
+                                  child: Text(
+                                    "Siguiente",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: WhiteColor,
+                                        fontFamily: "Gilroy Bold"),
+                                  ),
+                                )),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
