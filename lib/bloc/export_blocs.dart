@@ -93,3 +93,8 @@ export 'package:tomatebnb/bloc/reserve_bloc/reserve_state.dart';
 export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_event.dart';
 export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_availability_state.dart';
+
+// Bloc para filtrar los filtros por describe de los anuncios
+export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_bloc.dart';
+export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_event.dart';
+export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_state.dart';

@@ -8,6 +8,7 @@ class ExploreAccommodationBloc extends Bloc<ExploreAccommodationEvent, ExploreAc
 
   ExploreAccommodationBloc(this.exploreRepository) : super(GetAccommodationNearbyInitial()){
     on<NearbyAccommodationGetEvent>(_onNearbyAccommodationGet);
+    on<GetAccommodationByDescribeEvent>(_onAccommodationDescribeGet);
   }
 
   Future<void> _onNearbyAccommodationGet(NearbyAccommodationGetEvent event, Emitter<ExploreAccommodationState> emit) async {
@@ -21,6 +22,20 @@ class ExploreAccommodationBloc extends Bloc<ExploreAccommodationEvent, ExploreAc
       }
     } catch(e){
       emit(GetAccommodationNearbyError(e.toString()));
+    }
+  }
+
+  Future<void> _onAccommodationDescribeGet(GetAccommodationByDescribeEvent event, Emitter<ExploreAccommodationState> emit) async {
+    emit(GetAccommodationByDescribeLoading());
+    try{
+      final response = await exploreRepository.getAccommodationByDescribe(event.describeId);
+      if(response.status){
+        emit(GetAccommodationByDescribeSuccess(response.data!));
+      } else {
+        emit(GetAccommodationByDescribeError(response.message));
+      }
+    } catch(e){
+      emit(GetAccommodationByDescribeError(e.toString()));
     }
   }
 }

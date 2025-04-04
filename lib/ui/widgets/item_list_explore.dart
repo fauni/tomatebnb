@@ -64,7 +64,7 @@ class _ItemListExploreState extends State<ItemListExplore> {
                           );
                         }).toList()
                       : [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
@@ -81,8 +81,8 @@ class _ItemListExploreState extends State<ItemListExplore> {
                       height: 35,
                       width: 110,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blueGrey,
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       child: Center(
                         child: Text(
@@ -105,27 +105,19 @@ class _ItemListExploreState extends State<ItemListExplore> {
                 style: TextStyle(
                     fontSize: 15,
                     fontFamily: "Gilroy Bold",
-                    color: Colors.black),
+                    color: Theme.of(context).colorScheme.primary,),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
                 widget.accommodation.address!,
                 style: TextStyle(
                     fontSize: 12,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                     fontFamily: "Gilroy Medium",
                     overflow: TextOverflow.ellipsis),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.001),
-              Divider(color: Theme.of(context).colorScheme.secondary),
-              // SizedBox(
-              //     height: MediaQuery.of(context)
-              //             .size
-              //             .height *
-              //         0.01),
               Text(
                 '${widget.accommodation.city!} - ${widget.accommodation.country!}',
-                style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.primary,fontFamily: "Gilroy Medium")
+                style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy Medium")
               )
             ],
           ),
@@ -136,7 +128,6 @@ class _ItemListExploreState extends State<ItemListExplore> {
 
   hotelsystem({String? image, text, double? radi, BuildContext? context}) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Image.asset(
           image!,

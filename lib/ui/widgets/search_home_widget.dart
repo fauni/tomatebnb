@@ -11,6 +11,10 @@ class SearchHomeWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
+        border: Border.all(
+          width: 1,
+          color: Theme.of(context).colorScheme.tertiary,
+        ),
         color: Theme.of(context).colorScheme.onPrimary
       ),
       child: Padding(

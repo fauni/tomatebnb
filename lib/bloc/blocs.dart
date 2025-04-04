@@ -46,6 +46,7 @@ class Blocs {
   static final AccommodationRuleBloc accommodationRuleBloc = AccommodationRuleBloc(AccommodationRuleRepository(),);
   static final AccommodationAvailabilityBloc accommodationAvailabilityBloc = AccommodationAvailabilityBloc(AccommodationAvailabilityRepository(),);
   static final ReserveBloc reserveBloc = ReserveBloc(ReserveRepository(),);
+  static final ExploreDescribeBloc exploreDescribeBloc = ExploreDescribeBloc(DescribeRepository(),);
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -69,6 +70,7 @@ class Blocs {
     BlocProvider<AccommodationRuleBloc>(create: (context) => accommodationRuleBloc),
     BlocProvider<AccommodationAvailabilityBloc>(create: (context) => accommodationAvailabilityBloc),
     BlocProvider<ReserveBloc>(create: (context) => reserveBloc),
+    BlocProvider<ExploreDescribeBloc>(create: (context) => exploreDescribeBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -93,6 +95,7 @@ class Blocs {
     accommodationRuleBloc.close();
     accommodationAvailabilityBloc.close();
     reserveBloc.close();
+    exploreDescribeBloc.close();
   }
 
 

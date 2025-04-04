@@ -7,6 +7,7 @@ import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/response/api_response.dart';
 import 'package:tomatebnb/models/response/api_response_list.dart' as api_response_list;
+import 'package:tomatebnb/models/response/response_list.dart';
 
 
 class ExploreRepository {
@@ -40,6 +41,36 @@ class ExploreRepository {
       }
     } catch (e) {
       return ApiResponse<AccommodationResponseCompleteModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+  Future<ApiResponseList<AccommodationResponseCompleteModel>> getAccommodationByDescribe(int describeId) async {
+    final url = Uri.parse('$_baseUrl/v1/explore/accommodation/describe/$describeId');
+    final prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token")??"";
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      final response = await http.get(url, headers: headers);
+      if(response.statusCode == 200){
+        final data = json.decode(response.body);
+        return ApiResponseList<AccommodationResponseCompleteModel>.fromJson(data, (json) => AccommodationResponseCompleteModel.fromJson(json));
+      } else {
+        final data = json.decode(response.body);
+        return ApiResponseList<AccommodationResponseCompleteModel>(
+          status: false,
+          message: data['message']
+        );
+      }
+    } catch (e) {
+      return ApiResponseList<AccommodationResponseCompleteModel>(
         status: false, 
         message: e.toString()
       );

@@ -28,3 +28,24 @@ class GetAccommodationNearbyError extends ExploreAccommodationState{
 }
 
 // EndRegion: Accommodation Nearby
+
+// Region: Accommodation By Describe
+class GetAccommodationByDescribeInitial extends ExploreAccommodationState{}
+class GetAccommodationByDescribeLoading extends ExploreAccommodationState{}
+class GetAccommodationByDescribeSuccess extends ExploreAccommodationState{
+  final List<AccommodationResponseCompleteModel> accommodations;
+  GetAccommodationByDescribeSuccess(
+    this.accommodations
+  );
+  @override
+  List<Object> get props => [accommodations];
+}
+class GetAccommodationByDescribeError extends ExploreAccommodationState{
+  final String message;
+  GetAccommodationByDescribeError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+// EndRegion: Accommodation By Describe
