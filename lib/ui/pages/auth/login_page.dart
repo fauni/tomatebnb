@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late ColorNotifire notifire;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -24,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     emailController.text = 'juan@mail.com';
     passwordController.text = '1234567';
-    getdarkmodepreviousstate();
     getMode();
     super.initState();
   }
@@ -38,17 +34,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
-      backgroundColor: notifire.getbgcolor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(75),
-          child: CustomAppbar(
-              centertext: "",
-              ActionIcon: null,
-              bgcolor: notifire.getbgcolor,
-              actioniconcolor: notifire.getwhiteblackcolor,
-              leadingiconcolor: notifire.getwhiteblackcolor)),
+        preferredSize: const Size.fromHeight(75),
+        child: CustomAppbar(
+          centertext: "",
+          ActionIcon: null,
+          bgcolor: Theme.of(context).colorScheme.surface,
+          // actioniconcolor: notifire.getwhiteblackcolor,
+          // leadingiconcolor: notifire.getwhiteblackcolor
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Column(
@@ -57,19 +54,17 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Bienvenido a TomateBnb",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor,
+                Center(
+                  child: Image.asset(
+                    'assets/logos/logo-samay.JPG',
+                    height: 100,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-                Text("Acceda a su cuenta",
+                Text("Inicia sesión o Registrate",
                     style: TextStyle(
                       fontSize: 14,
-                      color: notifire.getgreycolor,
+                      // color: notifire.getgreycolor,
                       fontFamily: "Gilroy Medium",
                     )),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
@@ -77,12 +72,14 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
-                        color: notifire.getwhiteblackcolor)),
+                        // color: notifire.getwhiteblackcolor
+                      ),
+                    ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
                     controller: emailController,
-                    feildcolor: notifire.getdarkmodecolor,
-                    hintcolor: notifire.getgreycolor,
+                    // feildcolor: notifire.getdarkmodecolor,
+                    // hintcolor: notifire.getgreycolor,
                     text: 'Ingresa tu Correo Electrónico',
                     prefix: Icon(Icons.email_outlined, color: Theme.of(context).colorScheme.primary,),
                     suffix: null),
@@ -90,18 +87,21 @@ class _LoginPageState extends State<LoginPage> {
                 Text(
                   "Contraseña",
                   style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: "Gilroy Medium",
-                      color: notifire.getwhiteblackcolor),
+                    fontSize: 15,
+                    fontFamily: "Gilroy Medium",
+                    // color: notifire.getwhiteblackcolor
+                  ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 textfield(
                     controller: passwordController,
-                    feildcolor: notifire.getdarkmodecolor,
-                    hintcolor: notifire.getgreycolor,
+                    // feildcolor: notifire.getdarkmodecolor,
+                    // hintcolor: notifire.getgreycolor,
                     text: 'Enter your password',
                     prefix: Image.asset("assets/images/password.png",
-                        height: 25, color: notifire.getgreycolor),
+                        height: 25, 
+                        // color: notifire.getgreycolor
+                    ),
                     suffix: null),
               ],
             ),
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                   return Center(child: const CircularProgressIndicator());
                 }
                 return AppButton(
-                    buttontext: "Iniciar Sesión",
+                    buttontext: "Continuar",
                     onclick: () {
                       context.read<AuthBloc>().add(AuthLoginEvent(
                           emailController.text, passwordController.text));
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                     "o inicie sesión con",
                     style: TextStyle(
                         fontSize: 15,
-                        color: Theme.of(context).colorScheme.tertiary,
+                        color: Theme.of(context).colorScheme.primary,
                         fontFamily: "c"),
                   )
                 ],
@@ -261,7 +261,9 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: "Gilroy Medium",
-                        color: notifire.getwhiteblackcolor)),
+                        // color: notifire.getwhiteblackcolor
+                      )
+                    ),
                 InkWell(
                   onTap: () {
                     // Navigator.of(context).push(MaterialPageRoute(
@@ -285,15 +287,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
   }
 }
