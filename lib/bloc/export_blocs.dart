@@ -98,3 +98,8 @@ export 'package:tomatebnb/bloc/accommodation_availability_bloc/accommodation_ava
 export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_bloc.dart';
 export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_event.dart';
 export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_state.dart';
+
+// Bloc para alojamientos favoritos
+export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_event.dart';
+export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_state.dart';

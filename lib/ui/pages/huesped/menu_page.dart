@@ -58,14 +58,26 @@ class _MenuPageState extends State<MenuPage> {
               icon: Icon(EvaIcons.searchOutline, color: selectedIndex == 0 ? Darkblue : greyColor),
               label: 'Explora'),
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.heart, color: selectedIndex == 1 ? Darkblue : greyColor),
+              icon: Image.asset(
+                "assets/images/heart.png",
+                height: 25,
+                color: selectedIndex == 1 ? Darkblue : greyColor,
+              ),
               label: 'Favoritos'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.airplane_ticket_outlined, color: selectedIndex == 3 ? Darkblue : greyColor),
-              label: 'Viajes'),
+              icon: Image.asset(
+                "assets/images/booking.png",
+                height: 25,
+                color: selectedIndex == 2 ? Darkblue : greyColor,
+              ),
+              label: 'Mis Reservas'),
           BottomNavigationBarItem(
-            icon: Icon(EvaIcons.person, color: selectedIndex == 3 ? Darkblue : greyColor),
-            label: 'Perfil',
+            icon: Image.asset(
+              "assets/images/profile.png",
+              height: 25,
+              color: selectedIndex == 3 ? Darkblue : greyColor,
+            ),
+            label: 'Mi Perfil',
           ),
         ],
         onTap: (index) {
