@@ -1,16 +1,16 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_rule_anuncio.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
+import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
 import 'package:tomatebnb/utils/static_map_image.dart';
 
 import '../../../models/accommodation/accommodation_servicec_response_model.dart';
@@ -33,23 +33,24 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
 
   @override
   void initState() {
-    getdarkmodepreviousstate();
     super.initState();
   }
 
   int _accommodationId = 0;
-  late ColorNotifire notifire;
+
   late AccommodationResponseCompleteModel accommodation =
       AccommodationResponseCompleteModel();
   List<AccommodationServicecResponseModel> services = [];
   final String _imgsUrl = Environment.UrlImg;
+
   @override
   Widget build(BuildContext context) {
     _accommodationId = GoRouterState.of(context).extra as int;
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
+
     context
         .read<AccommodationBloc>()
         .add(AccommodationGetByIdEvent(_accommodationId));
+
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -70,7 +71,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
               // TODO: implement listener
             },
             builder: (context, state) {
-              if(state is AccommodationGetByIdSuccess){
+              if (state is AccommodationGetByIdSuccess) {
                 return SizedBox(
                   height: 70,
                   child: Row(
@@ -79,7 +80,8 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                       Text(
                         (accommodation.prices != null &&
                                 accommodation.prices!.isNotEmpty &&
-                                accommodation.prices!.first.priceNight != null &&
+                                accommodation.prices!.first.priceNight !=
+                                    null &&
                                 accommodation.prices!.first.priceNight != 0)
                             ? "Bs. ${accommodation.prices!.first.priceNight.toString()} noche"
                             : "Sin precio",
@@ -117,7 +119,6 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
           ),
         ),
       ),
-      backgroundColor: notifire.getbgcolor,
       body: BlocConsumer<AccommodationBloc, AccommodationState>(
         listener: (context, state) {
           if (state is AccommodationGetByIdSuccess) {
@@ -143,12 +144,9 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                 );
               }
             });
-
             context
                 .read<AccommodationServiceBloc>()
                 .add(AccommodationServicecGetEvent(accommodation.id!));
-            // setState(() {});
-            // print (_accommodationId);
           }
           if (state is AccommodationGetByIdError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -165,34 +163,80 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
           }
           if (state is AccommodationGetByIdError) {
             return Center(child: Text(state.message));
-          } else {
+          } else if (state is AccommodationGetByIdSuccess) {
             // accommodation = state.responseAccommodation;
             return CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
                   elevation: 0,
-                  backgroundColor: notifire.getbgcolor,
+                  backgroundColor: AppColors().WhiteColor,
                   leading: Padding(
                     padding: const EdgeInsets.only(top: 8, left: 12),
-                    child: CircleAvatar(
-                      backgroundColor: notifire.getlightblackcolor,
-                      child: BackButton(
-                        color: notifire.getdarkwhitecolor,
-                      ),
-                    ),
+                    child: BackButton(),
                   ),
                   actions: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 12),
+                      padding: const EdgeInsets.only(top: 12, bottom: 5),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 22,
-                            backgroundColor: notifire.getlightblackcolor,
-                            child: Image.asset(
-                              "assets/images/heart.png",
-                              color: notifire.getdarkwhitecolor,
-                              height: 25,
+                          InkWell(
+                            onTap: () {
+                              if (state.responseAccommodation.isFavorite!) {
+                                context.read<AccommodationFavoriteBloc>().add(
+                                    RemoveAccommodationFavoriteEvent(state.responseAccommodation.id!));
+                              } else {
+                                context.read<AccommodationFavoriteBloc>().add(
+                                    AddAccommodationFavoriteEvent(state.responseAccommodation.id!));
+                              }
+                            },
+                            child: BlocListener<AccommodationFavoriteBloc, AccommodationFavoriteState>(
+                              listener: (context, state) {
+                                setState(() {
+                                  
+                                });
+                                // if (state is AccommodationFavoriteAdded) {
+                                //   accommodation.isFavorite = true;
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     SnackBar(
+                                //       content: Text(state.message),
+                                //       backgroundColor:
+                                //           Theme.of(context).colorScheme.primary,
+                                //     ),
+                                //   );
+                                // }
+                                // if (state is AccommodationFavoriteRemoved) {
+                                //   accommodation.isFavorite = false;
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     SnackBar(
+                                //       content: Text(state.message),
+                                //       backgroundColor:
+                                //           Theme.of(context).colorScheme.primary,
+                                //     ),
+                                //   );
+                                // } 
+                                if (state is AccommodationFavoriteError) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(state.message),
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundColor:
+                                    state.responseAccommodation.isFavorite!
+                                        ? Colors.red
+                                        : AppColors().boxcolor,
+                                child: Image.asset(
+                                  "assets/images/heart.png",
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  height: 25,
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -205,18 +249,28 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                   floating: _floating,
                   expandedHeight: 250,
                   flexibleSpace: FlexibleSpaceBar(
-                      background: (accommodation.photos ?? []).isNotEmpty
-                          ? PageView.builder(
-                              controller: _pageController,
-                              itemCount: (accommodation.photos ?? []).length,
-                              itemBuilder: (context, index) {
-                                return FadeInImage.assetNetwork(
-                                  placeholder: 'assets/images/load.gif',
-                                  image:
-                                      '$_imgsUrl/accommodations/${accommodation.photos![index].photoUrl}',
-                                );
-                              })
-                          : Image.asset("assets/images/SagamoreResort.jpg")),
+                    background:
+                        (state.responseAccommodation.photos ?? []).isNotEmpty
+                            ? PageView.builder(
+                                controller: _pageController,
+                                itemCount:
+                                    state.responseAccommodation.photos!.length,
+                                itemBuilder: (context, index) {
+                                  return FadeInImage.memoryNetwork(
+                                    placeholder: Uint8List(0),
+                                    placeholderErrorBuilder:
+                                        (context, error, stackTrace) =>
+                                            SkeletonImageWidget(),
+                                    image: state.responseAccommodation
+                                        .photos![index].url,
+                                    fit: BoxFit.cover,
+                                  );
+                                })
+                            : Image.asset(
+                                "assets/images/gallery.png",
+                                color: Colors.black,
+                              ),
+                  ),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -234,7 +288,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                   accommodation.title ?? "Sin título",
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: notifire.getwhiteblackcolor,
+                                    // color: notifire.getwhiteblackcolor,
                                     fontFamily: "Gilroy Bold",
                                   ),
                                 ),
@@ -248,16 +302,18 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                   trimLines: 2,
                                   trimMode: TrimMode.Line,
                                   style: TextStyle(
-                                      color: notifire.getgreycolor,
+                                      // color: notifire.getgreycolor,
                                       fontFamily: "Gilroy Medium"),
                                   trimCollapsedText: 'Mas',
                                   trimExpandedText: 'Menos',
                                   lessStyle: TextStyle(
-                                      color: notifire.getdarkbluecolor),
+                                      // color: notifire.getdarkbluecolor
+                                      ),
                                   moreStyle: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: notifire.getdarkbluecolor),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    // color: notifire.getdarkbluecolor
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
@@ -274,12 +330,12 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                         Image.asset(
                                           "assets/images/Maplocation.png",
                                           height: 20,
-                                          color: notifire.getdarkbluecolor,
+                                          // color: notifire.getdarkbluecolor,
                                         ),
                                         Text(
                                           "${accommodation.city ?? "Sin ciudad"}/${accommodation.country ?? 'Sin país'}",
                                           style: TextStyle(
-                                              color: notifire.getgreycolor,
+                                              // color: notifire.getgreycolor,
                                               fontSize: 14,
                                               fontFamily: "Gilroy Medium"),
                                         )
@@ -292,26 +348,6 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.015),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                //   children: [
-                                //     Text(
-                                //       accommodation.describe?.describe??"",
-                                //       style: TextStyle(
-                                //           fontSize: 16,
-                                //           fontFamily: "Gilroy Bold",
-                                //           color: notifire.getwhiteblackcolor),
-                                //     ),
-                                //     Text(
-                                //       accommodation.type?.name??"",
-                                //       style: TextStyle(
-                                //           fontSize: 16,
-                                //           fontFamily: "Gilroy Bold",
-                                //           color: notifire.getwhiteblackcolor),
-                                //     ),
-                                //   ],
-                                // ),
-                                // SizedBox(height: MediaQuery.of(context).size.height * 0.025),
                                 SizedBox(
                                   height: 60,
                                   child: Row(
@@ -334,30 +370,6 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                   ),
                                 ),
                                 Divider(),
-                                // Row(
-                                //   children: [
-                                //     Text(
-                                //       ((accommodation.prices)?.first.priceNight??0)!=0
-                                //       ? "Bs. ${accommodation.prices!.first.priceNight.toString()}"
-                                //       :"Sin precio",
-
-                                //       style: TextStyle(
-                                //         fontSize: 16,
-                                //         color: notifire.getdarkbluecolor,
-                                //         fontFamily: "Gilroy Bold",
-                                //       ),
-                                //     ),
-
-                                //     Text(
-                                //       " Por noche",
-                                //       style: TextStyle(
-                                //         fontFamily: "Gilroy Medium",
-                                //         fontSize: 14,
-                                //         color: notifire.getwhiteblackcolor,
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
                                 Text(
                                   'Lo que este lugar ofrece',
                                   style: TextStyle(
@@ -410,36 +422,15 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                                   "Sin nombre",
                                               style: TextStyle(
                                                   fontSize: 15,
-                                                  color: notifire.getgreycolor,
+                                                  // color: notifire.getgreycolor,
                                                   fontFamily: "Gilroy Medium"),
                                             ),
                                             leading: Image.asset(
                                               "assets/images/wifi.png",
                                               height: 20,
-                                              color:
-                                                  notifire.getwhiteblackcolor,
+                                              // color: notifire.getwhiteblackcolor,
                                             ),
                                           );
-                                          // return Column(
-                                          //   children: [
-                                          //     Image.asset(
-                                          //         "assets/images/wifi.png",
-                                          //         height: 30,
-                                          //         color: notifire
-                                          //             .getwhiteblackcolor),
-                                          //     Text(
-                                          //       services[index].service?.name ??"Sin nombre",
-                                          //       overflow: TextOverflow.ellipsis,
-                                          //       maxLines: 1,
-                                          //       style: TextStyle(
-                                          //           fontSize: 15,
-                                          //           color:
-                                          //               notifire.getgreycolor,
-                                          //           fontFamily:
-                                          //               "Gilroy Medium"),
-                                          //     )
-                                          //   ],
-                                          // );
                                         },
                                       ),
                                     );
@@ -456,17 +447,11 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                     Text(
                                       "Ubicación",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "Gilroy Bold",
-                                          color: notifire.getwhiteblackcolor),
+                                        fontSize: 18,
+                                        fontFamily: "Gilroy Bold",
+                                        // color: notifire.getwhiteblackcolor
+                                      ),
                                     ),
-                                    // Text(
-                                    //   "View Detail",
-                                    //   style: TextStyle(
-                                    //       fontSize: 15,
-                                    //       color: notifire.getdarkbluecolor,
-                                    //       fontFamily: "Gilroy Medium"),
-                                    // ),
                                   ],
                                 ),
                                 Card(
@@ -513,7 +498,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                               "${accommodation.address ?? ''}  "
                                               "${accommodation.city ?? ""}, ${accommodation.country ?? ""}",
                                               style: TextStyle(
-                                                  color: notifire.getgreycolor,
+                                                  // color: notifire.getgreycolor,
                                                   fontFamily: "Gilroy Medium"),
                                             )
                                           ],
@@ -534,9 +519,10 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                     Text(
                                       "Reglas",
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "Gilroy Bold",
-                                          color: notifire.getwhiteblackcolor),
+                                        fontSize: 16,
+                                        fontFamily: "Gilroy Bold",
+                                        // color: notifire.getwhiteblackcolor
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -563,6 +549,10 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                 ),
               ],
             );
+          } else {
+            return Center(
+              child: Text("Error al cargar los datos"),
+            );
           }
         },
       ),
@@ -577,7 +567,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
           Text("$quanitity",
               style: TextStyle(
                   fontSize: 20,
-                  color: notifire.getgreycolor,
+                  // color: notifire.getgreycolor,
                   fontFamily: "Gilroy Medium")),
           Text(
             item,
@@ -585,21 +575,11 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
             maxLines: 1,
             style: TextStyle(
                 fontSize: 12,
-                color: notifire.getgreycolor,
+                // color: notifire.getgreycolor,
                 fontFamily: "Gilroy Medium"),
           )
         ],
       ),
     );
-  }
-
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
@@ -73,28 +74,35 @@ class _ItemListExploreState extends State<ItemListExplore> {
                           )
                         ],
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 35,
-                      width: 110,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.secondary,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        "assets/images/heart.png",
+                        color: widget.accommodation.isFavorite! ? Colors.red : Colors.white,
+                        height: 20,
                       ),
-                      child: Center(
-                        child: Text(
-                          "Bs. ${widget.accommodation.priceNight} noche",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontFamily: "Gilroy Medium",
+                      Container(
+                        height: 35,
+                        width: 110,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Bs. ${widget.accommodation.priceNight} noche",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontFamily: "Gilroy Medium",
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 )
               ],

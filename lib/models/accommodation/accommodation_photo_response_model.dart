@@ -31,6 +31,7 @@ class AccommodationPhotoResponseModel {
     // String status;
     DateTime updatedAt;
     DateTime createdAt;
+    String url;
     int id;
 
     AccommodationPhotoResponseModel({
@@ -41,6 +42,7 @@ class AccommodationPhotoResponseModel {
         // required this.status,
         required this.updatedAt,
         required this.createdAt,
+        required this.url,
         required this.id,
     });
 
@@ -52,6 +54,7 @@ class AccommodationPhotoResponseModel {
         // status: json["status"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
+        url: json["url"],
         id: json["id"],
     );
 
@@ -63,6 +66,7 @@ class AccommodationPhotoResponseModel {
         // "status": status,
         "updated_at": updatedAt.toIso8601String(),
         "created_at": createdAt.toIso8601String(),
+        "url": url,
         "id": id,
     };
 }

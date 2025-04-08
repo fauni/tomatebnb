@@ -10,3 +10,16 @@ class GetAccommodationFavoriteEvent extends AccommodationFavoriteEvent {
   @override
   List<Object> get props => [];
 }
+
+class AddAccommodationFavoriteEvent extends AccommodationFavoriteEvent {
+  final int accommodationId;
+  AddAccommodationFavoriteEvent(this.accommodationId);
+  @override
+  List<Object> get props => [accommodationId];
+}
+class RemoveAccommodationFavoriteEvent extends AccommodationFavoriteEvent {
+  final int accommodationId;
+  RemoveAccommodationFavoriteEvent(this.accommodationId);
+  @override
+  List<Object> get props => [accommodationId];
+}

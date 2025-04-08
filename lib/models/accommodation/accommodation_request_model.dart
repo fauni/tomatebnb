@@ -27,6 +27,7 @@ class AccommodationRequestModel {
     double? priceNight;
     bool? status;
     bool? published;
+    bool? isFavorite;
 
     AccommodationRequestModel({
         this.hostId,
@@ -47,6 +48,7 @@ class AccommodationRequestModel {
         this.priceNight,
         this.status,
         this.published,
+        this.isFavorite,
     });
 
     AccommodationRequestModel copyWith({
@@ -68,6 +70,7 @@ class AccommodationRequestModel {
         double? priceNight,
         bool? status,
         bool? published,
+        bool? isFavorite,
     }) => 
         AccommodationRequestModel(
             hostId: hostId?? this.hostId,
@@ -88,6 +91,7 @@ class AccommodationRequestModel {
             priceNight: priceNight?? this.priceNight,
             status: status?? this.status,
             published: published?? this.published,
+            isFavorite: isFavorite?? this.isFavorite,
         );
 
     factory AccommodationRequestModel.fromJson(Map<String, dynamic> json) => AccommodationRequestModel(
@@ -109,6 +113,7 @@ class AccommodationRequestModel {
         priceNight: double.parse(json["price_night"]??'00.00'),
         status: json["status"],
         published: json["published"],
+        isFavorite: json["is_favorite"] == true || json["is_favorite"] == "true",
     );
 
     Map<String, dynamic> toJson() => {
@@ -130,5 +135,6 @@ class AccommodationRequestModel {
         "price_night": priceNight,
         "status": status,
         "published": published,
+        "is_favorite": isFavorite,
     };
 }

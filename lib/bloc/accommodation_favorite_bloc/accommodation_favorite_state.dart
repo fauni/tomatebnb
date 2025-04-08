@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
-import 'package:tomatebnb/models/explore/describe.dart';
 
 abstract class AccommodationFavoriteState extends Equatable {
   @override
@@ -18,6 +17,20 @@ class AccommodationFavoriteLoaded extends AccommodationFavoriteState{
 class AccommodationFavoriteError extends AccommodationFavoriteState{
   final String message;
   AccommodationFavoriteError(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class AccommodationFavoriteAdded extends AccommodationFavoriteState{
+  final String message;
+  AccommodationFavoriteAdded(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class AccommodationFavoriteRemoved extends AccommodationFavoriteState{
+  final String message;
+  AccommodationFavoriteRemoved(this.message);
   @override
   List<Object> get props => [message];
 }

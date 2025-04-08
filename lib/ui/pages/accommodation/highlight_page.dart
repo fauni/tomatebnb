@@ -1500,6 +1500,7 @@ class _HighlightPageState extends State<HighlightPage> {
         // status: "",
         updatedAt: DateTime.parse("2000-01-01"),
         createdAt: DateTime.parse("2000-01-01"),
+        url: "",
         id: 0));
   }
 

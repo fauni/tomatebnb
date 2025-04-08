@@ -53,6 +53,7 @@ class AccommodationResponseCompleteModel {
     double? priceNight;
     bool? status;
     bool? published;
+    bool? isFavorite;
     DateTime? createdAt;
     DateTime? updatedAt;
     AccommodationTypeResponseModel? type;
@@ -85,6 +86,7 @@ class AccommodationResponseCompleteModel {
          this.priceNight,
          this.status,
          this.published,
+         this.isFavorite,
          this.createdAt,
          this.updatedAt,
          this.type,
@@ -119,6 +121,7 @@ class AccommodationResponseCompleteModel {
       priceNight: double.tryParse(json["price_night"]?.toString() ?? "0.0"),
       status: json["status"] == true || json["status"] == "true",
       published: json["published"] == true || json["published"] == "true",
+      isFavorite: json["is_favorite"] == true || json["is_favorite"] == "true",
       createdAt: json["created_at"] != null ? DateTime.tryParse(json["created_at"]) : null,
       updatedAt: json["updated_at"] != null ? DateTime.tryParse(json["updated_at"]) : null,
       type: json["type"] != null ? AccommodationTypeResponseModel.fromJson(json["type"]) : null,
@@ -167,6 +170,7 @@ class AccommodationResponseCompleteModel {
         "price_night": priceNight,
         "status": status,
         "published": published,
+        "is_favorite": isFavorite,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "type": type?.toJson(),
@@ -199,5 +203,6 @@ class AccommodationResponseCompleteModel {
     priceNight: priceNight,
     status: status,
     published: published,
+    isFavorite: isFavorite,
   );
 }
