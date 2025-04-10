@@ -26,7 +26,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     getdarkmodepreviousstate();
     super.initState();
   }
-  
+
   final lastnameController = TextEditingController();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -56,7 +56,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Bienvenido a Tomatebnb",
+                    "Bienvenido a SAMAY",
                     style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Gilroy Bold",
@@ -140,7 +140,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         borderRadius: BorderRadius.circular(16),
                         color: notifire.getdarkmodecolor),
                     child: TextField(
-                       controller: passwordController,
+                      controller: passwordController,
                       obscureText: obscureText,
                       decoration: InputDecoration(
                         hintText: "Ingrese su contraseña",
@@ -175,7 +175,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ),
                     ),
                   )
-               
                 ],
               ),
               SizedBox(
@@ -189,22 +188,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   children: [
                     BlocConsumer<AuthBloc, AuthState>(
                       listener: (context, state) {
-                        if(state is AuthCreateSuccess){
-                          bottomsheet();
+                        if (state is AuthCreateSuccess) {
+                          bottomsheet(state.responseAuth.email ??
+                              'Correo no disponible');
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   SnackBar(content: Text('Usuario Registrado'))
                           // );
                           // context.replace('/login');
                         }
-                        if(state is AuthCreateError){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(state.message),
-                            backgroundColor: Theme.of(context).colorScheme.error,)
-                          );
+                        if (state is AuthCreateError) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
+                          ));
                         }
                       },
                       builder: (context, state) {
-                        if(state is AuthCreateLoading){
+                        if (state is AuthCreateLoading) {
                           return CircularProgressIndicator();
                         }
                         return AppButton(
@@ -212,12 +213,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           onclick: () {
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => const verifyaccount()));
-                            context.read<AuthBloc>()
-                            .add(AuthCreateEvent(UserRequestModelp(
-                              name: nameController.text,
-                              lastname: lastnameController.text,
-                              email: emailController.text,
-                              password: passwordController.text)));
+                            context.read<AuthBloc>().add(AuthCreateEvent(
+                                UserRequestModelp(
+                                    name: nameController.text,
+                                    lastname: lastnameController.text,
+                                    email: emailController.text,
+                                    password: passwordController.text)));
                           },
                           buttontext: "Guardar",
                         );
@@ -271,7 +272,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     }
   }
 
-   bottomsheet() {
+  bottomsheet(String email) {
     return showModalBottomSheet(
         isDismissible: false,
         context: context,
@@ -282,7 +283,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         ),
         builder: (BuildContext context) {
           return SizedBox(
-            height: 600,
+            height: MediaQuery.of(context).size.height * 0.70,
             child: Column(
               children: [
                 Stack(
@@ -333,40 +334,89 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            child: Text(
+                              "Le enviaremos un correo de verificación a $email",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: "Gilroy Medium",
+                                  color: notifire.getgreycolor),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        context.replace('/login');
+                    BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if(state is VerificationCodeCreateError){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(state.message),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
+                          ));
+                        }
+                        if(state is VerificationCodeCreateSuccess){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Código de verificación enviado"),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                          ));
+                          
+                        }
                       },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.45,
-                            left: 20,
-                            right: 20),
-                        height: 50,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        child: Center(
-                            child: GestureDetector(
-                                child: Text("Login",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: WhiteColor,
-                                        fontFamily: "Gilroy Bold")))),
-                      ),
-                    )
+                      builder: (context, state) {
+                        if (state is VerificationCodeCreateLoading) {
+                          return CircularProgressIndicator();
+                        }else{
+                        return InkWell(
+                          onTap: () {
+                            context.read<AuthBloc>()
+                            .add(VerificationCodeCreateEvent(email));  
+                            Navigator.pop(context);
+                            context.replace('/verificate_email', extra: email);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.425,
+                                left: 20,
+                                right: 20),
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            child: Center(
+                                child: GestureDetector(
+                                    child: Text("Enviar codigo de verificación",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: WhiteColor,
+                                            fontFamily: "Gilroy Bold")))),
+                          ),
+                        );
+                        }  
+                      },
+                    ),
                   ],
                 ),
+                TextButton(
+                  onPressed: () {
+                    context.replace('/login');
+                  },
+                  child: Text(
+                    "Iniciar sesión",
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontFamily: "Gilroy Medium",
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                )
               ],
             ),
           );
         });
   }
-
 }

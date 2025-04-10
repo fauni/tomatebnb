@@ -103,4 +103,80 @@ class AuthRepository {
       );
     }
   }
+
+  Future<ApiResponse<UserResponseModel>> createVerificationCode(String email) async {
+    try{   
+      final response = await http.post(
+        Uri.parse('$_baseUrl/verification'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json'
+        },
+        body:jsonEncode(
+          <String, String>{
+            'email': email,
+          }
+        )  
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: true,
+          message: data['message'],
+          
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<UserResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
+  //verificar el codigo de verificacion
+
+Future<ApiResponse<UserResponseModel>> verificateCode(String code, String email) async {
+    try{   
+      final response = await http.post(
+        Uri.parse('$_baseUrl/verificate'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json'
+        },
+        body:jsonEncode(
+          <String, String>{
+            'code': code,
+            'email': email
+          }
+        )  
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: true,
+          message: data['message'],
+          
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<UserResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
+
 }

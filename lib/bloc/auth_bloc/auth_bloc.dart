@@ -9,6 +9,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
     on<AuthLoginEvent>(_onAuthLogin);
     on<AuthLogoutEvet>(_onAuthLogout);
     on<AuthCreateEvent>(_onAuthCreate);
+    on<VerificationCodeCreateEvent>(_onVerificationCodeCreate);
+    on<VerificateEvent>(_onVerificate);
   }
 
   Future<void> _onAuthLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
@@ -44,5 +46,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
   Future<void> _onAuthLogout(AuthLogoutEvet event, Emitter<AuthState> emit) async {
     await authRepository.clearUsarData();
     emit(AuthLogoutSuccess());
+  }
+
+  Future<void> _onVerificationCodeCreate(VerificationCodeCreateEvent event, Emitter<AuthState> emit) async {
+    emit(VerificationCodeCreateLoading());
+    try{
+      final response = await authRepository.createVerificationCode(event.email);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(VerificationCodeCreateSuccess(response.status));
+      } else {
+        emit(VerificationCodeCreateError(response.message));
+      }
+    } catch(e){
+      emit(VerificationCodeCreateError(e.toString()));
+    }
+  }
+
+  Future<void> _onVerificate(VerificateEvent event, Emitter<AuthState> emit) async {
+    emit(VerificateLoading());
+    try{
+      final response = await authRepository.verificateCode(event.code,event.email);
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(VerificateSuccess(response.status));
+      } else {
+        emit(VerificateError(response.message));
+      }
+    } catch(e){
+      emit(VerificateError(e.toString()));
+    }
   }
 }

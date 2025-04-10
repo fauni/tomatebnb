@@ -52,3 +52,45 @@ class AuthCreateError extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+// Estados para registrar Codigo de verificación
+class VerificationCodeCreateLoading extends AuthState {}
+
+class VerificationCodeCreateSuccess extends AuthState {
+  final bool status;
+  VerificationCodeCreateSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class VerificationCodeCreateError extends AuthState {
+  final String message;
+  VerificationCodeCreateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
+// Estados para  verificar el codigo de verificación
+class VerificateLoading extends AuthState {}
+
+class VerificateSuccess extends AuthState {
+  final bool status;
+  VerificateSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class VerificateError extends AuthState {
+  final String message;
+  VerificateError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

@@ -25,4 +25,18 @@ class AuthCreateEvent extends AuthEvent {
   List<Object?> get props => [userRequest];
 }
 
+class VerificationCodeCreateEvent extends AuthEvent {
+  final String email;
+  VerificationCodeCreateEvent(this.email);
+  @override
+  List<Object?> get props => [email];
+}
+
+class VerificateEvent extends AuthEvent {
+  final String code;
+  final String email;
+  VerificateEvent(this.code,this.email);
+  @override
+  List<Object?> get props => [code,email];
+}
 
