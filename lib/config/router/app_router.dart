@@ -18,6 +18,7 @@ import 'package:tomatebnb/ui/pages/huesped/explorar_mapa_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/home_page.dart';
 import 'package:tomatebnb/ui/pages/auth/login_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/menu_page.dart';
+import 'package:tomatebnb/ui/pages/huesped/payment_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/reserve_detail_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/search_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/select_date_page.dart';
@@ -135,5 +136,13 @@ final GoRouter appRouter = GoRouter(
       path: '/verificate_email',
       builder: (context, state) => const VerificateEmailPage()
     ),
+    GoRoute(
+      path: '/payment',
+      builder: (context, state){
+        final reserveId = state.extra as int;
+        return PaymentPage(reserveId: reserveId);
+      }
+    )
+
   ]
 );

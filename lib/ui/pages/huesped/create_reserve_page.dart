@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
-import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
-import 'package:scrollable_clean_calendar/utils/enums.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/reserve/reserve_request_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_anuncio.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 class CreateReservePage extends StatefulWidget {
   const CreateReservePage({super.key});
@@ -49,31 +44,28 @@ class _CreateReservePageState extends State<CreateReservePage> {
 
   @override
   void initState() {
-    getdarkmodepreviousstate();
     super.initState();
   }
 
   late AccommodationResponseCompleteModel _accommodation =
       AccommodationResponseCompleteModel();
   ReserveRequestModel reserveRequest = ReserveRequestModel();
-  late ColorNotifire notifire;
 
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
     _accommodation = GoRouterState.of(context).extra as AccommodationResponseCompleteModel;
     _nights = daysBetween(_accommodation.createdAt??DateTime.now(), _accommodation.updatedAt??DateTime.now());
     return Scaffold(
-      backgroundColor: notifire.getbgcolor,
+      // backgroundColor: AppColors().bgcolor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(75),
         child: CustomAppbar(
-          centertext: "Reservar",
-          ActionIcon: Icons.more_vert,
-          bgcolor: notifire.getbgcolor,
-          actioniconcolor: notifire.getwhiteblackcolor,
-          leadingiconcolor: notifire.getwhiteblackcolor,
-          titlecolor: notifire.getwhiteblackcolor,
+          centertext: "Detalle de la Reserva",
+          // ActionIcon: Icons.more_vert,
+          // bgcolor: AppColors().bgcolor,
+          // actioniconcolor: notifire.getwhiteblackcolor,
+          // leadingiconcolor: notifire.getwhiteblackcolor,
+          // titlecolor: notifire.getwhiteblackcolor,
         ),
       ),
       body: SingleChildScrollView(
@@ -82,189 +74,95 @@ class _CreateReservePageState extends State<CreateReservePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ItemListAnuncio(anuncio: _accommodation),
-              const SizedBox(height: 15),
+              // ItemListAnuncio(anuncio: _accommodation),
+              // const SizedBox(height: 15),
               Row(children: <Widget>[
-                  Text(
-             "Fechas",
-              style: TextStyle(
-              fontSize: 16,
-              color: notifire.getwhiteblackcolor,
-              fontFamily: "Gilroy Bold"),
+                  Text("Fechas",style: TextStyle(fontSize: 16,fontFamily: "Gilroy Bold"),),
+                ],
               ),
-               
-              ],),
-               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                 children: [
-                  Text("del",
-                                 style: TextStyle(
-                                 fontSize: 16,
-                                 color: notifire.getwhiteblackcolor,
-                                 fontFamily: "Gilroy Bold"),
-                                 ),
-                   Text("${_accommodation.createdAt?.day}/ ${_accommodation.createdAt?.month}/ ${_accommodation.createdAt?.year}"
-                                 ,
-                                 style: TextStyle(
-                                 fontSize: 16,
-                                 color: notifire.getwhiteblackcolor,
-                                 fontFamily: "Gilroy Bold"),
-                                 ),
-                  Text("al",
-                                 style: TextStyle(
-                                 fontSize: 16,
-                                 color: notifire.getwhiteblackcolor,
-                                 fontFamily: "Gilroy Bold"),
-                                 ),               
-                  Text(" ${_accommodation.updatedAt?.day}/ ${_accommodation.updatedAt?.month}/ ${_accommodation.updatedAt?.year}",
-                                 style: TextStyle(
-                                 fontSize: 16,
-                                 color: notifire.getwhiteblackcolor,
-                                 fontFamily: "Gilroy Bold"),
-                                 ),
-                 ],
-               ),
-        //      TableCalendar(
-               
-        //         firstDay: DateTime.now(),
-        //         lastDay: DateTime.now().add(Duration(days: 365)),
-        //         focusedDay: DateTime.now().add(Duration(days: 5)),
-        //         selectedDayPredicate: (day) {
-        //           if(day.day >21 && day.day <25){
-        //             return false;
-        //           }else{
-        //             return true;
-        //           }
-        //           // return isSameDay(_selectedDay, day);
-        //         },
-        //          rangeStartDay: _rangeStart,
-        //         rangeEndDay: _rangeEnd,
-        //         calendarFormat: _calendarFormat,
-        //         rangeSelectionMode: _rangeSelectionMode,
-        //         onDaySelected: (selectedDay, focusedDay) {
-        //             if (!isSameDay(_selectedDay, selectedDay)) {
-        //               setState(() {
-        //                 _selectedDay = selectedDay;
-        //                 _focusedDay = focusedDay;
-        //                 _rangeStart = null; // Important to clean those
-        //                 _rangeEnd = null;
-        //                 _rangeSelectionMode = RangeSelectionMode.toggledOff;
-        //               });
-        //             }
-        //         },
-        //          onRangeSelected: (start, end, focusedDay) {
-        //           setState(() {
-        //             _selectedDay = null;
-        //             _focusedDay = focusedDay;
-        //             _rangeStart = start;
-        //             _rangeEnd = end;
-        //             _rangeSelectionMode = RangeSelectionMode.toggledOn;
-        //             print(_rangeStart);
-        //             print(_rangeEnd);
-        //           });
-        //         },
-        //          onFormatChanged: (format) {
-        //   if (_calendarFormat != format) {
-        //     setState(() {
-        //       _calendarFormat = format;
-        //     });
-        //   }
-        // },
-        //       ),
-             
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withAlpha(10),
+                  borderRadius: BorderRadius.circular(8),
+                  // color: notifire.getdarkmodecolor
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("del", style: TextStyle(fontSize: 16,fontFamily: "Gilroy"),),
+                      Text("${_accommodation.createdAt?.day}/ ${_accommodation.createdAt?.month}/ ${_accommodation.createdAt?.year}",
+                        style: TextStyle(fontSize: 16, fontFamily: "Gilroy"),),
+                      Text("al", style: TextStyle(fontSize: 16,fontFamily: "Gilroy"),),               
+                      Text(" ${_accommodation.updatedAt?.day}/ ${_accommodation.updatedAt?.month}/ ${_accommodation.updatedAt?.year}",
+                        style: TextStyle(fontSize: 16,fontFamily: "Gilroy"),),
+                    ],
+                 ),
+              ),
               const SizedBox(height: 10),
-          //      Text(
-          // "Huespedes",
-          //     style: TextStyle(
-          //         fontSize: 16,
-          //         color: notifire.getwhiteblackcolor,
-          //         fontFamily: "Gilroy Bold"),
-          //   ),
-             SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                  Room(
-                      text: "Huespedes",
-                      titletext: "Mayores de 5 años",
-                      onclick1: () {
-                        setState(() {
-                          if(_counter2>1){
-                            _counter2--;
-                          }
-                        });
-                      },
-                      middeltext: "$_counter2",
-                      onclick2: () {
-                        setState(() {
-                          if(_counter2 < (_accommodation.guestCapacity ?? 0)){
-                            _counter2++;
-                          }
-                        });
-                      }),
-                  
-              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-              Divider(
-                color: notifire.getgreycolor,
-                thickness: 1,
+              Room(
+                text: "Cantidad de Huespedes",
+                titletext: "Mayores de 5 años",
+                onclick1: () {
+                  setState(() {
+                    if(_counter2>1){
+                      _counter2--;
+                    }
+                  });
+                },
+                middeltext: "$_counter2",
+                onclick2: () {
+                  setState(() {
+                    if(_counter2 < (_accommodation.guestCapacity ?? 0)){
+                      _counter2++;
+                    }
+                  });
+                }
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Divider(thickness: 1,),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Detalles del costo",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: notifire.getwhiteblackcolor,
-                          fontFamily: "Gilroy Bold")),
+                    style: TextStyle(fontSize: 16,fontFamily: "Gilroy Bold")
+                  ),
                   const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "\$${_accommodation.prices?.first.priceNight } x $_nights Nights",
+                      Text("\$${_accommodation.prices?.first.priceNight } x $_nights Nights",
                         style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Gilroy Medium",
-                            color: notifire.getgreycolor),
+                          fontSize: 14,
+                          fontFamily: "Gilroy Medium",
+                        ),
                       ),
-                      Text(
-                        "\$${_accommodation.prices!.first.priceNight*_nights}",
+                      Text("\BS ${_accommodation.prices!.first.priceNight*_nights}",
                         style: TextStyle(
-                            fontSize: 14,
-                            color: notifire.getgreycolor,
-                            fontFamily: "Gilroy Medium"),
+                          fontSize: 14,
+                          fontFamily: "Gilroy Medium"
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text("Costo de limpieza",
-                  //         style: TextStyle(
-                  //             fontSize: 14,
-                  //             fontFamily: "Gilroy Medium",
-                  //             color: notifire.getgreycolor)),
-                  //     Text("\$0",
-                  //         style: TextStyle(
-                  //             fontSize: 14,
-                  //             fontFamily: "Gilroy Medium",
-                  //             color: notifire.getgreycolor)),
-                  //   ],
-                  // ),
                   const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total (Bs.)",
-                          style: TextStyle(
-                              fontFamily: "Gilroy Bold",
-                              color: notifire.getwhiteblackcolor,),),
-                      Text("\$${_accommodation.prices!.first.priceNight*_nights}",
-                          style: TextStyle(
-                              fontFamily: "Gilroy Bold",
-                              color: notifire.getwhiteblackcolor,),),
+                      Text("Total (BS)",
+                        style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          // color: notifire.getwhiteblackcolor,
+                        ),
+                      ),
+                      Text("\BS ${_accommodation.prices!.first.priceNight*_nights}",
+                        style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          // color: notifire.getwhiteblackcolor,
+                        ),
+                      ),
                     ],
                   ),
-
                 ],
               ),
             ],
@@ -274,7 +172,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: InkWell(
-        onTap: paymentmodelbottomsheet,
+        onTap: ()=> context.push('/payment', extra: 1),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15,0,15,30),
           child: Container(
@@ -298,7 +196,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
 
   guestbottomsheet() {
     return showModalBottomSheet(
-      backgroundColor: notifire.getbgcolor,
+      backgroundColor: AppColors().bgcolor,
       isScrollControlled: true,
       context: context,
       shape: RoundedRectangleBorder(
@@ -324,9 +222,10 @@ class _CreateReservePageState extends State<CreateReservePage> {
                       Text(
                         "Cantidad de Huespedes",
                         style: TextStyle(
-                            fontFamily: "Gilroy Bold",
-                            fontSize: 18,
-                            color: notifire.getwhiteblackcolor),
+                          fontFamily: "Gilroy Bold",
+                          fontSize: 18,
+                          // color: notifire.getwhiteblackcolor
+                        ),
                       ),
                       InkWell(
                           onTap: () {
@@ -334,7 +233,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                           },
                           child: Icon(
                             Icons.close,
-                            color: notifire.getwhiteblackcolor,
+                            // color: notifire.getwhiteblackcolor,
                           ),),
                     ],
                   ),
@@ -377,6 +276,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
   Room({text, titletext, onclick1, onclick2, middeltext}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -384,7 +284,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
             Text(text,
                 style: TextStyle(
                     fontSize: 16,
-                    color: notifire.getwhiteblackcolor,
+                    // color: notifire.getwhiteblackcolor,
                     fontFamily: "Gilroy Bold")),
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -393,25 +293,33 @@ class _CreateReservePageState extends State<CreateReservePage> {
                   InkWell(
                     onTap: onclick1,
                     child: CircleAvatar(
-                      backgroundColor: notifire.getblackgreycolor,
+                      // backgroundColor: notifire.getblackgreycolor,
                       radius: 12,
-                      child: Icon(Icons.remove,
-                          color: notifire.getdarkwhitecolor, size: 20),
+                      child: Icon(
+                        Icons.remove,
+                        // color: notifire.getdarkwhitecolor, 
+                        size: 20
+                      ),
                     ),
                   ),
                   const SizedBox(width: 5),
                   Text(
                     middeltext,
-                    style: TextStyle(color: notifire.getwhiteblackcolor),
+                    style: TextStyle(
+                      // color: notifire.getwhiteblackcolor
+                    ),
                   ),
                   const SizedBox(width: 5),
                   InkWell(
                     onTap: onclick2,
                     child: CircleAvatar(
-                      backgroundColor: notifire.getdarkbluecolor,
+                      // backgroundColor: notifire.getdarkbluecolor,
                       radius: 12,
-                      child: Icon(Icons.add,
-                          color: notifire.getdarkwhitecolor, size: 20),
+                      child: Icon(
+                        Icons.add,
+                        // color: notifire.getdarkwhitecolor, 
+                        size: 20
+                      ),
                     ),
                   ),
                 ],
@@ -423,7 +331,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
           titletext,
           style: TextStyle(
               fontSize: 14,
-              color: notifire.getgreycolor,
+              // color: notifire.getgreycolor,
               fontFamily: "Gilroy Medium"),
         ),
       ],
@@ -434,7 +342,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
   paymentmodelbottomsheet() {
     return showModalBottomSheet(
         isScrollControlled: true,
-        backgroundColor: notifire.getbgcolor,
+        backgroundColor: AppColors().bgcolor,
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -467,9 +375,10 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             Text(
                               "Metodo de pago",
                               style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Gilroy Bold",
-                                  color: notifire.getwhiteblackcolor),
+                                fontSize: 18,
+                                fontFamily: "Gilroy Bold",
+                                // color: notifire.getwhiteblackcolor
+                              ),
                             ),
                             InkWell(
                                 onTap: () {
@@ -477,7 +386,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 },
                                 child: Icon(
                                   Icons.close,
-                                  color: notifire.getwhiteblackcolor,
+                                  // color: notifire.getwhiteblackcolor,
                                 ))
                           ],
                         ),
@@ -485,8 +394,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
                         Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: notifire.getdarkmodecolor),
+                            borderRadius: BorderRadius.circular(12),
+                            // color: notifire.getdarkmodecolor
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 6),
                             child: Row(
@@ -500,15 +410,16 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 Text(
                                   "Master Card",
                                   style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Gilroy Bold",
-                                      color: notifire.getwhiteblackcolor),
+                                    fontSize: 15,
+                                    fontFamily: "Gilroy Bold",
+                                    // color: notifire.getwhiteblackcolor
+                                  ),
                                 ),
                                 Spacer(),
                                 Theme(
                                   data: ThemeData(
-                                      unselectedWidgetColor:
-                                          notifire.getdarkwhitecolor),
+                                      // unselectedWidgetColor: notifire.getdarkwhitecolor
+                                  ),
                                   child: Checkbox(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
@@ -530,8 +441,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
                         Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: notifire.getdarkmodecolor),
+                            borderRadius: BorderRadius.circular(12),
+                            // color: notifire.getdarkmodecolor
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 6),
                             child: Row(
@@ -545,15 +457,16 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 Text(
                                   "Visa",
                                   style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Gilroy Bold",
-                                      color: notifire.getwhiteblackcolor),
+                                    fontSize: 15,
+                                    fontFamily: "Gilroy Bold",
+                                    // color: notifire.getwhiteblackcolor
+                                  ),
                                 ),
                                 Spacer(),
                                 Theme(
                                   data: ThemeData(
-                                      unselectedWidgetColor:
-                                          notifire.getdarkwhitecolor),
+                                    // unselectedWidgetColor: notifire.getdarkwhitecolor
+                                  ),
                                   child: Checkbox(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
@@ -575,8 +488,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
                         Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: notifire.getdarkmodecolor),
+                            borderRadius: BorderRadius.circular(12),
+                            // color: notifire.getdarkmodecolor
+                          ),
                           child: Row(
                             children: [
                               const SizedBox(width: 15),
@@ -584,16 +498,15 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 height: 40,
                                 width: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: notifire.getgreycolor),
+                                  borderRadius: BorderRadius.circular(12),
+                                  // color: notifire.getgreycolor
+                                ),
                                 child: Center(
                                   child: CircleAvatar(
-                                      backgroundColor:
-                                          notifire.getdarkbluecolor,
-                                      radius: 14,
-                                      child: Image.asset(
-                                          "assets/images/add.png",
-                                          height: 25)),
+                                    // backgroundColor: notifire.getdarkbluecolor,
+                                    radius: 14,
+                                    child: Image.asset("assets/images/add.png",height: 25)
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 15),
@@ -602,7 +515,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontFamily: "Gilroy Bold",
-                                  color: notifire.getwhiteblackcolor,
+                                  // color: notifire.getwhiteblackcolor,
                                 ),
                               ),
                             ],
@@ -663,149 +576,108 @@ class _CreateReservePageState extends State<CreateReservePage> {
 
   bookingSuccessfull() {
     return showModalBottomSheet(
-        isDismissible: false,
-        isScrollControlled: true,
-        backgroundColor: notifire.getbgcolor,
-        context: context,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        builder: (context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.60,
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Positioned(
-                        top: 20,
-                        child: CircleAvatar(
-                          radius: 70,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200),
-                            child: Image.asset(
-                                'assets/images/BookingSuccessfull.png'),
-                          ),
+      isDismissible: false,
+      isScrollControlled: true,
+      backgroundColor: AppColors().bgcolor,
+      context: context,
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.60,
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Positioned(
+                      top: 20,
+                      child: CircleAvatar(
+                        radius: 70,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(200),
+                          child: Image.asset(
+                              'assets/images/BookingSuccessfull.png'),
                         ),
                       ),
-                      Positioned(
-                        top: -28,
-                        right: 50,
-                        child: Image.asset(
-                          'assets/images/Success.png',
-                          height: 160,
-                        ),
+                    ),
+                    Positioned(
+                      top: -28,
+                      right: 50,
+                      child: Image.asset(
+                        'assets/images/Success.png',
+                        height: 160,
                       ),
-                      Positioned(
-                        bottom: 100,
-                        child: Column(
-                          children: [
-                            Center(
-                              child: Text(
-                                "Reserva creada",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: "Gilroy Bold",
-                                    color: notifire.getwhiteblackcolor),
+                    ),
+                    Positioned(
+                      bottom: 100,
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              "Reserva creada",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Gilroy Bold",
+                                // color: notifire.getwhiteblackcolor
                               ),
                             ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: Text(
-                                "¡Felicitaciones! Por favor, regístrese en la fecha correspondiente. ¡Disfrute de su viaje!",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: notifire.getgreycolor,
-                                    fontFamily: "Gilroy Medium"),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          // selectedIndex = 0;
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => const homepage()));
-                          context.pop(); 
-                          context.pop();
-                          context.replace('/menu-viajero');
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 300, left: 20, right: 20),
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Darkblue,
                           ),
-                          child: Center(
-                              child: Text("Terminar",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: WhiteColor,
-                                      fontFamily: "Gilroy Bold"))),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 1,
+                            child: Text(
+                              "¡Felicitaciones! Por favor, regístrese en la fecha correspondiente. ¡Disfrute de su viaje!",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  // color: notifire.getgreycolor,
+                                  fontFamily: "Gilroy Medium"),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // selectedIndex = 0;
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => const homepage()));
+                        context.pop(); 
+                        context.pop();
+                        context.replace('/menu-viajero');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            top: 300, left: 20, right: 20),
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Darkblue,
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            );
-          });
+                        child: Center(
+                            child: Text("Terminar",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: WhiteColor,
+                                    fontFamily: "Gilroy Bold"))),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
         });
+      }
+    );
   }
-
-  // PaymentCard(
-  //     {Function(bool?)? OnChage, String? image, CardName, bool? check}) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //         children: [
-  //           Image.asset(
-  //             image!,
-  //             height: 25,
-  //           ),
-  //           Text(
-  //             CardName,
-  //             style: TextStyle(fontSize: 15, fontFamily: "Gilroy Bold"),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(width: 25),
-
-  //       // SizedBox(width: MediaQuery.of(context).size.width / 2.61),
-  //       Row(
-  //         children: [
-  //           Checkbox(
-  //               shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(5)),
-  //               value: check,
-  //               activeColor: Darkblue,
-  //               onChanged: OnChage!),
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
-  }
+  
    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       if (args.value is PickerDateRange) {

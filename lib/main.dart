@@ -6,6 +6,7 @@ import 'package:tomatebnb/bloc/blocs.dart';
 import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/router/app_router.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,16 @@ class MyApp extends StatelessWidget {
             highlightColor: Colors.transparent,
             dividerColor: Colors.transparent,
           ),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('es', ''),
+            Locale('en', ''),
+          ],
+          locale: const Locale('es', '')
         );  
       }),
     );

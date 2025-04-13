@@ -71,8 +71,7 @@ class _SelectDatePageState extends State<SelectDatePage> {
     // _accommodation.updatedAt=null;
     if (_accommodation.id != null) {
       context
-          .read<AccommodationAvailabilityBloc>()
-          .add(AccommodationAvailabilityGetEvent(_accommodation.id!));
+          .read<AccommodationAvailabilityBloc>().add(AccommodationAvailabilityGetEvent(_accommodation.id!));
     }
     return Scaffold(
       appBar: AppBar(
@@ -80,24 +79,24 @@ class _SelectDatePageState extends State<SelectDatePage> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         // leading: BackButton(color: notifire.getwhiteblackcolor),
         title: Text(
-          "Elija fechas",
+          "Elejir Fechas",
           style: TextStyle(fontFamily: "Gilroy Bold"),
         ),
-        actions: [
-          Ink(
-            height: 40,
-            decoration:
-                ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
-            child:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
-          ),
-          SizedBox(
-            width: 10,
-          )
-        ],
+        // actions: [
+        //   Ink(
+        //     height: 40,
+        //     decoration:
+        //         ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
+        //     child:
+        //         IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+        //   ),
+        //   SizedBox(
+        //     width: 10,
+        //   )
+        // ],
       ),
       body: Column(
         children: <Widget>[
@@ -106,8 +105,8 @@ class _SelectDatePageState extends State<SelectDatePage> {
               // TODO: implement listener
               if(state is AccommodationAvailabilityGetError){
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(state.message),
-                      ));
+                  content: Text(state.message),
+                ));
               }
               if(state is AccommodationAvailabilityGetSuccess){
                 occupieds = state.responseAccommodationAvailabilitys;
@@ -117,33 +116,29 @@ class _SelectDatePageState extends State<SelectDatePage> {
               if(state is AccommodationAvailabilityGetLoading){
                 return Center(child: CircularProgressIndicator(),);
               }
-              return Expanded(
-                child: Card(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: SfDateRangePicker(
-                    controller: _controller,
-                    view: DateRangePickerView.month,
-                    selectionMode: DateRangePickerSelectionMode.range,
-                    enablePastDates: false,
-                    minDate: DateTime.now().add(Duration(days: 1)),
-                    maxDate: DateTime.now().add(Duration(days: 365)),
-                    // initialSelectedRange:
-                    // PickerDateRange(_activeDates[0], _activeDates[5]),
-                    startRangeSelectionColor:
-                        Theme.of(context).colorScheme.primary,
-                    endRangeSelectionColor:
-                        Theme.of(context).colorScheme.primary,
-                    rangeSelectionColor:
-                        Theme.of(context).colorScheme.secondary,
-                    //  onSelectionChanged: selectionChanged,
-                    onSelectionChanged: _onSelectionChanged,
-                    selectableDayPredicate: predicateCallback,
-                    monthCellStyle: DateRangePickerMonthCellStyle(
-                      disabledDatesTextStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                          fontSize: 13,
-                          fontFamily: 'Roboto'),
-                    ),
+              return Card(
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: SfDateRangePicker(
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  controller: _controller,
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  enablePastDates: false,
+                  minDate: DateTime.now().add(Duration(days: 1)),
+                  maxDate: DateTime.now().add(Duration(days: 365)),
+                  // initialSelectedRange:
+                  // PickerDateRange(_activeDates[0], _activeDates[5]),
+                  startRangeSelectionColor: Theme.of(context).colorScheme.primary,
+                  endRangeSelectionColor: Theme.of(context).colorScheme.primary,
+                  rangeSelectionColor: Theme.of(context).colorScheme.secondary,
+                  //  onSelectionChanged: selectionChanged,
+                  onSelectionChanged: _onSelectionChanged,
+                  selectableDayPredicate: predicateCallback,
+                  monthCellStyle: DateRangePickerMonthCellStyle(
+                    disabledDatesTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 13,
+                        fontFamily: 'Roboto'),
                   ),
                 ),
               );
