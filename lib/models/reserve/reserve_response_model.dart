@@ -61,9 +61,9 @@ class ReserveResponseModel {
         startDate: DateTime.parse(json["start_date"]),
         endDate: DateTime.parse(json["end_date"]),
         numberGuests: json["number_guests"],
-        totalPrice: double.parse(json["total_price"]??"0.0"),
-        cashDiscount: double.parse(json["cash_discount"]??"0.0"),
-        commission: double.parse(json["commission"]??"0.0"),
+        totalPrice: double.parse((json["total_price"]??0).toString()),
+        cashDiscount: double.parse((json["cash_discount"]??0).toString()),
+        commission: double.parse((json["commission"]??0).toString()),
         state: json["state"],
         status: json["status"],
         accommodation: AccommodationResponseModel.fromJson(json["accommodation"])
