@@ -14,6 +14,7 @@ import 'package:tomatebnb/models/accommodation/accommodation_response_complete_m
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 import 'package:tomatebnb/ui/widgets/item_list_instruction_anuncio.dart';
 import 'package:tomatebnb/ui/widgets/item_list_rule_anuncio.dart';
+import 'package:tomatebnb/ui/widgets/skeleton_icon_describe_widget.dart';
 import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:tomatebnb/utils/static_map_image.dart';
@@ -253,7 +254,8 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
                                         0.015),
                                 ReadMoreText(
                                   state.responseAccommodation.description != null
-                                      ? '${accommodation.type!.name}: ${accommodation.description}'
+                                      // ? '${accommodation.type!.name}: ${accommodation.description}'
+                                      ? '${accommodation.description}'
                                       : "Sin descripción",
                                   trimLines: 2,
                                   trimMode: TrimMode.Line,
@@ -401,12 +403,14 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
                                                   color: notifire.getgreycolor,
                                                   fontFamily: "Gilroy Medium"),
                                             ),
-                                            leading: Image.asset(
-                                              "assets/images/wifi.png",
-                                              height: 20,
-                                              color:
-                                                  notifire.getwhiteblackcolor,
-                                            ),
+                                            leading:  FadeInImage.memoryNetwork(
+                                            placeholder: Uint8List(0),
+                                            placeholderErrorBuilder: (context, error, stackTrace) => SkeletonIconDescribeWidget(),
+                                            image: services[index].service!.icon,
+                                            height: 30,
+                                            width: 30,
+                                          
+                                          ),
                                           );
                                         
                                         },

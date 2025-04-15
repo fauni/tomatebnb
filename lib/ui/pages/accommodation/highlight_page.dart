@@ -486,11 +486,21 @@ class _HighlightPageState extends State<HighlightPage> {
                                           title: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12.0),
-                                            child: Icon(Icons.bed),
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder:
+                                                  'assets/images/load.gif',
+                                              image:
+                                                  // '$_imgsUrl/services/${services[index].icon}',
+                                                   services[index].icon,
+                                              height: 30.0,
+                                              width: 30.0,
+                                            ),
                                           ),
                                           subtitle: Center(
                                             child: Text(
                                               services[index].name,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   fontFamily: "Gilroy Bold",
                                                   fontSize: 16,

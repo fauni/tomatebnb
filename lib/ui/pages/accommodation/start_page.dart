@@ -83,7 +83,7 @@ class _StartPageState extends State<StartPage> {
                         padding: const EdgeInsets.only(
                             left: 12.0, bottom: 12.0, top: 12.0),
                         child: Text(
-                          "Empieza a utilizar TomateBnB, es muy sencillo",
+                          "Empieza a utilizar SAMAY, es muy sencillo",
                           style: TextStyle(
                               fontSize: 20,
                               color: notifire.getwhiteblackcolor,
