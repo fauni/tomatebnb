@@ -282,11 +282,16 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                             width: 100.0,
                                             child: Column(
                                               children: [
-                                                Image.asset(
-                                                    "assets/images/wifi.png",
-                                                    height: 30,
-                                                    color: notifire
-                                                        .getwhiteblackcolor),
+                                                FadeInImage.assetNetwork(
+                                              placeholder:
+                                                  'assets/images/load.gif',
+                                              image:
+                                                  // '$_imgsUrl/services/${services[index].icon}',
+                                                   services[index].service!.icon,
+                                              height: 30.0,
+                                              width: 30.0,
+                                            ),
+                                               
                                                 Text(
                                                   services[index]
                                                           .service

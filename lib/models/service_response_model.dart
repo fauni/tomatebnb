@@ -32,6 +32,7 @@ class ServiceResponseModel {
     bool status;
     DateTime createdAt;
     DateTime updatedAt;
+    String icon;
 
     ServiceResponseModel({
         required this.id,
@@ -41,6 +42,7 @@ class ServiceResponseModel {
         required this.status,
         required this.createdAt,
         required this.updatedAt,
+        required this.icon,
     });
 
     factory ServiceResponseModel.fromJson(Map<String, dynamic> json) => ServiceResponseModel(
@@ -51,6 +53,7 @@ class ServiceResponseModel {
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        icon: json["icon"]??"",
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,5 +64,6 @@ class ServiceResponseModel {
         "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "icon": icon,
     };
 }
