@@ -2,6 +2,8 @@
 //
 //     final AccommodationResponseModel = AccommodationResponseModelFromJson(jsonString);
 import 'dart:convert';
+import 'package:tomatebnb/models/accommodation/accommodation_photo_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_price_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 
 class AccommodationsResponseModel {
@@ -45,6 +47,9 @@ class AccommodationResponseModel {
     bool? published;
     DateTime? updatedAt;
     DateTime? createdAt;
+    final List<AccommodationPricesRequestModel>? prices;
+    final List<AccommodationPhotosRequestModel>? photos;
+
 
     AccommodationResponseModel({
         this.id,
@@ -68,6 +73,8 @@ class AccommodationResponseModel {
         this.published,
         this.updatedAt,
         this.createdAt,
+        this.prices,
+        this.photos,
     });
 
      AccommodationResponseModel copyWith({
@@ -91,7 +98,9 @@ class AccommodationResponseModel {
         bool? status,
         bool? published,
         DateTime? updatedAt,
-        DateTime? createdAt
+        DateTime? createdAt,
+        List<AccommodationPricesRequestModel>? prices,
+        List<AccommodationPhotosRequestModel>? photos,
     }) => 
         AccommodationResponseModel(
             id: id?? this.id,
@@ -114,7 +123,9 @@ class AccommodationResponseModel {
             status: status?? this.status,
             published: published?? this.published,
             updatedAt: updatedAt?? this.updatedAt,
-            createdAt: createdAt?? this.createdAt
+            createdAt: createdAt?? this.createdAt,
+            prices: prices?? this.prices,
+            photos: photos?? this.photos,
         );
 
     factory AccommodationResponseModel.fromJson(Map<String, dynamic> json) => AccommodationResponseModel(
@@ -139,6 +150,8 @@ class AccommodationResponseModel {
         published: json["published"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
+        // prices: json["prices"] == null ? [] : List<Price>.from(json["prices"]!.map((x) => Price.fromJson(x))),
+        // photos: json["photos"] == null ? [] : List<Photo>.from(json["photos"]!.map((x) => Photo.fromJson(x))),
     );
  
     Map<String, dynamic> toJson() => {

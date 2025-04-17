@@ -21,4 +21,10 @@ class ReserveGetByUserEvent extends ReserveEvent {
   List<Object?> get props => [];
 }
 
+class ReserveGetByIdEvent extends ReserveEvent {
+  final int id;
+  ReserveGetByIdEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
 

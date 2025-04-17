@@ -9,7 +9,41 @@ import 'package:tomatebnb/models/response/api_response_list.dart' as api_respons
 import 'package:tomatebnb/models/response/api_response.dart';
 
 class ReserveRepository {
-   final String _baseUrl = Environment.UrlApi;
+  final String _baseUrl = Environment.UrlApi;
+
+  Future<ApiResponse<ReserveResponseModel>> getReserveById(int id) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      final response = await http.get(
+        Uri.parse('$_baseUrl/v1/reserves/$id'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        }
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<ReserveResponseModel>(
+          status: true,
+          message: data['message'],
+          data: ReserveResponseModel.fromJson(data['data']),
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<ReserveResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<ReserveResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
 
   Future<api_response_list.ApiResponse<ReserveResponseModel>> getbyAccommodation(int accommodationId) async {
     try{

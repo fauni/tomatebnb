@@ -50,3 +50,22 @@ class ReserveGetByUserError extends ReserveState {
   @override
   List<Object> get props => [message];
 }
+
+// Estados para obtener reserva por id
+class ReserveGetByIdLoading extends ReserveState {}
+class ReserveGetByIdSuccess extends ReserveState {
+  final ReserveResponseModel responseReserve;
+  ReserveGetByIdSuccess(
+    this.responseReserve
+  );
+  @override
+  List<Object> get props => [responseReserve];
+}
+class ReserveGetByIdError extends ReserveState {
+  final String message;
+  ReserveGetByIdError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

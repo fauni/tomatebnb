@@ -679,7 +679,6 @@ class _CreateReservePageState extends State<CreateReservePage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Gilroy Bold",
-                                  // color: notifire.getwhiteblackcolor
                                 ),
                               ),
                             ),
@@ -689,10 +688,9 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 1,
                               child: Text(
-                                "¡Felicitaciones! , regístrese en la fecha correspondiente. ¿Desea continuar con el pago?",
+                                "¡Felicitaciones!, se ha registrado su reserva en la fecha correspondiente. ¿Desea continuar con el pago?",
                                 style: TextStyle(
                                     fontSize: 14,
-                                    // color: notifire.getgreycolor,
                                     fontFamily: "Gilroy Medium"),
                                 textAlign: TextAlign.center,
                               ),
@@ -702,9 +700,6 @@ class _CreateReservePageState extends State<CreateReservePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          // selectedIndex = 0;
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => const homepage()));
                           context.pop();
                           context.pop();
                           context.replace('/menu-viajero');
@@ -719,7 +714,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             color: Colors.transparent,
                           ),
                           child: Center(
-                              child: Text("Terminar",
+                              child: Text("Todavía no",
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: Theme.of(context).colorScheme.primary,
@@ -745,7 +740,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                             color: Darkblue,
                           ),
                           child: Center(
-                              child: Text("Realizar pago",
+                              child: Text("Realizar Pago",
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: WhiteColor,

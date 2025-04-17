@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tomatebnb/bloc/blocs.dart';
 import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/router/app_router.dart';
+import 'package:tomatebnb/provider/navigation_provider.dart';
 import 'package:tomatebnb/utils/dark_lightmode.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -15,6 +16,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ColorNotifire()),
+        ChangeNotifierProvider(create: (_) => NavigationProvider())
       ],
       child: const MyApp(),
     )

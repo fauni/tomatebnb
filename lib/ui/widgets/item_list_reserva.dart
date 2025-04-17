@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
-import 'package:tomatebnb/config/constants/environment.dart';
-import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
-// import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
-// import 'package:tomatebnb/utils/customwidget.dart';
 
 class ItemListReserva extends StatelessWidget {
   final ReserveResponseModel reserva;
@@ -15,120 +11,86 @@ class ItemListReserva extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imgsUrl = Environment.UrlImg;
-    context.read<AccommodationBloc>()
-           .add(AccommodationGetByIdEvent(reserva.accommodationId??0));
+    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(reserva.accommodationId??0));
     return BlocBuilder<AccommodationBloc, AccommodationState>(
       
       builder: (context, state) {
         return GestureDetector(
-           onTap: () => context.push('/detalle_reserva', extra: reserva),
+          onTap: () => context.push('/detalle_reserva', extra: reserva),
           child: Container(
-            width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 6),
             padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: reserva.state != 'pendiente'
-                    ? Theme.of(context).colorScheme.inversePrimary
-                    : Theme.of(context).colorScheme.errorContainer,
-                width: 2,
-              ),
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.surfaceContainer,
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Container(
-                //   margin:
-                //       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                //   height: 75,
-                //   width: 75,
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(15),
-                //     // color: Colors.red,
-                //   ),
-                //   child: ClipRRect(
-                //     borderRadius: BorderRadius.circular(10),
-                //     child: anuncio.photos!.isNotEmpty
-                //         ? FadeInImage.assetNetwork(
-                //             placeholder: 'assets/images/load.gif',
-                //             image:
-                //                 '$imgsUrl/accommodations/${anuncio.photos?.first.photoUrl}')
-                //         : Image.asset("assets/images/BoutiqueHotel.jpg"),
-                //   ),
-                // ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      reserva.accommodation?.title?? "Sin título",
-                      style: TextStyle(fontSize: 15, fontFamily: "Gilroy Bold"),
-                    ),
-                    // const SizedBox(height: 6),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.006),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.65,
-                      child: Text(
-                        reserva.accommodation?.description ?? "Sin descripción",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 13, fontFamily: "Gilroy Medium"),
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('del '),
-                            Text(
-                              "${reserva.startDate?.day}/${reserva.startDate?.month}/${reserva.startDate?.year}",
-                              style: TextStyle(
-                                  fontSize: 16, fontFamily: "Gilroy Bold"),
-                            ),
-                            const SizedBox(width: 3),
-                            Text(
-                              "al",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontFamily: "Gilroy Medium"),
-                            ),
-                            Text(
-                              "${reserva.endDate?.day}/${reserva.endDate?.month}/${reserva.endDate?.year}",
-                              style: TextStyle(
-                                  fontSize: 16, fontFamily: "Gilroy Bold"),
-                            ),
-                          ],
-                        ),
-                       
-                      ],
-                    ),
-                       Row(
-                      children: [
-                        Text('Bs.'),
-                        Text(
-                          reserva.totalPrice.toString(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "Gilroy Bold"),
-                        ),
-                        const SizedBox(width: 3),
-                        Text(
-                          "Por el total de noches",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontFamily: "Gilroy Medium"),
-                        ),
-                      ],
-                    )
-                  ],
+                Text(
+                  reserva.accommodation?.title?? "Sin título",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "Gilroy Bold",
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
+                SizedBox(width: MediaQuery.of(context).size.width * 1,
+                  child: Text(
+                    reserva.accommodation?.description ?? "Sin descripción",
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: "Gilroy",
+                      color: Theme.of(context).colorScheme.secondary,
+                      overflow: TextOverflow.ellipsis
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).colorScheme.primary.withAlpha(30)
+                  ),
+                  child: Row(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('Desde el ', style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy"),),
+                          Text("${reserva.startDate?.day}/${reserva.startDate?.month}/${reserva.startDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
+                          const SizedBox(width: 5),
+                          Text( "hasta el ", style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy"),),
+                          SizedBox(width: 5,),
+                          Text("${reserva.endDate?.day}/${reserva.endDate?.month}/${reserva.endDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
+                        ],
+                      ),                       
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).colorScheme.primary.withAlpha(30)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Precio Total: ", 
+                        style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          color: Theme.of(context).colorScheme.primary
+                        ),
+                      ),
+                      Text('${reserva.totalPrice} BS.', style: TextStyle(fontFamily: "Gilroy"),),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

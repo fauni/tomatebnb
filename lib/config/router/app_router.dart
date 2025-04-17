@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 import 'package:tomatebnb/ui/pages/accommodation/accommodation_detail_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/accommodation_instructions_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/accommodation_rules_page.dart';
@@ -124,9 +125,12 @@ final GoRouter appRouter = GoRouter(
       path: '/select_date',
       builder: (context, state) => const SelectDatePage()
     ),
-     GoRoute(
+    GoRoute(
       path: '/detalle_reserva',
-      builder: (context, state) => const ReserveDetailPage()
+      builder: (context, state){
+        final reserva = state.extra as ReserveResponseModel;
+        return ReserveDetailPage(reserva: reserva);
+      }
     ),
      GoRoute(
       path: '/cambiar_password',

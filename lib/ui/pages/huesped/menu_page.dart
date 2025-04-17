@@ -1,15 +1,13 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tomatebnb/config/app_colors.dart';
+import 'package:tomatebnb/provider/navigation_provider.dart';
 import 'package:tomatebnb/ui/pages/huesped/explorar_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/favorito_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/profile_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/viaje_page.dart';
 import 'package:tomatebnb/utils/Colors.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
-
-int selectedIndex = 0;
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -19,9 +17,6 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  // late int _lastTimeBackButtonWasTapped;
-  // static const exitTimeInMillis = 2000;
-
   final _pageOption = [
     const ExplorarPage(),
     const FavoritoPage(),
@@ -31,71 +26,60 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   void initState() {
-    getdarkmodepreviousstate();
     super.initState();
   }
 
-  late ColorNotifire notifire;
-
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
+    final navigationProvider = Provider.of<NavigationProvider>(context);
+    var colortheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      body: _pageOption[navigationProvider.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        unselectedItemColor: notifire.getwhiteblackcolor,
-        backgroundColor: notifire.getbgcolor,
+        unselectedItemColor: AppColors().WhiteColor,
+        backgroundColor: AppColors().boxcolor,
         elevation: 0,
         selectedLabelStyle: const TextStyle(
             fontFamily: 'Gilroy Bold', fontWeight: FontWeight.bold),
-        fixedColor: notifire.getwhiteblackcolor,
+        fixedColor: Theme.of(context).colorScheme.tertiary,
         unselectedLabelStyle: const TextStyle(fontFamily: 'Gilroy Medium'),
-        currentIndex: selectedIndex,
+        currentIndex: navigationProvider.selectedIndex,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.searchOutline, color: selectedIndex == 0 ? Darkblue : greyColor),
+              icon: Icon(EvaIcons.searchOutline, color: navigationProvider.selectedIndex == 0 ? colortheme.tertiary : greyColor),
               label: 'Explora'),
           BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/images/heart.png",
                 height: 25,
-                color: selectedIndex == 1 ? Darkblue : greyColor,
+                color: navigationProvider.selectedIndex == 1 ? colortheme.tertiary : greyColor,
               ),
               label: 'Favoritos'),
           BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/images/booking.png",
                 height: 25,
-                color: selectedIndex == 2 ? Darkblue : greyColor,
+                color: navigationProvider.selectedIndex == 2 ? colortheme.tertiary : greyColor,
               ),
               label: 'Mis Reservas'),
           BottomNavigationBarItem(
             icon: Image.asset(
               "assets/images/profile.png",
               height: 25,
-              color: selectedIndex == 3 ? Darkblue : greyColor,
+              color: navigationProvider.selectedIndex == 3 ? colortheme.tertiary : greyColor,
             ),
             label: 'Mi Perfil',
           ),
         ],
         onTap: (index) {
           setState(() {});
-          selectedIndex = index;
+          navigationProvider.setPage(index);
         },
-      ),
-      body: _pageOption[selectedIndex],
+      )
     );
-  }
-
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
   }
 }
