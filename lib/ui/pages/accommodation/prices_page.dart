@@ -252,7 +252,6 @@ class _PricesPageState extends State<PricesPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
             SizedBox(
@@ -375,15 +374,10 @@ class _PricesPageState extends State<PricesPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(
-                  height: MediaQuery.of(context).size.height *
-                      0.02), //upar thi jagiya mukeli che
-              // ignore: sized_box_for_whitespace
-          
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),          
               Padding(
                 padding: const EdgeInsets.symmetric(),
                 child: Text(
@@ -419,13 +413,13 @@ class _PricesPageState extends State<PricesPage> {
                     child: TextField(
                       controller: _priceController,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 26),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        prefixText: 'Bs.',
+                        prefixText: 'BS.',
                         hintText: "0",
                         hintStyle: TextStyle(
-                          fontSize: 50.0,
+                          fontSize: 24.0,
                           color: Theme.of(context).colorScheme.primary,
                           fontFamily: "Gilroy Medium",
                         ),
@@ -533,24 +527,16 @@ class _PricesPageState extends State<PricesPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(
-                  height: MediaQuery.of(context).size.height *
-                      0.02), //upar thi jagiya mukeli che
-              // ignore: sized_box_for_whitespace
-          
+              SizedBox(height: MediaQuery.of(context).size.height *0.02),
               Padding(
                 padding: const EdgeInsets.symmetric(),
                 child: Text(
                   _titles[_currentPage]['title'] ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: "Gilroy Bold",
-                      color: notifire.getwhiteblackcolor), //heding Text
+                  style: TextStyle(fontSize: 24,fontFamily: "Gilroy Bold",color: notifire.getwhiteblackcolor), //heding Text
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -578,12 +564,12 @@ class _PricesPageState extends State<PricesPage> {
                       controller: _priceWeekendController,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.numberWithOptions(),
-                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 26),
                       decoration: InputDecoration(
-                        prefixText: 'Bs.',
+                        prefixText: 'BS.',
                         hintText: "0",
                         hintStyle: TextStyle(
-                          fontSize: 50.0,
+                          fontSize: 26.0,
                           color: Theme.of(context).colorScheme.primary,
                           fontFamily: "Gilroy Medium",
                         ),
@@ -692,7 +678,6 @@ class _PricesPageState extends State<PricesPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -702,10 +687,7 @@ class _PricesPageState extends State<PricesPage> {
                 child: Text(
                   _titles[_currentPage]['title'] ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: "Gilroy Bold",
-                      color: notifire.getwhiteblackcolor), //heding Text
+                  style: TextStyle(fontSize: 24,fontFamily: "Gilroy Bold",color: notifire.getwhiteblackcolor), //heding Text
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),

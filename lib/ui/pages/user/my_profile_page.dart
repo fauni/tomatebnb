@@ -410,7 +410,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: color.tertiary,
+                                    backgroundColor: color.tertiary.withAlpha(150),
                                     child: Image.asset('assets/images/camera.png',height: 25,),
                                   ),
                                 ),
@@ -467,7 +467,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: color.tertiary,
+                                    backgroundColor: color.tertiary.withAlpha(150),
                                     child: Image.asset(
                                       'assets/images/camera.png',
                                       height: 25,
@@ -524,7 +524,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: color.tertiary,
+                                    backgroundColor: color.tertiary.withAlpha(150),
                                     child: Image.asset(
                                       'assets/images/camera.png',
                                       height: 25,

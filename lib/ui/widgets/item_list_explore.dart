@@ -124,7 +124,8 @@ class _ItemListExploreState extends State<ItemListExplore> {
                     overflow: TextOverflow.ellipsis),
               ),
               Text(
-                '${widget.accommodation.city!} - ${widget.accommodation.country!}',
+                widget.accommodation.city!,
+                // '${widget.accommodation.city!} - ${widget.accommodation.country!}',
                 style: TextStyle(fontSize: 12,color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy Medium")
               )
             ],

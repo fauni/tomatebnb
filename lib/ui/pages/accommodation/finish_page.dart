@@ -53,31 +53,20 @@ class _FinishPageState extends State<FinishPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.02),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(),
-                      child: Text(
-                        'Creaste tu anuncion con éxito',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: "Gilroy Bold",
-                            color: Theme.of(context)
-                                .colorScheme
-                                .tertiary), //heding Text
+                    SizedBox(width: double.infinity,height: MediaQuery.of(context).size.height * 0.04),
+                    Center(child: Image.asset('assets/logos/logo-samay.JPG', height: 100,)),
+                    SizedBox(height: 12,),
+                    Center(
+                      child: Text('Tu anuncio fue creado con éxito',
+                        style: TextStyle(fontSize: 20, fontFamily: "Gilroy Bold",color: Theme.of(context).colorScheme.secondary
+                        ),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    labelTile('Título'),
-                    dataTile(accommodationResponseModel!.title ?? 'Sin título',
-                        20.0),
+                    dataTile(accommodationResponseModel!.title ?? 'Sin título', 14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    labelTile('Descripción'),
                     dataTile(
-                        accommodationResponseModel!.description ?? 'Sin título',
-                        16.0),
+                        accommodationResponseModel!.description ?? 'Sin título', 14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('Dirección'),
                     dataTile(
@@ -86,7 +75,7 @@ class _FinishPageState extends State<FinishPage> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('Ciudad'),
                     dataTile(
-                        accommodationResponseModel!.city ?? 'Sin título', 16.0),
+                        accommodationResponseModel!.city ?? 'Sin título', 14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('País'),
                     dataTile(
@@ -94,46 +83,33 @@ class _FinishPageState extends State<FinishPage> {
                         16.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('Capacidad'),
-                    dataTile(
-                        '${accommodationResponseModel!.guestCapacity} Huespedes',
-                        20.0),
-                    dataTile(
-                        '${accommodationResponseModel!.numberRooms} Recamaras',
-                        20.0),
-                    dataTile(
-                        '${accommodationResponseModel!.numberBathrooms} Baños',
-                        20.0),
-                    dataTile(
-                        '${accommodationResponseModel!.guestCapacity} Camas',
-                        20.0),
+                    dataTile('${accommodationResponseModel!.guestCapacity} Huespedes',14.0),
+                    SizedBox(height: 5,),
+                    dataTile('${accommodationResponseModel!.numberRooms} Recamaras',14.0),
+                    SizedBox(height: 5,),
+                    dataTile('${accommodationResponseModel!.numberBathrooms} Baños',14.0),
+                    SizedBox(height: 5,),
+                    dataTile('${accommodationResponseModel!.guestCapacity} Camas',14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('Tipo de hospedaje'),
-                    dataTile(
-                        accommodationResponseModel?.type?.name ?? 'Sin título',
-                        16.0),
+                    dataTile(accommodationResponseModel?.type?.name ?? 'Sin título',14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     labelTile('Se ve como un(a)'),
-                    dataTile(
-                        accommodationResponseModel?.describe?.describe ??
-                            'Sin título',
-                        16.0),
+                    dataTile(accommodationResponseModel?.describe?.describe ??'Sin título',14.0),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Center(
-                          child: Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: AppButton(
-                            buttontext: 'Pagina Principal',
-                            onclick: () {
-                              // accommodationRequestModel.priceNight =
-                              // accommodationResponseModel!.prices!.first.priceNight;
-                              context.pushReplacement('/menu-anfitrion');
-                               context
-                                .read<AccommodationBloc>()
-                                .add(AccommodationGetEvent());
-                            },
-                            context: context),
-                      )),
-                    
+                          buttontext: 'Pagina Principal',
+                          onclick: () {
+                            context.pushReplacement('/menu-anfitrion');
+                            context.read<AccommodationBloc>().add(AccommodationGetEvent());
+                          },
+                          context: context
+                        ),
+                      )
+                    ),
                   ],
                 ),
               );
@@ -149,16 +125,12 @@ class _FinishPageState extends State<FinishPage> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(10),
               border: Border(
-                top: BorderSide(
-                    color: Theme.of(context).colorScheme.tertiary, width: 1.0),
-                bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.tertiary, width: 1.0),
-                left: BorderSide(
-                    color: Theme.of(context).colorScheme.tertiary, width: 1.0),
-                right: BorderSide(
-                    color: Theme.of(context).colorScheme.tertiary, width: 1.0),
+                top: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 0.5),
+                bottom: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 0.5),
+                left: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 0.5),
+                right: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 0.5),
               ),
               color: Colors.white),
           child: Column(
@@ -168,9 +140,7 @@ class _FinishPageState extends State<FinishPage> {
                   child: Text(
                     data,
                     style: TextStyle(
-                        fontFamily: "Gilroy Bold",
-                        fontSize: size,
-                        color: Theme.of(context).colorScheme.primary),
+                        fontFamily: "Gilroy", fontSize: size, color: Theme.of(context).colorScheme.secondary),
                   ),
                 ),
                 // isThreeLine: true,
@@ -186,8 +156,8 @@ class _FinishPageState extends State<FinishPage> {
       child: Text(
         label,
         style: TextStyle(
-            fontSize: 20,
-            fontFamily: "Gilroy Bold",
+            fontSize: 14,
+            fontFamily: "Gilroy",
             color: Theme.of(context).colorScheme.primary), //heding Text
       ),
     );
