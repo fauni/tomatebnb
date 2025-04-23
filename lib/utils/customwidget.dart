@@ -41,33 +41,17 @@ CustomAppbar(
 textfield({String? text, prefix, suffix, Color? hintcolor, feildcolor , TextEditingController? controller}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 0),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16), color: feildcolor),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: feildcolor),
     child: TextField(
       controller: controller,
       decoration: InputDecoration(
         hintText: text,
         labelStyle: const TextStyle(color: Colors.white),
         hintStyle: TextStyle(color: hintcolor, fontFamily: "Gilroy Medium"),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          child: prefix,
-        ),
-        suffixIcon: Padding(
-          padding: const EdgeInsets.all(6),
-          child: suffix,
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: greyColor,
-          ),
-          borderRadius: BorderRadius.circular(15),
-        ),
+        prefixIcon: Padding(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),child: prefix,),
+        suffixIcon: Padding(padding: const EdgeInsets.all(6),child: suffix,),
+        border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10),),),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: greyColor,),borderRadius: BorderRadius.circular(10),),
       ),
     ),
   );
@@ -78,16 +62,11 @@ AppButton({onclick, buttontext, BuildContext? context}) {
   return InkWell(
     onTap: onclick,
     child: Container(
-        height: 55,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Theme.of(context!).colorScheme.primary),
-        child: Center(
-            child: Text(buttontext,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: WhiteColor,
-                    fontFamily: "Gilroy Bold")))),
+      height: 55,
+      width: double.infinity,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context!).colorScheme.secondary),
+      child: Center(child: Text(buttontext,style: TextStyle(fontSize: 16,color: WhiteColor,fontFamily: "Gilroy Bold")))
+    )
   );
 }
 

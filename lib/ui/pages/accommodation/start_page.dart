@@ -9,7 +9,6 @@ import 'package:tomatebnb/models/accommodation/accommodation_price_request_model
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -18,10 +17,8 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  late ColorNotifire notifire;
   @override
   void initState() {
-    getdarkmodepreviousstate();
     super.initState();
   }
 
@@ -29,9 +26,8 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
+    final colorTheme = Theme.of(context).colorScheme;
     return Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: BlocConsumer<AccommodationDiscountBloc, AccommodationDiscountState>(
           listener: (context, state) {
             if(state is AccommodationDiscountCreateSuccess){
@@ -86,7 +82,6 @@ class _StartPageState extends State<StartPage> {
                           "Empieza a utilizar SAMAY, es muy sencillo",
                           style: TextStyle(
                               fontSize: 20,
-                              color: notifire.getwhiteblackcolor,
                               fontFamily: "Gilroy Bold"),
                         ),
                       ),
@@ -110,8 +105,7 @@ class _StartPageState extends State<StartPage> {
                                               .toString(),
                                           style: TextStyle(
                                             fontSize: 15,
-                                            fontFamily: "Gilroy Bold",
-                                            color: notifire.getwhiteblackcolor,
+                                            fontFamily: "Gilroy Bold"
                                           )),
                                     ),
                                     const SizedBox(width: 12),
@@ -145,8 +139,6 @@ class _StartPageState extends State<StartPage> {
                                                     style: TextStyle(
                                                       fontSize: 15,
                                                       fontFamily: "Gilroy Bold",
-                                                      color: notifire
-                                                          .getwhiteblackcolor,
                                                     ),
                                                   ),
                                                 ),
@@ -203,27 +195,23 @@ class _StartPageState extends State<StartPage> {
                             child: AppButton(
                               buttontext: "Empezar",
                               onclick: () {
-                                context
-                                    .read<AccommodationBloc>()
-                                    .add(AccommodationCreateEvent());
-                                //  context.push('/describe',
-                                //         extra: 147);
+                                context.read<AccommodationBloc>().add(AccommodationCreateEvent());
                               },
                               context: context
                             ));
                       }, listener: (context, state) {
                         if (state is AccommodationCreateSuccess) {
-                          accommodationResponseModel =
-                              state.responseAccommodation;
+                          accommodationResponseModel = state.responseAccommodation;
                           context.read<AccommodationPriceBloc>().add(
                               AccommodationPriceCreateEvent(
                                   AccommodationPriceRequestModel(
-                                      accommodationId:
-                                          accommodationResponseModel.id ?? 0,
+                                      accommodationId: accommodationResponseModel.id ?? 0,
                                       priceNight: 0,
                                       priceWeekend: 0,
                                       type: 'normal',
-                                      status: true)));
+                                      status: true)
+                                    )
+                                  );
                         } else if (state is AccommodationCreateError) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(state.message),
@@ -239,23 +227,10 @@ class _StartPageState extends State<StartPage> {
           },
         ),
         appBar: AppBar(
-          leading: BackButton(
-            color: notifire.getwhiteblackcolor,
-          ),
+          leading: BackButton(),
           actions: [],
           elevation: 0,
-          backgroundColor: notifire.getbgcolor,
           centerTitle: true,
         ));
-  }
-
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
   }
 }

@@ -14,7 +14,6 @@ class AspectBloc extends Bloc<AspectEvent, AspectState> {
     try{
       final response = await aspectRepository.getBydescribe(event.describeId);
       if(response.status){
-        //await AspectRepository.setUserData(response.data!);
         emit(AspectGetByDescribeSuccess(response.data!));
       } else {
         emit(AspectGetByDescribeError(response.message));

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
+import 'package:tomatebnb/ui/widgets/empty_data_widget.dart';
 import 'package:tomatebnb/ui/widgets/item_list_explore.dart';
 import 'package:tomatebnb/ui/widgets/search_home_widget.dart';
 import 'package:tomatebnb/ui/widgets/skeleton_icon_describe_widget.dart';
@@ -164,7 +165,13 @@ class _ExplorarPageState extends State<ExplorarPage> {
                       ? state.accommodations
                       : (state as GetAccommodationByDescribeSuccess).accommodations;
                   return accommodations.isEmpty 
-                  ? Center(child: Text('No hay alojamientos disponibles en esta categoría'),)
+                  ? EmptyDataWidget(
+                    message: 'Todavia no existen anuncios para esta busqueda.',
+                    image: 'assets/images/empty-folder.png',
+                    onPush: () {
+                      
+                    },
+                  )
                   : ListView.separated(
                       itemBuilder: (context, index) {
                         AccommodationResponseCompleteModel accommodation = accommodations[index];
@@ -180,11 +187,18 @@ class _ExplorarPageState extends State<ExplorarPage> {
                       },
                       itemCount: accommodations.length);
                 } else if (state is GetAccommodationNearbyError || state is GetAccommodationByDescribeError) {
-                  return Center(
-                    child: Text(state is GetAccommodationNearbyError 
-                      ? state.message 
-                      : (state as GetAccommodationByDescribeError).message),
+                  return EmptyDataWidget(
+                    message: state is GetAccommodationNearbyError ? state.message : (state as GetAccommodationByDescribeError).message,
+                    image: 'assets/images/empty-folder.png',
+                    onPush: () {
+                      
+                    },
                   );
+                  // return Center(
+                  //   child: Text(state is GetAccommodationNearbyError 
+                  //     ? state.message 
+                  //     : (state as GetAccommodationByDescribeError).message),
+                  // );
                 } else {
                   return Center(child: Text('Seleccione una categoría'));
                 }

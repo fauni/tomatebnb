@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
-import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_type_response_model.dart';
 import 'package:tomatebnb/models/accommodation/describe_response_model.dart';
 import 'package:tomatebnb/services/location_service.dart';
@@ -67,36 +66,32 @@ class _DescribePageState extends State<DescribePage> {
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     _accommodationId = GoRouterState.of(context).extra as int?;
-    context
-        .read<AccommodationBloc>()
-        .add(AccommodationGetByIdEvent(_accommodationId ?? 0));
+    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(_accommodationId ?? 0));
     return Scaffold(
-      backgroundColor: WhiteColor,
-       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        surfaceTintColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        // leading: BackButton(color: notifire.getwhiteblackcolor),
+      appBar: AppBar(
+      elevation: 0,
+      centerTitle: true,
+      // backgroundColor: Theme.of(context).colorScheme.surface,
+      // surfaceTintColor: Theme.of(context).colorScheme.surface,
+      // automaticallyImplyLeading: false,
+      // leading: BackButton(color: notifire.getwhiteblackcolor),
        
-        actions: [
-          Ink(
-            height: 40,
-            decoration:
-                ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
-            child: IconButton(
-                onPressed: () {
-                  context.go('/menu-anfitrion');
-                },
-                icon: const Icon(Icons.close)),
-          ),
-          SizedBox(
-            width: 10,
-          )
-        ],
-      ),
-     
+      actions: [
+        // Ink(
+        //   height: 40,
+        //   decoration:
+        //       ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
+        //   child: IconButton(
+        //       onPressed: () {
+        //         context.go('/menu-anfitrion');
+        //       },
+        //       icon: const Icon(Icons.close)),
+        // ),
+        // SizedBox(
+        //   width: 10,
+        // )
+      ],
+    ),
       body: Stack(
         children: <Widget>[
           PageView(
@@ -240,21 +235,16 @@ class _DescribePageState extends State<DescribePage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
+            SizedBox(height: MediaQuery.of(context).size.height *0.02), //upar thi jagiya mukeli che
             // ignore: sized_box_for_whitespace
             Container(
-              height: MediaQuery.of(context).size.height / 1.9, //imagee size
+              height: MediaQuery.of(context).size.height / 2, //imagee size
               width: MediaQuery.of(context).size.width,
               child: Image.asset("assets/images/onbording11.png"),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
@@ -336,23 +326,15 @@ class _DescribePageState extends State<DescribePage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+            SizedBox(height: MediaQuery.of(context).size.height *0.02), 
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
                 _titles[_currentPage],
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+                style: TextStyle(fontSize: 24,fontFamily: "Gilroy Bold",color: notifire.getwhiteblackcolor), 
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -385,12 +367,11 @@ class _DescribePageState extends State<DescribePage> {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.63,
                         child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 10,
-                            mainAxisSpacing: 5,
-                            childAspectRatio: 1.3,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.5,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -402,16 +383,16 @@ class _DescribePageState extends State<DescribePage> {
                                     const EdgeInsets.symmetric(vertical: 6),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: 
-                                      selected[index]
-                                      ?Border(
-                                        top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
-                                        bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
-                                        left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
-                                        right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
-                                      :Border(),
-                                      color: notifire.getdarkmodecolor),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: selected[index]
+                                    ?Border(
+                                      top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                      bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                      left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
+                                      right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
+                                    :Border(),
+                                    color: Theme.of(context).colorScheme.primary.withAlpha(20)
+                                  ),
                                   child: Column(
                                     children: [
                                       ListTile(
@@ -424,26 +405,17 @@ class _DescribePageState extends State<DescribePage> {
                                           setState(() {});
                                         },
                                         
-                                        // trailing: selected[index] == true
-                                            
-                                        //     ? Icon(Icons.check_circle,
-                                        //         color:
-                                        //             notifire.getdarkbluecolor)
-                                        //     : SizedBox.shrink(),
-
                                         title: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                          child:Image.asset("assets/images/d${describes[index].id}.png",
-                                          height: 30,width: 30,)
+                                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                          child:Image.asset("assets/images/d${describes[index].id}.png",height: 40,width: 40,)
                                           // Icon(Icons.bed),
                                         ),
                                         subtitle: Center(
                                           child: Text(
                                             describes[index].describe??'',
                                             style: TextStyle(
-                                                fontFamily: "Gilroy Bold",
-                                                fontSize: 16,
+                                                fontFamily: "Gilroy",
+                                                fontSize: 12,
                                                 color:
                                                     notifire.getwhiteblackcolor),
                                           ),
@@ -542,14 +514,9 @@ class _DescribePageState extends State<DescribePage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+            SizedBox(height: MediaQuery.of(context).size.height *0.02),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
@@ -602,9 +569,8 @@ class _DescribePageState extends State<DescribePage> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      color: notifire.getdarkmodecolor,
-                                       border: 
-                                      selectedTypes[index]
+                                      color: Theme.of(context).colorScheme.primary.withAlpha(20),
+                                      border: selectedTypes[index]
                                       ?Border(
                                         top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                         bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
@@ -769,7 +735,6 @@ class _DescribePageState extends State<DescribePage> {
     LatLng currentLocation = LatLng(-17.009547, -64.832168);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Stack(
           children: [
             GoogleMap(
@@ -791,10 +756,9 @@ class _DescribePageState extends State<DescribePage> {
                     style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Gilroy Bold",
-                        color: notifire.getwhiteblackcolor), //heding Text
+                        color: Theme.of(context).colorScheme.primary), //heding Text
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: AppButton(
@@ -802,7 +766,7 @@ class _DescribePageState extends State<DescribePage> {
                     onclick: bottomsheet,
                     context: context),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 BlocConsumer<LocalizationBloc, LocalizationState>(
                   listener: (context, state) {
                     if (state is LocalizationGetSuccess) {
@@ -853,27 +817,35 @@ class _DescribePageState extends State<DescribePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          GestureDetector(
-                            onTap: ()  {
-                               context.read<LocalizationBloc>().add(
-                                        LocalizationGetEvent());
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    borderRadius: BorderRadius.circular(25)),
-                                height: 40,
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Center(
-                                  child: Text(
-                                    "Obtener mi ubicación",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: WhiteColor,
-                                        fontFamily: "Gilroy Bold"),
-                                  ),
-                                )),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: ()  {
+                                 context.read<LocalizationBloc>().add(LocalizationGetEvent());
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  height: 50,
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Icon(Icons.gps_fixed_outlined, color: WhiteColor),
+                                        Text(
+                                          "Obtener mi ubicación",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: WhiteColor,
+                                              fontFamily: "Gilroy Bold"),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
                           ),
+                          SizedBox(width: 10,),
                            (accommodationRequestModel?.latitude?? 0) != 0  && (accommodationRequestModel?.longitude?? 0) != 0
                               ? Icon(Icons.check_circle_outlined, color: Theme.of(context).colorScheme.primary)
                               :Icon(Icons.circle_outlined, color: Colors.grey)
@@ -989,7 +961,6 @@ class _DescribePageState extends State<DescribePage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -1018,23 +989,23 @@ class _DescribePageState extends State<DescribePage> {
                   SizedBox(height: 8),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.025),
                   room(
-                      text: "Cantidad de Huespedes",
-                      titletext: "Minimum contains 4 people",
-                      onclick1: () {
-                        setState(() {
-                          if(_guestCounter>0){
-                            _guestCounter--;
-                          }
-                          
-                        });
-                      },
-                      middeltext: "$_guestCounter",
-                      onclick2: () {
-                        setState(() {
-                          _guestCounter++;
-                        });
-                      }),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                    text: "Cantidad de Huespedes",
+                    titletext: " ",
+                    onclick1: () {
+                      setState(() {
+                        if(_guestCounter>0){
+                          _guestCounter--;
+                        }
+                      });
+                    },
+                    middeltext: "$_guestCounter",
+                    onclick2: () {
+                      setState(() {
+                        _guestCounter++;
+                      });
+                    }
+                  ),
+                  Divider(),
                   room(
                       text: "Cantidad de recamaras",
                       titletext: " ",
@@ -1052,7 +1023,7 @@ class _DescribePageState extends State<DescribePage> {
                           _roomCounter++;
                         });
                       }),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  Divider(),
                   room(
                       text: "Cantidad de baños",
                       titletext: "",
@@ -1069,7 +1040,7 @@ class _DescribePageState extends State<DescribePage> {
                           _bathCounter++;
                         });
                       }),
-                       SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  Divider(),
                   room(
                       text: "Cantidad de camas",
                       titletext: "",
@@ -1394,7 +1365,7 @@ class _DescribePageState extends State<DescribePage> {
                 style: TextStyle(
                     fontSize: 16,
                     color: notifire.getwhiteblackcolor,
-                    fontFamily: "Gilroy Bold")),
+                    fontFamily: "Gilroy")),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(

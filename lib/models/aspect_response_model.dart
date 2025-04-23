@@ -42,6 +42,7 @@ class AspectResponseModel {
     String description;
     int describeId;
     bool status;
+    String icon;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -50,6 +51,7 @@ class AspectResponseModel {
         required this.description,
         required this.describeId,
         required this.status,
+        required this.icon,
         required this.createdAt,
         required this.updatedAt,
     });
@@ -59,6 +61,7 @@ class AspectResponseModel {
         description: json["description"],
         describeId: json["describe_id"],
         status: json["status"],
+        icon: json["icon"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
@@ -68,6 +71,7 @@ class AspectResponseModel {
         "description": description,
         "describe_id": describeId,
         "status": status,
+        "icon": icon,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
     };

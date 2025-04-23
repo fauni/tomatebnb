@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tomatebnb/provider/navigation_provider.dart';
+import 'package:tomatebnb/ui/widgets/empty_data_widget.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
 
 import '../../../bloc/export_blocs.dart';
@@ -33,50 +35,51 @@ class _FavoritoPageState extends State<FavoritoPage> {
           style: TextStyle(fontFamily: "Gilroy Bold"),
         )
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          child: BlocConsumer<AccommodationFavoriteBloc, AccommodationFavoriteState>(
-            builder: (context, state) {
-              if (state is AccommodationFavoriteLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is AccommodationFavoriteLoaded) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.accommodationList.length,
-                  itemBuilder: (context, index) {
-                    final accommodation = state.accommodationList[index];
-                    return InkWell(
-                      onTap: (){
-                        context.push('/detail_ads', extra: accommodation.id);
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        decoration:  BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              height: 75,
-                              width: 75,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  accommodation.photos![0].url,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.error);
-                                  },
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
+      body: BlocConsumer<AccommodationFavoriteBloc, AccommodationFavoriteState>(
+        builder: (context, state) {
+          if (state is AccommodationFavoriteLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is AccommodationFavoriteLoaded) {
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              itemCount: state.accommodationList.length,
+              itemBuilder: (context, index) {
+                final accommodation = state.accommodationList[index];
+                return InkWell(
+                  onTap: () {
+                    context.push('/detail_ads', extra: accommodation.id);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainer,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 75,
+                            width: 75,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                accommodation.photos![0].url,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            Column(
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -87,37 +90,41 @@ class _FavoritoPageState extends State<FavoritoPage> {
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.65,
-                                  child: Text(
-                                    accommodation.description!,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "Gilroy",
-                                      color: Theme.of(context).colorScheme.secondary,
-                                      overflow: TextOverflow.ellipsis
-                                    ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  accommodation.description!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: "Gilroy",
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    overflow: TextOverflow.ellipsis
                                   ),
+                                  maxLines: 2,
                                 ),
+                                const SizedBox(height: 8),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text('${accommodation.prices![0].priceNight} BS', style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
-                                        Text('/Noche', )
-                                      ],
+                                    Text(
+                                      '${accommodation.prices![0].priceNight} BS/Noche',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).colorScheme.primary
+                                      ),
                                     ),
                                     Row(
                                       children: [
-                                        const SizedBox(width:12),
-                                        Image.asset("assets/images/star.png", height: 20,),
-                                        const SizedBox(width: 2),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 4),
-                                          child: Row(
-                                            children: [
-                                              Text('4.5', style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.inversePrimary, fontWeight: FontWeight.bold),)
-                                            ],
+                                        Image.asset(
+                                          "assets/images/star.png",
+                                          height: 20,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '4.5',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Theme.of(context).colorScheme.inversePrimary,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         )
                                       ],
@@ -125,25 +132,28 @@ class _FavoritoPageState extends State<FavoritoPage> {
                                   ],
                                 )
                               ],
-                            )
-                          ],
-                        ),
-                                
+                            ),
+                          )
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 );
-              } else if (state is AccommodationFavoriteError) {
-                return Center(child: Text(state.message));
-              } else {
-                return const Center(child: Text('No hay favoritos'));
-              }
-            }, 
-            listener: (context, state) {
-              
-            },
-          ),
-        ),
+              },
+            );
+          } else if (state is AccommodationFavoriteError) {
+            return EmptyDataWidget(
+              message: state.message,
+              image: 'assets/images/heart.png',
+              onPush: () {
+                context.read<NavigationProvider>().setPage(0);
+              },
+            );
+          } else {
+            return const Center(child: Text('No hay favoritos'));
+          }
+        },
+        listener: (context, state) {},
       ),
     );
   }

@@ -57,22 +57,113 @@ class _MyProfilePageState extends State<MyProfilePage> {
     profileId = prefs.getInt("userId") ?? 0;
   }
 
+  changeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    if(isAnfitrion == null || isAnfitrion == false){
+      prefs.setBool("setIsAnfitrion", true);
+      // ignore: use_build_context_synchronously
+      context.push('/menu-anfitrion');
+    } else {
+      prefs.setBool("setIsAnfitrion", false);
+      // ignore: use_build_context_synchronously
+      context.push('/menu-viajero');
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: isAnfitrion != null && isAnfitrion == true ? 
+        FloatingActionButton.extended(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          onPressed: () => changeMode(), 
+          label: Text('Cambiar a modo viajero'),
+          icon: Icon(Icons.change_circle_outlined),
+        ) 
+        : FloatingActionButton.extended(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          onPressed: () => changeMode(), 
+          label: Text('Cambiar a modo anfitrion'),
+          icon: Icon(Icons.change_circle_outlined),
+      ),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: notifire.getbgcolor,
-        leading: BackButton(color: notifire.getwhiteblackcolor),
-        title: Text(
-          "Mi Perfil",
-          style: TextStyle(
-              color: notifire.getwhiteblackcolor, fontFamily: "Gilroy Bold"),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
+        automaticallyImplyLeading: false,
+        title: Text("Mi Perfil",style: TextStyle(fontFamily: "Gilroy Bold"),),
+        actions: [
+          
+          SizedBox(width: 10,)
+        ],
+      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   automaticallyImplyLeading: false,
+      //   leading: BackButton(color: notifire.getwhiteblackcolor),
+      //   title: Text("Mi Perfil",style: TextStyle(fontFamily: "Gilroy Bold"),
+      //   ),
+      // ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is UserUpdateError) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.message),
+                backgroundColor:Theme.of(context).colorScheme.error,
+              ));
+            }
+            if (state is UserUpdateSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Datos actualizados"),
+              ));
+            }
+          },
+          builder: (context, state) {
+            if (state is UserUpdateLoading) {
+              return Center(child: CircularProgressIndicator());
+            }
+            
+      
+            return AppButton(
+                buttontext: "Guardar Cambios",
+                onclick: () {
+                  // Navigator.pop(context);
+                  reqUser.name = _nameController.text;
+                  reqUser.lastname = _lastnameController.text;
+                  reqUser.email = _emailController.text;
+                  reqUser.phone = _phoneController.text;
+                  reqUser.biography = _biographyController.text;
+                  reqUser.profilePhoto =
+                      _profilePhotoController.text;
+                  reqUser.documentNumber =
+                      _documentNumberController.text;
+                  reqUser.documentType =
+                      _documentTypeController.text;
+                  reqUser.documentPhotoFront =
+                      _documentPhotoFrontController.text;
+                  reqUser.documentPhotoBack =
+                      _documentPhotoBackController.text;
+                  reqUser.confirmPhoto =
+                      _confirmPhotoController.text;
+                  reqUser.recordDate = user.recordDate;
+                  reqUser.verified = user.verified;
+                  reqUser.status = user.status;
+                  context
+                      .read<UserBloc>()
+                      .add(UserUpdateEvent(reqUser));
+                },
+                context: context);
+          },
         ),
       ),
-      backgroundColor: notifire.getbgcolor,
       body: BlocConsumer<UserBloc, UserState>(listener: (context, state) {
         if (state is UserGetByIdError) {
           ScaffoldMessenger.of(context)
@@ -106,21 +197,33 @@ class _MyProfilePageState extends State<MyProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 200,
                     width: 200,
-                    color: notifire.getbgcolor,
+                    // color: notifire.getbgcolor,
                     child: Stack(
                       children: [
                         Positioned(
                           top: 25,
                           left: 30,
-                          child: CircleAvatar(
-                            radius: 70,
-                            backgroundImage: profilePhoto == ""
-                                ? AssetImage("assets/images/image.png")
-                                : NetworkImage('$_imgsUrl/users/$profilePhoto'),
-                            // child: Image.asset("assets/images/person1.jpeg"),
+                          child: Container(
+                            width: 140, // 2 * radius
+                            height: 140, // 2 * radius
+                            decoration: BoxDecoration(
+                              color: color.secondary.withAlpha(50),
+                              shape: BoxShape.circle,
+                            ),
+                            child: profilePhoto == ""
+                              ? Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Image.asset("assets/images/image.png"),
+                                )
+                              : ClipOval(
+                                  child: Image.network(
+                                    '$_imgsUrl/users/$profilePhoto',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                           ),
                         ),
 
@@ -129,15 +232,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             if(state is UserPhotoUpdateSuccess){
                               user = state.responseUserPhoto;
                               profilePhoto = user.profilePhoto??"";
-                              setState(() {
-                              });
+                              setState(() {});
                             }
                             if(state is UserPhotoUpdateError){
-                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(state.message),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.error,
-                            ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.message),backgroundColor:Theme.of(context).colorScheme.error,)
+                              );
                             }
                           },
                           builder: (context, state) {
@@ -145,24 +245,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               return Center(child:CircularProgressIndicator());
                             }
                             return Positioned(
-                              top: 115,
-                              // bottom: 20,
-                              right: 25,
-                              // left: 20,
+                              top: 115, right: 25,
                               child: GestureDetector(
-                                onTap: () {
-                                  bottomsheet("profile_photo");
-                                },
+                                onTap: () =>bottomsheet("profile_photo"),
                                 child: CircleAvatar(
+                                  backgroundColor: color.tertiary,
                                   radius: 25,
-                                  backgroundColor: WhiteColor,
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    child: Image.asset(
-                                      'assets/images/camera.png',
-                                      height: 25,
-                                    ),
-                                  ),
+                                  child: Image.asset('assets/images/camera.png',height: 25,),
                                 ),
                               ),
                             );
@@ -172,7 +261,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -180,296 +268,177 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          
                           TextButton(
-                            onPressed: (){
-                            context.push("/cambiar_password");
-                          }, child: Text(
-                            "Cambiar Contraseña"
-                          )),
+                            onPressed: (){context.push("/cambiar_password");}, 
+                            child: Text("Cambiar Contraseña")
+                          ),
                         ],
                       ),
                       Padding(
-                        
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Nombre",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Nombre",style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _nameController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
+                        controller: _nameController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png", height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Apellidos",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Apellidos",style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _lastnameController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
+                        controller: _lastnameController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png",height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Email",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Email",style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _emailController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
+                        controller: _emailController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png",height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Telefono",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Telefono",style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _phoneController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
+                        controller: _phoneController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png",height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Biografia",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Biografia", style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: WhiteColor),
-                        child: TextField(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
                           controller: _biographyController,
-                          minLines: 3,
+                          minLines: 2,
                           maxLines: 5,
+                          maxLength: 100,
                           decoration: InputDecoration(
                             hintText: 'Me dedico a......',
                             labelStyle: const TextStyle(color: Colors.white),
-                            hintStyle: TextStyle(
-                                color: notifire.getgreycolor,
-                                fontFamily: "Gilroy Medium"),
+                            hintStyle: TextStyle(color: color.secondary,fontFamily: "Gilroy Medium"),
                             prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                              child: Image.asset("assets/images/profile.png",
-                                  height: 25, color: notifire.getgreycolor),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              child: Image.asset("assets/images/profile.png", height: 25),
                             ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: null,
-                            ),
+                            suffixIcon: Padding(padding: const EdgeInsets.all(6),child: null,),
                             border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15),
-                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: greyColor,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: greyColor),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Tipo de Documento",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Tipo de Documento",style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _documentTypeController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
+                        controller: _documentTypeController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png",height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Número de documento",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                        child: Text("Número de documento", style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
                       textfield(
-                          controller: _documentNumberController,
-                          feildcolor: notifire.getdarkmodecolor,
-                          hintcolor: notifire.getgreycolor,
-                          text: "",
-                          prefix: Image.asset("assets/images/profile.png",
-                              height: 25, color: notifire.getgreycolor),
-                          suffix: null),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
-                       Padding(
+                        controller: _documentNumberController,
+                        text: "",
+                        prefix: Image.asset("assets/images/profile.png",height: 25),
+                        suffix: null
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      Divider(),
+                      Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Text(
                           "Fotografia frontal del documento",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
+                          style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold"),
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
-                       
-                       Stack(
-                         children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.012),
+                      Stack(
+                        children: [
                           user.documentPhotoFront!= null && user.documentPhotoFront!=""
-                       ? FadeInImage.assetNetwork(
-                                image: '$_imgsUrl/users/${user.documentPhotoFront}',
-                                placeholder: "assets/images/load.gif",
-                              )
-                              :Image.asset("assets/images/image.png"),
+                          ? FadeInImage.assetNetwork(
+                              image: '$_imgsUrl/users/${user.documentPhotoFront}',
+                              placeholder: "assets/images/load.gif",
+                            )
+                          : Center(child: Image.asset("assets/images/picture.png", height: 100,)),
                           BlocConsumer<UserBloc, UserState>(
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
                               user = state.responseUserPhoto;
                               _documentPhotoFrontController.text = user.documentPhotoFront??"";
-                              setState(() {
-                              });
+                              setState(() {});
                             }
                             if(state is UserPhotoUpdateError){
-                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(state.message),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.error,
-                            ));
+                              backgroundColor: color.error,
+                              ));
                             }
                           },
                           builder: (context, state) {
-                            if( state is UserPhotoUpdateLoading ){
-                              return Center(child:CircularProgressIndicator());
-                            }
+                            if( state is UserPhotoUpdateLoading ){return Center(child:CircularProgressIndicator());}
                             return GestureDetector(
-                                onTap: () {
-                                  bottomsheet("document_photo_front");
-                                },
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: WhiteColor,
+                                onTap: () { bottomsheet("document_photo_front");},
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
-                                    child: Image.asset(
-                                      'assets/images/camera.png',
-                                      height: 25,
-                                    ),
+                                    backgroundColor: color.tertiary,
+                                    child: Image.asset('assets/images/camera.png',height: 25,),
                                   ),
                                 ),
                               );
                           },
                         ),
-                      
-                      
-                         ],
-                       ),
-                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
-                       Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Fotografia trasera del documento",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
+                      ],
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text("Fotografia trasera del documento",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: "Gilroy Bold",
                         ),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.012),
                        
-                       Stack(
-                         children: [
-                          user.documentPhotoBack!= null && user.documentPhotoBack!=""
-                       ? FadeInImage.assetNetwork(
-                                image: '$_imgsUrl/users/${user.documentPhotoBack}',
-                                placeholder: "assets/images/load.gif",
-                              )
-                              :Image.asset("assets/images/image.png"),
+                    Stack(
+                      children: [
+                        user.documentPhotoBack!= null && user.documentPhotoBack!=""
+                        ? FadeInImage.assetNetwork(
+                          image: '$_imgsUrl/users/${user.documentPhotoBack}',
+                          placeholder: "assets/images/load.gif",
+                        )
+                        : Center(child: Image.asset("assets/images/picture.png", height: 100,)),
                           BlocConsumer<UserBloc, UserState>(
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
@@ -494,11 +463,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 onTap: () {
                                   bottomsheet("document_photo_back");
                                 },
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: WhiteColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
+                                    backgroundColor: color.tertiary,
                                     child: Image.asset(
                                       'assets/images/camera.png',
                                       height: 25,
@@ -508,34 +477,25 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               );
                           },
                         ),
-                      
-                      
-                         ],
-                       ),
-                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.025),
-                       Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          "Tómate una fotografia con tu documento ",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: notifire.getwhiteblackcolor,
-                            fontFamily: "Gilroy Bold",
-                          ),
-                        ),
+                      ],
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        "Tómate una fotografia con tu documento ",
+                        style: TextStyle(fontSize: 12,fontFamily: "Gilroy Bold",),
                       ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.012),
-                       
-                       Stack(
-                         children: [
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.012),
+                      Stack(
+                        children: [
                           user.confirmPhoto!= null && user.confirmPhoto!=""
-                       ? FadeInImage.assetNetwork(
-                                image: '$_imgsUrl/users/${user.confirmPhoto}',
-                                placeholder: "assets/images/load.gif",
-                              )
-                              :Image.asset("assets/images/image.png"),
+                          ? FadeInImage.assetNetwork(
+                              image: '$_imgsUrl/users/${user.confirmPhoto}',
+                              placeholder: "assets/images/load.gif",
+                            )
+                          : Center(child: Image.asset("assets/images/image.png", height: 100,)),
                           BlocConsumer<UserBloc, UserState>(
                           listener: (context, state) {
                             if(state is UserPhotoUpdateSuccess){
@@ -560,11 +520,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 onTap: () {
                                   bottomsheet("confirm_photo");
                                 },
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: WhiteColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 25,
+                                    backgroundColor: color.tertiary,
                                     child: Image.asset(
                                       'assets/images/camera.png',
                                       height: 25,
@@ -574,94 +534,63 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               );
                           },
                         ),
-                      
-                      
-                         ],
-                       ),
-                         
-
-
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.15),
-                      
-                      BlocConsumer<UserBloc, UserState>(
-                        listener: (context, state) {
-                          if (state is UserUpdateError) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(state.message),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.error,
-                            ));
-                          }
-                          if (state is UserUpdateSuccess) {
-                            
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Datos actualizados"),
-                            ));
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is UserUpdateLoading) {
-                            return Center(child: CircularProgressIndicator());
-                          }
+                      ],
+                    ),
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                    //   BlocConsumer<UserBloc, UserState>(
+                    //     listener: (context, state) {
+                    //       if (state is UserUpdateError) {
+                    //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //           content: Text(state.message),
+                    //           backgroundColor:Theme.of(context).colorScheme.error,
+                    //         ));
+                    //       }
+                    //       if (state is UserUpdateSuccess) {
+                    //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //           content: Text("Datos actualizados"),
+                    //         ));
+                    //       }
+                    //     },
+                    //     builder: (context, state) {
+                    //       if (state is UserUpdateLoading) {
+                    //         return Center(child: CircularProgressIndicator());
+                    //       }
                           
 
-                          return AppButton(
-                              buttontext: "Guardar Cambios",
-                              onclick: () {
-                                // Navigator.pop(context);
-                                reqUser.name = _nameController.text;
-                                reqUser.lastname = _lastnameController.text;
-                                reqUser.email = _emailController.text;
-                                reqUser.phone = _phoneController.text;
-                                reqUser.biography = _biographyController.text;
-                                reqUser.profilePhoto =
-                                    _profilePhotoController.text;
-                                reqUser.documentNumber =
-                                    _documentNumberController.text;
-                                reqUser.documentType =
-                                    _documentTypeController.text;
-                                reqUser.documentPhotoFront =
-                                    _documentPhotoFrontController.text;
-                                reqUser.documentPhotoBack =
-                                    _documentPhotoBackController.text;
-                                reqUser.confirmPhoto =
-                                    _confirmPhotoController.text;
-                                reqUser.recordDate = user.recordDate;
-                                reqUser.verified = user.verified;
-                                reqUser.status = user.status;
-                                context
-                                    .read<UserBloc>()
-                                    .add(UserUpdateEvent(reqUser));
-                              },
-                              context: context);
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.2),
-                      // Center(
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       // Navigator.of(context).push(
-                      //       //   MaterialPageRoute(
-                      //       //     builder: (context) => const newPassword(),
-                      //       //   ),
-                      //       // );
-                      //     },
-                      //     child: Text(
-                      //       "Cambiar Contraseña?",
-                      //       style: TextStyle(
-                      //         fontSize: 16,
-                      //         color: Darkblue,
-                      //         fontFamily: "Gilroy Bold",
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      
+                    //       return AppButton(
+                    //           buttontext: "Guardar Cambios",
+                    //           onclick: () {
+                    //             // Navigator.pop(context);
+                    //             reqUser.name = _nameController.text;
+                    //             reqUser.lastname = _lastnameController.text;
+                    //             reqUser.email = _emailController.text;
+                    //             reqUser.phone = _phoneController.text;
+                    //             reqUser.biography = _biographyController.text;
+                    //             reqUser.profilePhoto =
+                    //                 _profilePhotoController.text;
+                    //             reqUser.documentNumber =
+                    //                 _documentNumberController.text;
+                    //             reqUser.documentType =
+                    //                 _documentTypeController.text;
+                    //             reqUser.documentPhotoFront =
+                    //                 _documentPhotoFrontController.text;
+                    //             reqUser.documentPhotoBack =
+                    //                 _documentPhotoBackController.text;
+                    //             reqUser.confirmPhoto =
+                    //                 _confirmPhotoController.text;
+                    //             reqUser.recordDate = user.recordDate;
+                    //             reqUser.verified = user.verified;
+                    //             reqUser.status = user.status;
+                    //             context
+                    //                 .read<UserBloc>()
+                    //                 .add(UserUpdateEvent(reqUser));
+                    //           },
+                    //           context: context);
+                    //     },
+                    //   ),
+                    //   SizedBox(height: MediaQuery.of(context).size.height * 0.2),  
                     ],
                   ),
-                  /* SizedBox(height: MediaQuery.of(context).size.height * 0.22),*/
                 ],
               ),
             ),

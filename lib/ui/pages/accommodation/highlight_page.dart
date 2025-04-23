@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_response_model.dart';
@@ -51,7 +52,7 @@ class _HighlightPageState extends State<HighlightPage> {
   final _descriptionController = TextEditingController();
 
   static const List<String> _titles = [
-    'Haz que tu espacion se destaque',
+    'Has que tu espacio se destaque',
     'Cuentale a tus huéspedes todo lo que tu espacio tiene para ofrecer',
     'Agrega algunas fotos de tu alojamiento',
     'Ponle Título a tu alojamiento',
@@ -75,26 +76,26 @@ class _HighlightPageState extends State<HighlightPage> {
            appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        surfaceTintColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
+        // backgroundColor: Theme.of(context).colorScheme.surface,
+        // surfaceTintColor: Theme.of(context).colorScheme.surface,
+        // automaticallyImplyLeading: false,
         // leading: BackButton(color: notifire.getwhiteblackcolor),
        
-        actions: [
-          Ink(
-            height: 40,
-            decoration:
-                ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
-            child: IconButton(
-                onPressed: () {
-                  context.go('/menu-anfitrion');
-                },
-                icon: const Icon(Icons.close)),
-          ),
-          SizedBox(
-            width: 10,
-          )
-        ],
+        // actions: [
+        //   Ink(
+        //     height: 40,
+        //     decoration:
+        //         ShapeDecoration(color: Colors.grey[300], shape: CircleBorder()),
+        //     child: IconButton(
+        //         onPressed: () {
+        //           context.go('/menu-anfitrion');
+        //         },
+        //         icon: const Icon(Icons.close)),
+        //   ),
+        //   SizedBox(
+        //     width: 10,
+        //   )
+        // ],
       ),
      
       backgroundColor: WhiteColor,
@@ -248,7 +249,6 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
             SizedBox(
@@ -260,11 +260,9 @@ class _HighlightPageState extends State<HighlightPage> {
               width: MediaQuery.of(context).size.width,
               child: Image.asset("assets/images/onbording12.png"),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
             Padding(
-              padding: const EdgeInsets.symmetric(),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
                 _titles[_currentPage],
                 textAlign: TextAlign.center,
@@ -344,26 +342,17 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
                 _titles[_currentPage],
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: "Gilroy Bold",
-                    color: notifire.getwhiteblackcolor), //heding Text
+                style: TextStyle(fontSize: 24,fontFamily: "Gilroy Bold",color: notifire.getwhiteblackcolor),
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: SizedBox(
@@ -400,8 +389,8 @@ class _HighlightPageState extends State<HighlightPage> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 15,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 1.2,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.4,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -415,33 +404,21 @@ class _HighlightPageState extends State<HighlightPage> {
                                     AccommodationServiceState>(
                                   listener: (context, state) {
                                     // TODO: implement listener
-                                    if (state
-                                        is AccommodationServiceCreateSuccess) {
-                                      if (state.responseAccommodationService
-                                              .serviceId ==
-                                          services[index].id) {
+                                    if (state is AccommodationServiceCreateSuccess) {
+                                      if (state.responseAccommodationService.serviceId ==services[index].id) {
                                         selectedServices[index] = true;
                                         setState(() {});
                                       }
-                                      // _pageController.nextPage(
-                                      //     duration: const Duration(microseconds: 300),
-                                      //     curve: Curves.easeIn);
-                                    } else if (state
-                                        is AccommodationServiceDeleteSuccess) {
-                                      if (state.responseAccommodationService
-                                              .serviceId ==
-                                          services[index].id) {
+                                    } else if (state is AccommodationServiceDeleteSuccess) {
+                                      if (state.responseAccommodationService.serviceId == services[index].id) {
                                         selectedServices[index] = false;
                                         setState(() {});
                                       }
-                                    } else if (state
-                                        is AccommodationServiceCreateError) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                    } else if (state is AccommodationServiceCreateError) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text(state.message),
                                       ));
-                                    } else if (state
-                                        is AccommodationServiceDeleteError) {
+                                    } else if (state is AccommodationServiceDeleteError) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text(state.message),
@@ -451,47 +428,29 @@ class _HighlightPageState extends State<HighlightPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: notifire.getdarkmodecolor,
-                                        border: 
-                                        selectedServices[index]
-                                          ?Border(
+                                        color: Theme.of(context).colorScheme.primary.withAlpha(20),
+                                        border: selectedServices[index]
+                                          ? Border(
                                             top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
-                                          :Border(),),
+                                          : Border(),),
                                     child: Column(
                                       children: [
                                         ListTile(
                                           onTap: () {
                                             if (!selectedServices[index]) {
-                                              context
-                                                  .read<
-                                                      AccommodationServiceBloc>()
-                                                  .add(
-                                                      AccommodationServiceCreateEvent(
-                                                          _accommodationId ?? 0,
-                                                          services[index].id));
+                                              context.read<AccommodationServiceBloc>().add(AccommodationServiceCreateEvent(_accommodationId ?? 0,services[index].id));
                                             } else {
-                                              context
-                                                  .read<
-                                                      AccommodationServiceBloc>()
-                                                  .add(
-                                                      AccommodationServiceDeleteEvent(
-                                                          _accommodationId ?? 0,
-                                                          services[index].id));
+                                              context.read<AccommodationServiceBloc>().add(AccommodationServiceDeleteEvent(_accommodationId ?? 0,services[index].id));
                                             }
-                                          
                                           },
                                           title: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12.0),
+                                            padding: const EdgeInsets.symmetric(vertical: 12.0),
                                             child: FadeInImage.assetNetwork(
-                                              placeholder:
-                                                  'assets/images/load.gif',
-                                              image:
-                                                  // '$_imgsUrl/services/${services[index].icon}',
-                                                   services[index].icon,
+                                              placeholder:'assets/images/load.gif',
+                                              image: services[index].icon,
                                               height: 30.0,
                                               width: 30.0,
                                             ),
@@ -501,11 +460,7 @@ class _HighlightPageState extends State<HighlightPage> {
                                               services[index].name,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontFamily: "Gilroy Bold",
-                                                  fontSize: 16,
-                                                  color: notifire
-                                                      .getwhiteblackcolor),
+                                              style: TextStyle(fontFamily: "Gilroy",fontSize: 13),
                                             ),
                                           ),
                                           // isThreeLine: true,
@@ -591,14 +546,10 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
             SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+                height: MediaQuery.of(context).size.height * 0.02),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
@@ -634,62 +585,56 @@ class _HighlightPageState extends State<HighlightPage> {
                             FadeInImage.assetNetwork(
                               placeholder: 'assets/images/load.gif', 
                               image: '$_imgsUrl/accommodations/${photos[index].photoUrl}'),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton.outlined(
-                                    
-                                    color: Theme.of(context).colorScheme.error,
-
-                                    onPressed: (){
-                                      context.read<AccommodationPhotoBloc>().add(
-                                        AccommodationPhotoDeleteEvent(photos[index].id ));
-                                    },
-                                    icon: Icon(Icons.delete,
-                                    // color: Theme.of(context).colorScheme.error,
-                                    ))
-                                ],
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: AppColors().WhiteColor.withAlpha(100),
+                                      child: IconButton(
+                                        color: Theme.of(context).colorScheme.error,
+                                        onPressed: (){
+                                          context.read<AccommodationPhotoBloc>().add(
+                                            AccommodationPhotoDeleteEvent(photos[index].id ));
+                                        },
+                                        icon: Icon(Icons.delete,)),
+                                    )
+                                  ],
+                                ),
                               )
                               ]
                         );  
-                        // Text('foto ');
                       } else {
                         return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: notifire.getdarkmodecolor),
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    onTap: bottomsheet,
-                                    title: SizedBox(height: 15.0,),
-                                    subtitle: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 1.0),
-                                        child: Icon(
-                                          Icons.add_a_photo_outlined,
-                                          size: 70.0,
-                                        ),
-                                      ),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Theme.of(context).colorScheme.primary.withAlpha(20)
+                            ),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  onTap: bottomsheet,
+                                  title: SizedBox(height: 15.0,),
+                                  subtitle: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 1.0),
+                                      child: Icon(Icons.add_a_photo_outlined,size: 70.0,),
                                     ),
-                                    // subtitle: Padding(
-                                    //   padding: const EdgeInsets.only(top: 8),
-                                    //   child: IconButton(
-                                    //     onPressed: null,
-                                    //     icon: Icon(Icons.add_a_photo_outlined))
-                                    // )
-                                    // isThreeLine: true,
                                   ),
-                                ],
-                              ),
-                            ));
+                                ),
+                              ],
+                            ),
+                          )
+                        );
                       }
                     },
                   ),
-                ))),
+                )
+              )
+            ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -798,7 +743,6 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -814,34 +758,25 @@ class _HighlightPageState extends State<HighlightPage> {
                       color: notifire.getwhiteblackcolor), //heding Text
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const SizedBox(height: 4),
               Container(
                 height: MediaQuery.of(context).size.height * 0.55,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: notifire.getdarkmodecolor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: _titleController,
-                      minLines: 2,
+                      minLines: 3,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
-                      style: TextStyle(
-                          fontSize: 35,
-                          color: Theme.of(context).colorScheme.primary),
-                      // controller: adressController,
+                      style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.primary),
                       decoration: InputDecoration(
-                        hintText: "Alojamiento.....",
+                        hintText: "Ingrese aqui el Título de su alojamiento",
                         hintStyle: TextStyle(
-                          color: notifire.getgreycolor,
-                          fontSize: 25.0,
+                          fontSize: 15.0,
                           fontFamily: "Gilroy Medium",
                         ),
-                        border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
                               color: Color(0xffE2E4EA),
@@ -859,20 +794,20 @@ class _HighlightPageState extends State<HighlightPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: GestureDetector(
-                        onTap: () {
-                          // context.pop();
-                          removeFocus();
-                          _pageController.previousPage(
-                              duration: const Duration(microseconds: 300),
-                              curve: Curves.easeIn);
-                        },
-                        child: Text(
-                          "Atras",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontFamily: "Gilroy Bold"),
-                        )),
+                      onTap: () {
+                        removeFocus();
+                        _pageController.previousPage(
+                            duration: const Duration(microseconds: 300),
+                            curve: Curves.easeIn);
+                      },
+                      child: Text(
+                        "Atras",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontFamily: "Gilroy Bold"),
+                      )
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -884,9 +819,7 @@ class _HighlightPageState extends State<HighlightPage> {
                               duration: const Duration(microseconds: 300),
                               curve: Curves.easeIn);
                         } else if (state is AccommodationUpdate2Error) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(state.message),
-                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message),));
                         }
                       },
                       builder: (context, state) {
@@ -894,19 +827,10 @@ class _HighlightPageState extends State<HighlightPage> {
                           return Center(child: const CircularProgressIndicator());
                         }
                         return GestureDetector(
-                          onTap: 
-                          // _titleController.text.isEmpty
-                              // ? null
-                              // : 
-                              () {
-                                  accommodationRequestModel?.title =
-                                      _titleController.text;
-                                  context.read<AccommodationBloc>().add(
-                                      AccommodationUpdate2Event(
-                                          _accommodationId ?? 0,
-                                          accommodationRequestModel!));
-                                },
-                          child: Container(
+                          onTap: () {
+                            accommodationRequestModel?.title = _titleController.text;
+                            context.read<AccommodationBloc>().add(AccommodationUpdate2Event(_accommodationId ?? 0,accommodationRequestModel!));},
+                            child: Container(
                               decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.primary,
                                   borderRadius: BorderRadius.circular(15)),
@@ -938,21 +862,16 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.02), //upar thi jagiya mukeli che
-            // ignore: sized_box_for_whitespace
-
+            SizedBox(height: MediaQuery.of(context).size.height *0.02),
             Padding(
               padding: const EdgeInsets.symmetric(),
               child: Text(
                 _titles[_currentPage],
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 22,
                     fontFamily: "Gilroy Bold",
                     color: notifire.getwhiteblackcolor), //heding Text
               ),
@@ -975,20 +894,17 @@ class _HighlightPageState extends State<HighlightPage> {
                       }
                       if (state is AspectGetByDescribeSuccess) {
                         aspects = state.responseAspects;
-                        // for (int i = 0; i < aspects.length; i++) {
-                        //   selectedAspects.add(false);
-                        // }
-                          for (int i = 0; i < aspects.length; i++) {
-                              bool esElegido= false;
-                                for(int j  = 0; j < accommodationResponseModel!.aspects!.length; j++)
+                        for (int i = 0; i < aspects.length; i++) {
+                          bool esElegido= false;
+                            for(int j  = 0; j < accommodationResponseModel!.aspects!.length; j++)
+                            {
+                              if(aspects[i].id == accommodationResponseModel!.aspects![j].aspectId)
                                 {
-                                  if(aspects[i].id == accommodationResponseModel!.aspects![j].aspectId)
-                                    {
-                                      esElegido =true;
-                                    }
+                                  esElegido =true;
                                 }
-                              selectedAspects.add(esElegido);
                             }
+                          selectedAspects.add(esElegido);
+                        }
                       }
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.63,
@@ -997,8 +913,8 @@ class _HighlightPageState extends State<HighlightPage> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 15,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 1.2,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.3,
                           ),
                           // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -1012,35 +928,22 @@ class _HighlightPageState extends State<HighlightPage> {
                                     AccommodationAspectState>(
                                   listener: (context, state) {
                                     // TODO: implement listener
-                                    if (state
-                                        is AccommodationAspectCreateSuccess) {
-                                      if (state.responseAccommodationAspect
-                                              .aspectId ==
-                                          aspects[index].id) {
+                                    if (state is AccommodationAspectCreateSuccess) {
+                                      if (state.responseAccommodationAspect.aspectId == aspects[index].id) {
                                         selectedAspects[index] = true;
                                         setState(() {});
                                       }
-                                      // _pageController.nextPage(
-                                      //     duration: const Duration(microseconds: 300),
-                                      //     curve: Curves.easeIn);
-                                    } else if (state
-                                        is AccommodationAspectDeleteSuccess) {
-                                      if (state.responseAccommodationAspect
-                                              .aspectId ==
-                                          aspects[index].id) {
+                                    } else if (state is AccommodationAspectDeleteSuccess) {
+                                      if (state.responseAccommodationAspect .aspectId == aspects[index].id) {
                                         selectedAspects[index] = false;
                                         setState(() {});
                                       }
-                                    } else if (state
-                                        is AccommodationAspectCreateError) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                    } else if (state is AccommodationAspectCreateError) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text(state.message),
                                       ));
-                                    } else if (state
-                                        is AccommodationAspectDeleteError) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                    } else if (state is AccommodationAspectDeleteError) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text(state.message),
                                       ));
                                     }
@@ -1048,57 +951,42 @@ class _HighlightPageState extends State<HighlightPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: notifire.getdarkmodecolor,
-                                         border: 
-                                        selectedAspects[index]
-                                          ?Border(
+                                        color: Theme.of(context).colorScheme.primary.withAlpha(20),
+                                        border: selectedAspects[index]
+                                          ? Border(
                                             top:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             bottom:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             left:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),
                                             right:BorderSide(color:Theme.of(context).colorScheme.tertiary,width:4.0),)
-                                          :Border(),),
+                                          : Border(),),
                                     child: Column(
                                       children: [
                                         ListTile(
                                           onTap: () {
                                             if (!selectedAspects[index]) {
-                                              context
-                                                  .read<
-                                                      AccommodationAspectBloc>()
-                                                  .add(
-                                                      AccommodationAspectCreateEvent(
-                                                          _accommodationId ?? 0,
-                                                          aspects[index].id));
+                                              context.read<AccommodationAspectBloc>().add(
+                                                AccommodationAspectCreateEvent(_accommodationId ?? 0, aspects[index].id));
                                             } else {
-                                              context
-                                                  .read<
-                                                      AccommodationAspectBloc>()
-                                                  .add(
-                                                      AccommodationAspectDeleteEvent(
-                                                          _accommodationId ?? 0,
-                                                          aspects[index].id));
+                                              context.read<AccommodationAspectBloc>().add(
+                                                AccommodationAspectDeleteEvent(_accommodationId ?? 0, aspects[index].id));
                                             }
                                           },
-
-                                          // trailing: selectedAspects[index]
-                                          //     ? Icon(Icons.check_circle,
-                                          //         color:
-                                          //             notifire.getdarkbluecolor)
-                                          //     : SizedBox.shrink(),
-
-                                          title: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12.0),
-                                            child: Icon(Icons.bed),
+                                            title: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder: 'assets/images/load.gif',
+                                              image: aspects[index].icon,
+                                              height: 30.0,
+                                              width: 30.0,
+                                            ),
                                           ),
                                           subtitle: Center(
                                             child: Text(
                                               aspects[index].description,
                                               style: TextStyle(
-                                                  fontFamily: "Gilroy Bold",
-                                                  fontSize: 16,
-                                                  color: notifire
-                                                      .getwhiteblackcolor),
+                                                fontFamily: "Gilroy",
+                                                fontSize: 16
+                                              ),
                                             ),
                                           ),
                                           // isThreeLine: true,
@@ -1185,7 +1073,6 @@ class _HighlightPageState extends State<HighlightPage> {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: notifire.getbgcolor,
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -1206,26 +1093,26 @@ class _HighlightPageState extends State<HighlightPage> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.55,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     color: notifire.getdarkmodecolor),
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: _descriptionController,
-                      minLines: 5,
+                      minLines: 4,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 15,
                           color: Theme.of(context).colorScheme.primary),
                       // controller: adressController,
                       decoration: InputDecoration(
                         hintText: "Alojamiento espacioso.....",
                         hintStyle: TextStyle(
                             color: notifire.getgreycolor,
-                            fontFamily: "Gilroy Medium",
-                            fontSize: 20),
+                            fontFamily: "Gilroy",
+                            fontSize: 15),
                         border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(15))),
                         enabledBorder: OutlineInputBorder(

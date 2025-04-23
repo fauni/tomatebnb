@@ -7,6 +7,7 @@ import 'package:tomatebnb/ui/pages/huesped/explorar_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/favorito_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/profile_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/viaje_page.dart';
+import 'package:tomatebnb/ui/pages/user/my_profile_page.dart';
 import 'package:tomatebnb/utils/Colors.dart';
 
 class MenuPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _MenuPageState extends State<MenuPage> {
     const ExplorarPage(),
     const FavoritoPage(),
     const ViajePage(),
-    const ProfilePage(),
+    const MyProfilePage(),
   ];
 
   @override
