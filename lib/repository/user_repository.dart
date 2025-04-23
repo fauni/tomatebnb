@@ -91,7 +91,6 @@ Future<void> setUserData(UserResponseModel user) async {
 
 Future<ApiResponse<UserResponseModel>> updateUserPhoto(String column, File file) async {
     try{
-
       final prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("token")??"";
       int userId = prefs.getInt("userId")??0;
