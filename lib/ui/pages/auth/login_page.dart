@@ -167,37 +167,37 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
             const SizedBox(height: 15),
-            Center(
-              child: Column(
-                children: [
-                  Text(
-                    "o inicie sesión con",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontFamily: "c"),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),  
-                ),
-                onPressed: () {
+            // Center(
+            //   child: Column(
+            //     children: [
+            //       Text(
+            //         "o inicie sesión con",
+            //         style: TextStyle(
+            //             fontSize: 15,
+            //             color: Theme.of(context).colorScheme.primary,
+            //             fontFamily: "c"),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 15),
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: 50,
+            //   child: ElevatedButton.icon(
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.white,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10),
+            //       ),  
+            //     ),
+            //     onPressed: () {
                 
-                }, 
-                label: Text('Google'),
-                icon: Image.asset("assets/images/google.png", width: 30,),
-              ),
-            ),
+            //     }, 
+            //     label: Text('Google'),
+            //     icon: Image.asset("assets/images/google.png", width: 30,),
+            //   ),
+            // ),
 
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

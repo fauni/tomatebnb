@@ -65,13 +65,10 @@ class _AnuncioPageState extends State<AnuncioPage> {
             return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.symmetric(horizontal: 10),
               itemCount: ads.length,
               itemBuilder: (BuildContext context, int index) {
-                return ItemListAnuncio(
-                  anuncio: ads[index],
-                );
-              
+                return ItemListAnuncio(anuncio: ads[index],);
               },
             );
           } else {

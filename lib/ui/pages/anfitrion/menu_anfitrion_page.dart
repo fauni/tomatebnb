@@ -1,13 +1,12 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tomatebnb/config/app_colors.dart';
+import 'package:tomatebnb/provider/navigation_provider.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/anuncio_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/calendario_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/home_anfitrion_page.dart';
-import 'package:tomatebnb/ui/pages/huesped/profile_page.dart';
+import 'package:tomatebnb/ui/pages/user/my_profile_page.dart';
 import 'package:tomatebnb/utils/Colors.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 int selectedIndex = 0;
 
@@ -26,64 +25,53 @@ class _MenuAnfitrionPageState extends State<MenuAnfitrionPage> {
     const HomeAnfitrionPage(),
     const CalendarioPage(),
     const AnuncioPage(),
-    const ProfilePage(),
+    const MyProfilePage(),
   ];
 
   @override
   void initState() {
-    getdarkmodepreviousstate();
     super.initState();
   }
 
-  late ColorNotifire notifire;
-
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
+    final navigationProvider = Provider.of<NavigationProvider>(context);
+    var colortheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        unselectedItemColor: notifire.getwhiteblackcolor,
-        backgroundColor: notifire.getbgcolor,
+        unselectedItemColor: AppColors().WhiteColor,
+        backgroundColor: AppColors().boxcolor,
         elevation: 0,
         selectedLabelStyle: const TextStyle(
             fontFamily: 'Gilroy Bold', fontWeight: FontWeight.bold),
-        fixedColor: notifire.getwhiteblackcolor,
+        fixedColor: Theme.of(context).colorScheme.tertiary,
         unselectedLabelStyle: const TextStyle(fontFamily: 'Gilroy Medium'),
-        currentIndex: selectedIndex,
+        currentIndex: navigationProvider.selectedIndexAnfitrion,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.homeOutline, color: selectedIndex == 0 ? Darkblue : greyColor,),
-              label: 'Inicio'),
+            icon: Image.asset("assets/images/home.png", height: 25, color: navigationProvider.selectedIndexAnfitrion == 0 ? colortheme.tertiary : greyColor,),
+            label: 'Inicio'),
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.calendarOutline, color: selectedIndex == 1 ? Darkblue : greyColor),
-              label: 'Calendario'),
+            icon: Image.asset("assets/images/calendar.png", height: 25, color: navigationProvider.selectedIndexAnfitrion == 1 ? colortheme.tertiary : greyColor,),
+            label: 'Calendario'),
           BottomNavigationBarItem(
-            icon: Icon(EvaIcons.archiveOutline, color: selectedIndex == 2 ? Darkblue : greyColor),
+            icon: Image.asset("assets/images/post-it.png", height: 25, color: navigationProvider.selectedIndexAnfitrion == 2 ? colortheme.tertiary : greyColor,),
             label: 'Anuncios'),
           BottomNavigationBarItem(
-            icon: Icon(EvaIcons.menu, color: selectedIndex == 3 ? Darkblue : greyColor,),
+            icon: Image.asset("assets/images/hamburger.png", height: 25, color: navigationProvider.selectedIndexAnfitrion == 3 ? colortheme.tertiary : greyColor,),
             label: 'Menu',
           ),
         ],
         onTap: (index) {
           setState(() {});
-          selectedIndex = index;
+          navigationProvider.setPageAnfitrion(index);
         },
       ),
-      body: _pageOption[selectedIndex],
+      body: _pageOption[navigationProvider.selectedIndexAnfitrion],
     );
-  }
-
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
   }
 }

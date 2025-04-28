@@ -93,8 +93,7 @@ class _ExplorarPageState extends State<ExplorarPage> {
                               _selectedIndex = index;
                             });
                             // Disparar evento para cargar alojamiento por categoría
-                            context.read<ExploreAccommodationBloc>().add(
-                              GetAccommodationByDescribeEvent(describes.id!),
+                            context.read<ExploreAccommodationBloc>().add(GetAccommodationByDescribeEvent(describes.id!),
                             );
                           },
                           child: AnimatedContainer(
@@ -157,9 +156,7 @@ class _ExplorarPageState extends State<ExplorarPage> {
               },
               builder: (context, state) {
                 if (state is GetAccommodationNearbyLoading || state is GetAccommodationByDescribeLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Center(child: CircularProgressIndicator(),);
                 } else if (state is GetAccommodationNearbySuccess || state is GetAccommodationByDescribeSuccess) {
                   final accommodations = state is GetAccommodationNearbySuccess
                       ? state.accommodations

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/auth/login_response_model.dart';
 import 'package:tomatebnb/models/response/api_response.dart';
-import 'package:tomatebnb/models/user/user_request_model.dart';
 import 'package:tomatebnb/models/user/user_request_modelp.dart';
 import 'package:tomatebnb/models/user/user_response_model.dart';
 
@@ -20,6 +19,7 @@ class AuthRepository {
     await prefs.setString('token', user.token!);
     await prefs.setString('tokenType', user.tokenType!);
     await prefs.setString('profilePhoto', user.profilePhoto??"");
+    await prefs.setString('profilePhotoUrl', user.profilePhotoUrl??"");
   }
 
   Future<void> clearUsarData() async {
@@ -30,6 +30,7 @@ class AuthRepository {
     await prefs.remove('token');
     await prefs.remove('tokenType');
     await prefs.remove('profilePhoto');
+    await prefs.remove('profilePhotoUrl');
   }
 
   Future<ApiResponse<LoginResponseModel>> login(String email, String password) async {

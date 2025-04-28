@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/ui/widgets/skeleton_image_widget.dart';
@@ -56,7 +55,7 @@ class _ItemListExploreState extends State<ItemListExplore> {
                                   child: FadeInImage.memoryNetwork(
                                     placeholder: Uint8List(0),
                                     placeholderErrorBuilder: (context, error, stackTrace) => SkeletonImageWidget(),
-                                    image: '$imgsUrl/accommodations/${photo.photoUrl}',
+                                    image: photo.url,// '$imgsUrl/accommodations/${photo.photoUrl}',
                                     fit: BoxFit.cover, // Para que la imagen cubra el contenedor
                                   ),
                                 ),

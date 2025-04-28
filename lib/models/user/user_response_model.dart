@@ -42,6 +42,10 @@ class UserResponseModel {
     DateTime? createdAt;
     DateTime? updatedAt;
     String? confirmPhoto;
+    String? profilePhotoUrl;
+    String? documentPhotoFrontUrl;
+    String? documentPhotoBackUrl;
+    String? confirmPhotoUrl;
 
     UserResponseModel({
         this.id,
@@ -62,6 +66,10 @@ class UserResponseModel {
         this.createdAt,
         this.updatedAt,
         this.confirmPhoto,
+        this.profilePhotoUrl,
+        this.documentPhotoFrontUrl,
+        this.documentPhotoBackUrl,
+        this.confirmPhotoUrl,
     });
 
     factory UserResponseModel.fromJson(Map<String, dynamic> json) => UserResponseModel(
@@ -83,6 +91,10 @@ class UserResponseModel {
         createdAt: DateTime.parse(json["created_at"]??'2000-01-01'),
         updatedAt: DateTime.parse(json["updated_at"]??'2000-01-01'),
         confirmPhoto: json["confirm_photo"],
+        profilePhotoUrl: json["profile_photo_url"],
+        documentPhotoFrontUrl: json["document_photo_front_url"],
+        documentPhotoBackUrl: json["document_photo_back_url"],
+        confirmPhotoUrl: json["confirm_photo_url"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -104,5 +116,9 @@ class UserResponseModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "confirm_photo": confirmPhoto,
+        "profile_photo_url": profilePhotoUrl,
+        "document_photo_front_url": documentPhotoFrontUrl,
+        "document_photo_back_url": documentPhotoBackUrl,
+        "confirm_photo_url": confirmPhotoUrl,
     };
 }
