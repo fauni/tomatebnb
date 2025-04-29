@@ -19,7 +19,7 @@ class ItemListAnuncio extends StatelessWidget {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: 
              anuncio.prices!.isNotEmpty 
@@ -31,10 +31,9 @@ class ItemListAnuncio extends StatelessWidget {
             && anuncio.description!= null
             ?Theme.of(context).colorScheme.inversePrimary 
             :Theme.of(context).colorScheme.errorContainer,
-           
             width: 2,
           ),
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.surfaceContainer,
         ),
         child: Row(
           children: [
@@ -75,30 +74,31 @@ class ItemListAnuncio extends StatelessWidget {
                     overflow: TextOverflow.ellipsis, 
                     style: TextStyle(
                         fontSize: 13,
-                        fontFamily: "Gilroy Medium"),
+                        fontFamily: "Gilroy"),
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Row(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Bs.'),
+                        Text('BS.'),
                         Text(
                           anuncio.prices!.isNotEmpty
                           ?anuncio.prices?.first.priceNight.toString() ?? "0.0"
                           :"?",
                           style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: "Gilroy Bold"),
+                              fontSize: 14,
+                              fontFamily: "Gilroy"),
                         ),
-                        const SizedBox(width: 3),
+                        const SizedBox(width: 15),
                         Text(
                           "Por Noche",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Theme.of(context).colorScheme.primary,
-                              fontFamily: "Gilroy Medium"),
+                              fontFamily: "Gilroy"),
                         ),
                       ],
                     ),
