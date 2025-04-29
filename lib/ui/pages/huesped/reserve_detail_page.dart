@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
@@ -20,12 +21,18 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
     cargarReservaPorId();
   }
 
+  
+   int _nights=0;
+
   cargarReservaPorId(){
     context.read<ReserveBloc>().add(ReserveGetByIdEvent(widget.reserva.id!));
   }
   @override
   Widget build(BuildContext context) {
     context.read<ReserveBloc>().add(ReserveGetByIdEvent(widget.reserva.id!));
+_nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
+        widget.reserva.endDate ?? DateTime.now());
+   
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(75),
@@ -115,8 +122,8 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
                                     Row(
                                       children: [
                                         // Text('${state.responseReserve.accommodation.prices![0].priceNight} BS', style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
-                                        Text('65 BS', style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
-                                        Text('/Noche', )
+                                        Text('${state.responseReserve.totalPrice} BS', style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
+                                        Text('/Total', )
                                       ],
                                     ),
                                     Row(
@@ -226,7 +233,7 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "46 Bs. x ${1} Noches",
+                                "${_nights} Noches",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontFamily: "Gilroy Medium",
@@ -274,6 +281,39 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
                       ),
                     ],
                   ),
+                 Divider(
+                    thickness: 1,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    widget.reserva.state == "Pagado" 
+                                    ?InkWell(
+                                      onTap: () {
+                                        // if(_accommodationId!=0){
+                                        context.push('/instructions_reserve',
+                                            extra: widget.reserva);
+                                        // }
+                                      },
+                                      child: Text(
+                                            "Ver Instrucciones",
+                                            style: TextStyle(
+                                                 fontSize: 16,
+                                                fontFamily: "Gilroy Bold",
+                                                color: Theme.of(context).colorScheme.primary),
+                                          ),
+                                    ):
+                                    Text(
+                                          "Pendiente de Pago",
+                                          style: TextStyle(
+                                                fontSize: 16,
+                                                fontFamily: "Gilroy Bold",
+                                                color: Theme.of(context).colorScheme.primary),
+                                        ),
+                                    
+                                  ],
+                                ),
                   SizedBox(
                     height: 20,
                   ),
@@ -298,5 +338,10 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
         ),
       )),
     );
+  }
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return ((to.difference(from).inHours / 24).round()) + 1;
   }
 }

@@ -154,5 +154,41 @@ Future<ApiResponse<ReserveResponseModel>> createReserve(ReserveRequestModel rese
     }
   }
 
+  Future<ApiResponse<ReserveResponseModel>> check(int reserveId,String checkDate, String column) async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      final response = await http.put(
+        Uri.parse('$_baseUrl/v1/reserves/$reserveId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        },
+        body:jsonEncode({
+          column: checkDate
+        }) 
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<ReserveResponseModel>(
+          status: true,
+          message: data['message'],
+          // data: ReserveResponseModel.fromJson(data['data']),
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<ReserveResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<ReserveResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
  
 }

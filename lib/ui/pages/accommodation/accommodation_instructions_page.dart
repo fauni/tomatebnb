@@ -208,5 +208,6 @@ class _AccommodationInstructionsPageState
         /* SizedBox(height: MediaQuery.of(context).size.height * 0.22),*/
       ),
     );
-  }
+ 
+ }
 }

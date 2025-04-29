@@ -69,3 +69,45 @@ class ReserveGetByIdError extends ReserveState {
   @override
   List<Object> get props => [message];
 }
+
+//Estados para agregar hora de checkin estimada en la reserva 
+class ReserveCheckinLoading extends ReserveState {}
+
+class ReserveCheckinSuccess extends ReserveState {
+  final bool status;
+  ReserveCheckinSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class ReserveCheckinError extends ReserveState {
+  final String message;
+  ReserveCheckinError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
+//Estados para agregar hora de checkout estimada en la reserva 
+class ReserveCheckoutLoading extends ReserveState {}
+
+class ReserveCheckoutSuccess extends ReserveState {
+  final bool status;
+  ReserveCheckoutSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class ReserveCheckoutError extends ReserveState {
+  final String message;
+  ReserveCheckoutError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}

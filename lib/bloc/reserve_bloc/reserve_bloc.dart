@@ -9,6 +9,8 @@ class ReserveBloc extends Bloc<ReserveEvent, ReserveState> {
     on<ReserveCreateEvent>(_onReserveCreate);
     on<ReserveGetByUserEvent>(_onReserveGetByUser);
     on<ReserveGetByIdEvent>(_onReserveGetById);
+    on<ReserveCheckinEvent>(_onReserveCheckin);
+    on<ReserveCheckoutEvent>(_onReserveCheckout);
   }
 
   Future<void> _onReserveCreate(ReserveCreateEvent event, Emitter<ReserveState> emit) async {
@@ -55,4 +57,35 @@ class ReserveBloc extends Bloc<ReserveEvent, ReserveState> {
       emit(ReserveGetByIdError(e.toString()));
     }
   }
+
+    Future<void> _onReserveCheckin(ReserveCheckinEvent event, Emitter<ReserveState> emit) async {
+    emit(ReserveCheckinLoading());
+    try{
+      final response = await reserveRepository.check(event.id, event.dateCheckin, 'checkin_date');
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(ReserveCheckinSuccess(response.status));
+      } else {
+        emit(ReserveCheckinError(response.message));
+      }
+    } catch(e){
+      emit(ReserveCheckinError(e.toString()));
+    }
+  }
+
+   Future<void> _onReserveCheckout(ReserveCheckoutEvent event, Emitter<ReserveState> emit) async {
+    emit(ReserveCheckoutLoading());
+    try{
+      final response = await reserveRepository.check(event.id, event.dateCheckout, 'checkout_date');
+      if(response.status){
+        //await accommodationRepository.setUserData(response.data!);
+        emit(ReserveCheckoutSuccess(response.status));
+      } else {
+        emit(ReserveCheckoutError(response.message));
+      }
+    } catch(e){
+      emit(ReserveCheckoutError(e.toString()));
+    }
+  }
+
 }

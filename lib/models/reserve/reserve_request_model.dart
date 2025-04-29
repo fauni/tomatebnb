@@ -35,7 +35,8 @@ class ReserveRequestModel {
     int? commission;
     String? state;
     bool? status;
-
+    DateTime? checkinDate;
+    DateTime? checkoutDate;
     ReserveRequestModel({
          this.userId,
          this.accommodationId,
@@ -47,6 +48,8 @@ class ReserveRequestModel {
          this.commission,
          this.state,
          this.status,
+         this.checkinDate,
+         this.checkoutDate,
     });
 
     factory ReserveRequestModel.fromJson(Map<String, dynamic> json) => ReserveRequestModel(  
@@ -60,6 +63,8 @@ class ReserveRequestModel {
         commission: json["commission"],
         state: json["state"],
         status: json["status"],
+        checkinDate: DateTime.parse(json["checkin_date"]?? "2000-01-01 00:00:00"),
+        checkoutDate: DateTime.parse(json["checkout_date"]?? "2000-01-01 00:00:00"),
     );
 
     Map<String, dynamic> toJson() => {
@@ -73,5 +78,7 @@ class ReserveRequestModel {
         "commission": commission,
         "state": state,
         "status": status,
+        "checkin_date": "${checkinDate?.year.toString().padLeft(4, '0')}-${checkinDate?.month.toString().padLeft(2, '0')}-${checkinDate?.day.toString().padLeft(2, '0')}",
+        "checkout_date": "${checkoutDate?.year.toString().padLeft(4, '0')}-${checkoutDate?.month.toString().padLeft(2, '0')}-${checkoutDate?.day.toString().padLeft(2, '0')}",
     };
 }

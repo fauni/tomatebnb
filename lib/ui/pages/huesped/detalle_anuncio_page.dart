@@ -379,8 +379,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                 BlocConsumer<AccommodationServiceBloc,
                                     AccommodationServiceState>(
                                   listener: (context, state) {
-                                    if (state
-                                        is AccommodationServicecGetSuccess) {
+                                    if (state is AccommodationServicecGetSuccess) {
                                       services =
                                           state.responseAccommodationServices;
                                     }
@@ -425,11 +424,17 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                                   // color: notifire.getgreycolor,
                                                   fontFamily: "Gilroy Medium"),
                                             ),
-                                            leading: Image.asset(
-                                              "assets/images/wifi.png",
-                                              height: 20,
-                                              // color: notifire.getwhiteblackcolor,
-                                            ),
+                                            // leading: Image.asset(
+                                            //   "assets/images/wifi.png",
+                                            //   height: 20,
+                                            //   // color: notifire.getwhiteblackcolor,
+                                            // ),
+                                           leading: FadeInImage.assetNetwork(
+                                              placeholder:'assets/images/load.gif',
+                                              image: services[index].service!.icon,
+                                              height: 30.0,
+                                              width: 30.0,
+                                            )
                                           );
                                         },
                                       ),

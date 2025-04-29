@@ -146,7 +146,7 @@ class _CreateReservePageState extends State<CreateReservePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$${_accommodation.prices?.first.priceNight} x $_nights Nights",
+                        "\$${_accommodation.prices?.first.priceNight} x $_nights Noches",
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: "Gilroy Medium",

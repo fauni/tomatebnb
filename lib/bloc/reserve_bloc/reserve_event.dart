@@ -28,3 +28,19 @@ class ReserveGetByIdEvent extends ReserveEvent {
   List<Object> get props => [id];
 }
 
+class ReserveCheckinEvent extends ReserveEvent {
+  final int id;
+  final String dateCheckin;
+  ReserveCheckinEvent(this.id,this.dateCheckin);
+  @override
+  List<Object?> get props => [id,dateCheckin];
+}
+
+class ReserveCheckoutEvent extends ReserveEvent {
+  final int id;
+  final String dateCheckout;
+  ReserveCheckoutEvent(this.id,this.dateCheckout);
+  @override
+  List<Object?> get props => [id,dateCheckout];
+}
+

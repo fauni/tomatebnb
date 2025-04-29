@@ -38,6 +38,8 @@ class ReserveResponseModel {
     String? state;
     bool? status;
     AccommodationResponseModel? accommodation;
+    DateTime ? checkinDate;
+    DateTime ? checkoutDate;
 
     ReserveResponseModel({
         this.id,
@@ -51,7 +53,9 @@ class ReserveResponseModel {
         this.commission,
         this.state,
         this.status,
-        this.accommodation
+        this.accommodation,
+        this.checkinDate,
+        this.checkoutDate,
     });
 
     factory ReserveResponseModel.fromJson(Map<String, dynamic> json) => ReserveResponseModel(
@@ -66,7 +70,9 @@ class ReserveResponseModel {
         commission: double.parse((json["commission"]??0).toString()),
         state: json["state"],
         status: json["status"],
-        accommodation: AccommodationResponseModel.fromJson(json["accommodation"])
+        accommodation: AccommodationResponseModel.fromJson(json["accommodation"]),
+        checkinDate: DateTime.parse(json["checkin_date"]?? "2000-01-01 00:00:00"),
+        checkoutDate: DateTime.parse(json["checkout_date"]?? "2000-01-01 00:00:00"),
     );
 
     Map<String, dynamic> toJson() => {
@@ -82,5 +88,7 @@ class ReserveResponseModel {
         "state": state,
         "status": status,
         "accommodation": accommodation?.toJson(),
+        "checkin_date": "${checkinDate?.year.toString().padLeft(4, '0')}-${checkinDate?.month.toString().padLeft(2, '0')}-${checkinDate?.day.toString().padLeft(2, '0')} ${checkinDate?.hour.toString().padLeft(2, '0')}:${checkinDate?.minute.toString().padLeft(2, '0')}",
+        "checkout_date": "${checkoutDate?.year.toString().padLeft(4, '0')}-${checkoutDate?.month.toString().padLeft(2, '0')}-${checkoutDate?.day.toString().padLeft(2, '0')} ${checkoutDate?.hour.toString().padLeft(2, '0')}:${checkoutDate?.minute.toString().padLeft(2, '0')}",
     };
 }
