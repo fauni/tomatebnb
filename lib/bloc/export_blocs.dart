@@ -103,3 +103,8 @@ export 'package:tomatebnb/bloc/explore_describe_bloc/explore_describe_state.dart
 export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_event.dart';
 export 'package:tomatebnb/bloc/accommodation_favorite_bloc/accommodation_favorite_state.dart';
+
+// Bloc para payment url 
+export 'package:tomatebnb/bloc/payment_url_bloc/payment_url_bloc.dart';
+export 'package:tomatebnb/bloc/payment_url_bloc/payment_url_event.dart';
+export 'package:tomatebnb/bloc/payment_url_bloc/payment_url_state.dart';

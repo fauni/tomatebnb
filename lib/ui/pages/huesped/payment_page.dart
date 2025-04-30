@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Importa estas para mejor soporte en iOS/Android
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -17,16 +19,16 @@ class _PaymentPageState extends State<PaymentPage> {
   bool _isLoading = true;
   String? _errorMessage;
 
-  final String url = "https://vpay.com.bo:5039/#/lnk/eyJhbGciOiJIUzI1NiIsInR5cCI6ICJKV1QifQ.eyJjb21wYW55SWQiOiI5NSIsImNvZGlnbyI6IjEiLCJtb250byI6MX0";
-
   @override
   void initState() {
     super.initState();
+    // Inicializa el controlador sin URL primero
     _initializeWebViewController();
+    // Dispara el evento para obtener la URL
+    context.read<PaymentUrlBloc>().add(GenerateUrlPaymentEvent(widget.reserveId));
   }
 
   Future<void> _initializeWebViewController() async {
-    // Configuración avanzada para iOS/Android
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(
@@ -39,7 +41,6 @@ class _PaymentPageState extends State<PaymentPage> {
 
     final controller = WebViewController.fromPlatformCreationParams(params);
 
-    // Configuración común
     await controller.setJavaScriptMode(JavaScriptMode.unrestricted);
     await controller.setNavigationDelegate(
       NavigationDelegate(
@@ -66,29 +67,32 @@ class _PaymentPageState extends State<PaymentPage> {
           });
         },
         onUrlChange: (UrlChange change) {
-          // Puedes monitorear cambios de URL aquí
+          // Monitorear cambios de URL
         },
       ),
     );
 
-    // Configuración específica para Android
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
       (controller.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
 
-    // Carga la URL
+    _controller = controller;
+  }
+
+  Future<void> _loadUrl(String url) async {
     try {
-      await controller.loadRequest(Uri.parse(url));
+      await _controller.loadRequest(Uri.parse(url));
+      setState(() {
+        _errorMessage = null;
+      });
     } catch (e) {
       setState(() {
         _errorMessage = 'Error al cargar la URL: $e';
         _isLoading = false;
       });
     }
-
-    _controller = controller;
   }
 
   @override
@@ -97,25 +101,38 @@ class _PaymentPageState extends State<PaymentPage> {
       appBar: AppBar(
         title: const Text('Payment'),
       ),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-          if (_errorMessage != null)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  _errorMessage!,
-                  style: const TextStyle(color: Colors.red),
-                  textAlign: TextAlign.center,
+      body: BlocListener<PaymentUrlBloc, PaymentUrlState>(
+        listener: (context, state) {
+          if (state is GenerateUrlPaymentSuccess) {
+            // Cuando recibimos la URL, la cargamos en el WebView
+            _loadUrl(state.url);
+          } else if (state is GenerateUrlPaymentError) {
+            setState(() {
+              _errorMessage = state.message;
+              _isLoading = false;
+            });
+          }
+        },
+        child: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+            if (_errorMessage != null)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
