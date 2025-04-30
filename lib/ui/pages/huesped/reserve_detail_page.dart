@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_clean_calendar/utils/extensions.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
@@ -326,7 +327,27 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                      child: Text('Realizar Pago'))
+                      child: Text('Realizar Pago')),
+                       SizedBox(
+                    height: 20,
+                  ),
+                  widget.reserva.state == "Pagado" &&(widget.reserva.startDate!.isSameDay(DateTime.now()))
+                  ?ElevatedButton(
+                      onPressed: () {
+                        context.push('/checkin', extra: widget.reserva);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Theme.of(context).colorScheme.tertiary,
+                          foregroundColor: Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          )),
+                      child: Text('Check In'))
+                  :Text(""),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               );
             } else {

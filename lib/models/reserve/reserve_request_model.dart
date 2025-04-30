@@ -78,7 +78,7 @@ class ReserveRequestModel {
         "commission": commission,
         "state": state,
         "status": status,
-        "checkin_date": "${checkinDate?.year.toString().padLeft(4, '0')}-${checkinDate?.month.toString().padLeft(2, '0')}-${checkinDate?.day.toString().padLeft(2, '0')}",
-        "checkout_date": "${checkoutDate?.year.toString().padLeft(4, '0')}-${checkoutDate?.month.toString().padLeft(2, '0')}-${checkoutDate?.day.toString().padLeft(2, '0')}",
+        "checkin_date": checkinDate?.toIso8601String(),
+        "checkout_date": checkoutDate?.toIso8601String(),
     };
 }
