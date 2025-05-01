@@ -1,46 +1,47 @@
 import 'package:equatable/equatable.dart';
+import 'package:tomatebnb/models/reserve/event_request_model.dart';
 import 'package:tomatebnb/models/reserve/reserve_request_model.dart';
 
-abstract class ReserveEvent extends Equatable {
+abstract class EventEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class ReserveCreateEvent extends ReserveEvent {
-  final ReserveRequestModel requestModel;
-  ReserveCreateEvent(this.requestModel);
+class EventCreateEvent extends EventEvent {
+  final EventRequestModel requestModel;
+  EventCreateEvent(this.requestModel);
   @override
   List<Object?> get props => [requestModel];
 }
 
 
-class ReserveGetByUserEvent extends ReserveEvent {
-  
-  ReserveGetByUserEvent();
+class EventGetByReserveEvent extends EventEvent {
+  final int reserveId;
+  EventGetByReserveEvent(this.reserveId);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [reserveId];
 }
 
-class ReserveGetByIdEvent extends ReserveEvent {
-  final int id;
-  ReserveGetByIdEvent(this.id);
-  @override
-  List<Object> get props => [id];
-}
+// class EventGetByIdEvent extends EventEvent {
+//   final int id;
+//   EventGetByIdEvent(this.id);
+//   @override
+//   List<Object> get props => [id];
+// }
 
-class ReserveCheckinEvent extends ReserveEvent {
-  final int id;
-  final String dateCheckin;
-  ReserveCheckinEvent(this.id,this.dateCheckin);
-  @override
-  List<Object?> get props => [id,dateCheckin];
-}
+// class EventCheckinEvent extends EventEvent {
+//   final int id;
+//   final String dateCheckin;
+//   EventCheckinEvent(this.id,this.dateCheckin);
+//   @override
+//   List<Object?> get props => [id,dateCheckin];
+// }
 
-class ReserveCheckoutEvent extends ReserveEvent {
-  final int id;
-  final String dateCheckout;
-  ReserveCheckoutEvent(this.id,this.dateCheckout);
-  @override
-  List<Object?> get props => [id,dateCheckout];
-}
+// class EventCheckoutEvent extends EventEvent {
+//   final int id;
+//   final String dateCheckout;
+//   EventCheckoutEvent(this.id,this.dateCheckout);
+//   @override
+//   List<Object?> get props => [id,dateCheckout];
+// }
 

@@ -1,113 +1,111 @@
 import 'package:equatable/equatable.dart';
-
-import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
-
-abstract class ReserveState extends Equatable {
+import 'package:tomatebnb/models/reserve/event_response_model.dart';
+abstract class EventState extends Equatable {
   @override
   List<Object> get props => [];
 }
-class ReserveInitial extends ReserveState {}
+class EventInitial extends EventState {}
 
-//estados para guardar reserva de alojamiento
-class ReserveCreateLoading extends ReserveState {}
+//estados para guardar evento de reserva
+class EventCreateLoading extends EventState {}
 
-class ReserveCreateSuccess extends ReserveState {
-  final ReserveResponseModel responseReserve;
-  ReserveCreateSuccess(
-    this.responseReserve
+class EventCreateSuccess extends EventState {
+  final EventResponseModel responseEvent;
+  EventCreateSuccess(
+    this.responseEvent
   );
   @override
-  List<Object> get props => [responseReserve];
+  List<Object> get props => [responseEvent];
 }
 
-class ReserveCreateError extends ReserveState {
+class EventCreateError extends EventState {
   final String message;
-  ReserveCreateError(
+  EventCreateError(
     this.message
   );
   @override
   List<Object> get props => [message];
 }
 
-// Estados para el listado de reservas por usuario
+// Estados para el listado de eventos(checkin o checkout) por reserva
 
-class ReserveGetByUserLoading extends ReserveState {}
+class EventGetByReserveLoading extends EventState {}
 
-class ReserveGetByUserSuccess extends ReserveState {
-  final List<ReserveResponseModel> responseReserves;
-  ReserveGetByUserSuccess(
-    this.responseReserves
+class EventGetByReserveSuccess extends EventState {
+  final List<EventResponseModel> responseEvents;
+  EventGetByReserveSuccess(
+    this.responseEvents
   );
   @override
-  List<Object> get props => [responseReserves];
+  List<Object> get props => [responseEvents];
 }
 
-class ReserveGetByUserError extends ReserveState {
+class EventGetByReserveError extends EventState {
   final String message;
-  ReserveGetByUserError(
+  EventGetByReserveError(
     this.message
   );
   @override
   List<Object> get props => [message];
 }
 
-// Estados para obtener reserva por id
-class ReserveGetByIdLoading extends ReserveState {}
-class ReserveGetByIdSuccess extends ReserveState {
-  final ReserveResponseModel responseReserve;
-  ReserveGetByIdSuccess(
-    this.responseReserve
-  );
-  @override
-  List<Object> get props => [responseReserve];
-}
-class ReserveGetByIdError extends ReserveState {
-  final String message;
-  ReserveGetByIdError(
-    this.message
-  );
-  @override
-  List<Object> get props => [message];
-}
+// // Estados para obtener reserva por id
+// class EventGetByIdLoading extends EventState {}
+// class EventGetByIdSuccess extends EventState {
+//   final EventResponseModel responseEvent;
+//   EventGetByIdSuccess(
+//     this.responseEvent
+//   );
+//   @override
+//   List<Object> get props => [responseEvent];
+// }
+// class EventGetByIdError extends EventState {
+//   final String message;
+//   EventGetByIdError(
+//     this.message
+//   );
+//   @override
+//   List<Object> get props => [message];
+// }
 
-//Estados para agregar hora de checkin estimada en la reserva 
-class ReserveCheckinLoading extends ReserveState {}
+// //Estados para agregar hora de checkin estimada en la reserva 
+// class EventCheckinLoading extends EventState {}
 
-class ReserveCheckinSuccess extends ReserveState {
-  final bool status;
-  ReserveCheckinSuccess(
-    this.status
-  );
-  @override
-  List<Object> get props => [status];
-}
+// class EventCheckinSuccess extends EventState {
+//   final bool status;
+//   EventCheckinSuccess(
+//     this.status
+//   );
+//   @override
+//   List<Object> get props => [status];
+// }
 
-class ReserveCheckinError extends ReserveState {
-  final String message;
-  ReserveCheckinError(
-    this.message
-  );
-  @override
-  List<Object> get props => [message];
-}
+// class EventCheckinError extends EventState {
+//   final String message;
+//   EventCheckinError(
+//     this.message
+//   );
+//   @override
+//   List<Object> get props => [message];
+// }
 
-//Estados para agregar hora de checkout estimada en la reserva 
-class ReserveCheckoutLoading extends ReserveState {}
+// //Estados para agregar hora de checkout estimada en la reserva 
+// class EventCheckoutLoading extends EventState {}
 
-class ReserveCheckoutSuccess extends ReserveState {
-  final bool status;
-  ReserveCheckoutSuccess(
-    this.status
-  );
-  @override
-  List<Object> get props => [status];
-}
+// class EventCheckoutSuccess extends EventState {
+//   final bool status;
+//   EventCheckoutSuccess(
+//     this.status
+//   );
+//   @override
+//   List<Object> get props => [status];
+// }
 
-class ReserveCheckoutError extends ReserveState {
-  final String message;
-  ReserveCheckoutError(
-    this.message
-  );
-  @override
-  List<Object> get props => [message];
-}
+// class EventCheckoutError extends EventState {
+//   final String message;
+//   EventCheckoutError(
+//     this.message
+//   );
+//   @override
+//   List<Object> get props => [message];
+// }

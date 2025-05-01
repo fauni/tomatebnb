@@ -16,6 +16,7 @@ import 'package:tomatebnb/repository/aspect_repository.dart';
 import 'package:tomatebnb/repository/auth_repository.dart';
 import 'package:tomatebnb/repository/accommodation_repository.dart';
 import 'package:tomatebnb/repository/describe_repository.dart';
+import 'package:tomatebnb/repository/event_repository.dart';
 import 'package:tomatebnb/repository/explore_repository.dart';
 import 'package:tomatebnb/repository/payment_repository.dart';
 import 'package:tomatebnb/repository/reserve_respository.dart';
@@ -51,6 +52,7 @@ class Blocs {
   static final ExploreDescribeBloc exploreDescribeBloc = ExploreDescribeBloc(DescribeRepository(),);
   static final AccommodationFavoriteBloc accommodationFavoriteBloc = AccommodationFavoriteBloc(AccommodationFavoriteRepository(),);
   static final PaymentUrlBloc paymentUrlBloc = PaymentUrlBloc(PaymentRepository());
+  static final EventBloc eventBloc = EventBloc(EventRepository());
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -77,6 +79,7 @@ class Blocs {
     BlocProvider<ExploreDescribeBloc>(create: (context) => exploreDescribeBloc),
     BlocProvider<AccommodationFavoriteBloc>(create: (context) => accommodationFavoriteBloc),
     BlocProvider<PaymentUrlBloc>(create: (context) => paymentUrlBloc),
+    BlocProvider<EventBloc>(create: (context) => eventBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -104,6 +107,7 @@ class Blocs {
     exploreDescribeBloc.close();
     accommodationFavoriteBloc.close();
     paymentUrlBloc.close();
+    eventBloc.close();
   }
 
 

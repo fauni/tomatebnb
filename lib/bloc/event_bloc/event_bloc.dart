@@ -1,91 +1,92 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
-import 'package:tomatebnb/repository/reserve_respository.dart';
+import 'package:tomatebnb/repository/event_repository.dart';
 
-class ReserveBloc extends Bloc<ReserveEvent, ReserveState> {
-  final ReserveRepository reserveRepository;
 
-  ReserveBloc(this.reserveRepository) : super(ReserveInitial()){
-    on<ReserveCreateEvent>(_onReserveCreate);
-    on<ReserveGetByUserEvent>(_onReserveGetByUser);
-    on<ReserveGetByIdEvent>(_onReserveGetById);
-    on<ReserveCheckinEvent>(_onReserveCheckin);
-    on<ReserveCheckoutEvent>(_onReserveCheckout);
+class EventBloc extends Bloc<EventEvent, EventState> {
+  final EventRepository reserveRepository;
+
+  EventBloc(this.reserveRepository) : super(EventInitial()){
+    on<EventCreateEvent>(_onEventCreate);
+    on<EventGetByReserveEvent>(_onEventGetByReserve);
+    // on<EventGetByIdEvent>(_onEventGetById);
+    // on<EventCheckinEvent>(_onEventCheckin);
+    // on<EventCheckoutEvent>(_onEventCheckout);
   }
 
-  Future<void> _onReserveCreate(ReserveCreateEvent event, Emitter<ReserveState> emit) async {
-    emit(ReserveCreateLoading());
+  Future<void> _onEventCreate(EventCreateEvent event, Emitter<EventState> emit) async {
+    emit(EventCreateLoading());
     try{
-      final response = await reserveRepository.createReserve(event.requestModel);
+      final response = await reserveRepository.createEvent(event.requestModel);
       if(response.status){
         //await accommodationRepository.setUserData(response.data!);
-        emit(ReserveCreateSuccess(response.data!));
+        emit(EventCreateSuccess(response.data!));
       } else {
-        emit(ReserveCreateError(response.message));
+        emit(EventCreateError(response.message));
       }
     } catch(e){
-      emit(ReserveCreateError(e.toString()));
+      emit(EventCreateError(e.toString()));
       
     }
   }
 
-  Future<void> _onReserveGetByUser(ReserveGetByUserEvent event, Emitter<ReserveState> emit) async {
-    emit(ReserveGetByUserLoading());
+  Future<void> _onEventGetByReserve(EventGetByReserveEvent event, Emitter<EventState> emit) async {
+    emit(EventGetByReserveLoading());
     try{
-      final response = await reserveRepository.getByUser();
+      final response = await reserveRepository.getByReserve(event.reserveId);
       if(response.status){
-        //await accommodationRepository.setUserData(response.data!);
-        emit(ReserveGetByUserSuccess(response.data!));
+        //await accommodationRepository.setReserveData(response.data!);
+        emit(EventGetByReserveSuccess(response.data!));
       } else {
-        emit(ReserveGetByUserError(response.message));
+        emit(EventGetByReserveError(response.message));
       }
     } catch(e){
-      emit(ReserveGetByUserError(e.toString()));
+      emit(EventGetByReserveError(e.toString()));
     }
   }
 
-  Future<void> _onReserveGetById(ReserveGetByIdEvent event, Emitter<ReserveState> emit) async {
-    emit(ReserveGetByIdLoading());
-    try{
-      final response = await reserveRepository.getReserveById(event.id);
-      if(response.status){
-        emit(ReserveGetByIdSuccess(response.data!));
-      } else {
-        emit(ReserveGetByIdError(response.message));
-      }
-    } catch(e){
-      emit(ReserveGetByIdError(e.toString()));
-    }
-  }
+  // Future<void> _onEventGetById(EventGetByIdEvent event, Emitter<EventState> emit) async {
+  //   emit(EventGetByIdLoading());
+  //   try{
+  //     final response = await reserveRepository.getEventById(event.id);
+  //     if(response.status){
+  //       emit(EventGetByIdSuccess(response.data!));
+  //     } else {
+  //       emit(EventGetByIdError(response.message));
+  //     }
+  //   } catch(e){
+  //     emit(EventGetByIdError(e.toString()));
+  //   }
+  // }
 
-    Future<void> _onReserveCheckin(ReserveCheckinEvent event, Emitter<ReserveState> emit) async {
-    emit(ReserveCheckinLoading());
-    try{
-      final response = await reserveRepository.check(event.id, event.dateCheckin, 'checkin_date');
-      if(response.status){
-        //await accommodationRepository.setUserData(response.data!);
-        emit(ReserveCheckinSuccess(response.status));
-      } else {
-        emit(ReserveCheckinError(response.message));
-      }
-    } catch(e){
-      emit(ReserveCheckinError(e.toString()));
-    }
-  }
+  //   Future<void> _onEventCheckin(EventCheckinEvent event, Emitter<EventState> emit) async {
+  //   emit(EventCheckinLoading());
+  //   try{
+  //     final response = await reserveRepository.check(event.id, event.dateCheckin, 'checkin_date');
+  //     if(response.status){
+  //       //await accommodationRepository.setUserData(response.data!);
+  //       emit(EventCheckinSuccess(response.status));
+  //     } else {
+  //       emit(EventCheckinError(response.message));
+  //     }
+  //   } catch(e){
+  //     emit(EventCheckinError(e.toString()));
+  //   }
+  // }
 
-   Future<void> _onReserveCheckout(ReserveCheckoutEvent event, Emitter<ReserveState> emit) async {
-    emit(ReserveCheckoutLoading());
-    try{
-      final response = await reserveRepository.check(event.id, event.dateCheckout, 'checkout_date');
-      if(response.status){
-        //await accommodationRepository.setUserData(response.data!);
-        emit(ReserveCheckoutSuccess(response.status));
-      } else {
-        emit(ReserveCheckoutError(response.message));
-      }
-    } catch(e){
-      emit(ReserveCheckoutError(e.toString()));
-    }
-  }
+  //  Future<void> _onEventCheckout(EventCheckoutEvent event, Emitter<EventState> emit) async {
+  //   emit(EventCheckoutLoading());
+  //   try{
+  //     final response = await reserveRepository.check(event.id, event.dateCheckout, 'checkout_date');
+  //     if(response.status){
+  //       //await accommodationRepository.setUserData(response.data!);
+  //       emit(EventCheckoutSuccess(response.status));
+  //     } else {
+  //       emit(EventCheckoutError(response.message));
+  //     }
+  //   } catch(e){
+  //     emit(EventCheckoutError(e.toString()));
+  //   }
+  // }
 
 }

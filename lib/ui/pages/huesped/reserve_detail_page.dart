@@ -69,6 +69,7 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      
                       Container(
                         width: double.infinity,
                         margin: const EdgeInsets.symmetric(vertical: 6),
@@ -84,15 +85,16 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                               width: 75,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  'https://asda', // state.responseReserve.accommodation.photos![0].url,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.error);
-                                  },
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: Icon(Icons.error),
+                                // child: Image.network(
+                                //   'https://asda', // state.responseReserve.accommodation.photos![0].url,
+                                //   errorBuilder: (context, error, stackTrace) {
+                                //     return const Icon(Icons.error);
+                                //   },
+                                //   width: 100,
+                                //   height: 100,
+                                //   fit: BoxFit.cover,
+                                // ),
                               ),
                             ),
                             Column(
@@ -150,6 +152,7 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                         ),
                                 
                       ),
+                     
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -331,7 +334,7 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                        SizedBox(
                     height: 20,
                   ),
-                  widget.reserva.state == "Pagado" &&(widget.reserva.startDate!.isSameDay(DateTime.now()))
+                  widget.reserva.state != "pendiente" &&(widget.reserva.startDate!.isSameDayOrAfter(DateTime.now()))
                   ?ElevatedButton(
                       onPressed: () {
                         context.push('/checkin', extra: widget.reserva);
