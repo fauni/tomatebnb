@@ -322,7 +322,9 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                     height: 20,
                   ),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.replace('/payment', extra: widget.reserva.id);
+                      },
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor: Theme.of(context).colorScheme.tertiary,

@@ -15,17 +15,17 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  late final WebViewController _controller;
+  WebViewController? _controller; // Cambia a nullable en lugar de late
   bool _isLoading = true;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    // Inicializa el controlador sin URL primero
-    _initializeWebViewController();
-    // Dispara el evento para obtener la URL
-    context.read<PaymentUrlBloc>().add(GenerateUrlPaymentEvent(widget.reserveId));
+    _initializeWebViewController().then((_) {
+      // Solo después de inicializar el controlador, solicitamos la URL
+      context.read<PaymentUrlBloc>().add(GenerateUrlPaymentEvent(widget.reserveId));
+    });
   }
 
   Future<void> _initializeWebViewController() async {
@@ -78,12 +78,16 @@ class _PaymentPageState extends State<PaymentPage> {
           .setMediaPlaybackRequiresUserGesture(false);
     }
 
-    _controller = controller;
+    setState(() {
+      _controller = controller;
+    });
   }
 
   Future<void> _loadUrl(String url) async {
+    if (_controller == null) return; // Asegúrate de que el controlador existe
+    
     try {
-      await _controller.loadRequest(Uri.parse(url));
+      await _controller!.loadRequest(Uri.parse(url));
       setState(() {
         _errorMessage = null;
       });
@@ -99,12 +103,11 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment'),
+        title: const Text('Realizar Pago'),
       ),
       body: BlocListener<PaymentUrlBloc, PaymentUrlState>(
         listener: (context, state) {
-          if (state is GenerateUrlPaymentSuccess) {
-            // Cuando recibimos la URL, la cargamos en el WebView
+          if (state is GenerateUrlPaymentSuccess && _controller != null) {
             _loadUrl(state.url);
           } else if (state is GenerateUrlPaymentError) {
             setState(() {
@@ -115,7 +118,10 @@ class _PaymentPageState extends State<PaymentPage> {
         },
         child: Stack(
           children: [
-            WebViewWidget(controller: _controller),
+            if (_controller != null)
+              WebViewWidget(controller: _controller!)
+            else
+              const Center(child: CircularProgressIndicator()),
             if (_isLoading)
               const Center(
                 child: CircularProgressIndicator(),
