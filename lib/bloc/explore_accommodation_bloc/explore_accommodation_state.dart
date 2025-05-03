@@ -27,6 +27,12 @@ class GetAccommodationNearbyError extends ExploreAccommodationState{
   List<Object> get props => [message];
 }
 
+class AccommodationFilterSuccess extends ExploreAccommodationState {
+  final List<AccommodationResponseCompleteModel> accommodations;
+  AccommodationFilterSuccess(this.accommodations);
+  @override
+  List<Object> get props => [accommodations];
+}
 // EndRegion: Accommodation Nearby
 
 // Region: Accommodation By Describe

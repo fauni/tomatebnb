@@ -13,6 +13,7 @@ import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/auth/create_account_page.dart';
 import 'package:tomatebnb/ui/pages/auth/verificate_email_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
+import 'package:tomatebnb/ui/pages/huesped/accommodation_filter_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/checkin_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/create_reserve_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/detalle_anuncio_page.dart';
@@ -133,6 +134,10 @@ final GoRouter appRouter = GoRouter(
         final reserva = state.extra as ReserveResponseModel;
         return ReserveDetailPage(reserva: reserva);
       }
+    ),
+    GoRoute(
+      path: '/accommodation_filter',
+      builder: (context, state) => const AccommodationFilterPage()
     ),
      GoRoute(
       path: '/cambiar_password',

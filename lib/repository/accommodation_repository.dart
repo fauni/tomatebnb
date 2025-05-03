@@ -2,14 +2,46 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_filter_request.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_model.dart';
 import 'package:tomatebnb/models/response/api_response_list.dart' as api_response_list;
 import 'package:tomatebnb/models/response/api_response.dart';
+import 'package:tomatebnb/models/response/response_list.dart';
 
 class AccommodationRepository {
   final String _baseUrl = Environment.UrlApi;
+
+  Future<ApiResponseList<AccommodationResponseCompleteModel>> filterAccommodations(AccommodationFilterRequest request) async{
+    final url = Uri.parse('$_baseUrl/v1/accommodations/filter2');
+    final prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString("token")??"";
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final body = json.encode(request.toJson());
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if(response.statusCode == 200){
+        final data = json.decode(response.body);
+        return ApiResponseList<AccommodationResponseCompleteModel>.fromJson(data, (json) => AccommodationResponseCompleteModel.fromJson(json));
+      } else {
+        final data = json.decode(response.body);
+        return ApiResponseList<AccommodationResponseCompleteModel>(
+          status: false,
+          message: data['message']
+        );
+      }
+    } catch (e) {
+      return ApiResponseList(status: false, message: e.toString());
+    }
+  }
 
   Future<api_response_list.ApiResponse<AccommodationResponseCompleteModel>> getByUser() async {
     try{

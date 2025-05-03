@@ -4,19 +4,30 @@ import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 
-class ItemListReserva extends StatelessWidget {
+class ItemListReserva extends StatefulWidget {
   final ReserveResponseModel reserva;
 
   const ItemListReserva({super.key, required this.reserva});
 
   @override
+  State<ItemListReserva> createState() => _ItemListReservaState();
+}
+
+class _ItemListReservaState extends State<ItemListReserva> {
+  @override
+  void initState() {
+    super.initState();
+    
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(reserva.accommodationId??0));
+    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(widget.reserva.accommodationId??0));
     return BlocBuilder<AccommodationBloc, AccommodationState>(
       
       builder: (context, state) {
         return GestureDetector(
-          onTap: () => context.push('/detalle_reserva', extra: reserva),
+          onTap: () => context.push('/detalle_reserva', extra: widget.reserva),
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
             padding: const EdgeInsets.all(12.0),
@@ -28,7 +39,7 @@ class ItemListReserva extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  reserva.accommodation?.title?? "Sin título",
+                  widget.reserva.accommodation?.title?? "Sin título",
                   style: TextStyle(
                     fontSize: 15,
                     fontFamily: "Gilroy Bold",
@@ -37,7 +48,7 @@ class ItemListReserva extends StatelessWidget {
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 1,
                   child: Text(
-                    reserva.accommodation?.description ?? "Sin descripción",
+                    widget.reserva.accommodation?.description ?? "Sin descripción",
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -61,11 +72,11 @@ class ItemListReserva extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text('Desde el ', style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy"),),
-                          Text("${reserva.startDate?.day}/${reserva.startDate?.month}/${reserva.startDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
+                          Text("${widget.reserva.startDate?.day}/${widget.reserva.startDate?.month}/${widget.reserva.startDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
                           const SizedBox(width: 5),
                           Text( "hasta el ", style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontFamily: "Gilroy"),),
                           SizedBox(width: 5,),
-                          Text("${reserva.endDate?.day}/${reserva.endDate?.month}/${reserva.endDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
+                          Text("${widget.reserva.endDate?.day}/${widget.reserva.endDate?.month}/${widget.reserva.endDate?.year}", style: TextStyle(fontFamily: "Gilroy"),),
                         ],
                       ),                       
                     ],
@@ -87,7 +98,7 @@ class ItemListReserva extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primary
                         ),
                       ),
-                      Text('${reserva.totalPrice} BS.', style: TextStyle(fontFamily: "Gilroy"),),
+                      Text('${widget.reserva.totalPrice} BS.', style: TextStyle(fontFamily: "Gilroy"),),
                     ],
                   ),
                 )

@@ -113,3 +113,7 @@ export 'package:tomatebnb/bloc/payment_url_bloc/payment_url_state.dart';
 export 'package:tomatebnb/bloc/event_bloc/event_bloc.dart';
 export 'package:tomatebnb/bloc/event_bloc/event_event.dart';
 export 'package:tomatebnb/bloc/event_bloc/event_state.dart';
+// Bloc para filter accommodations
+export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_bloc.dart';
+export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_event.dart';
+export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_state.dart';

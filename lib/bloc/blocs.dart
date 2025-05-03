@@ -42,7 +42,7 @@ class Blocs {
   static final AccommodationDiscountBloc accommodationDiscountBloc = AccommodationDiscountBloc(AccommodationDiscountRepository(),);
   static final AccommodationPhotoBloc accommodationPhotoBloc = AccommodationPhotoBloc(AccommodationPhotoRepository(),);
   static final UserBloc userBloc = UserBloc(UserRepository(),);
-  static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(),);
+  static final ExploreAccommodationBloc exploreAccommodationBloc = ExploreAccommodationBloc(ExploreRepository(), AccommodationRepository());
   static final ExploreAccommodationDetailBloc exploreAccommodationDetailBloc = ExploreAccommodationDetailBloc(ExploreRepository(),);
   static final LocationBloc locationBloc = LocationBloc();
   static final AccommodationInstructionBloc accommodationInstructionBloc = AccommodationInstructionBloc(AccommodationInstructionRepository(),);
@@ -53,6 +53,7 @@ class Blocs {
   static final AccommodationFavoriteBloc accommodationFavoriteBloc = AccommodationFavoriteBloc(AccommodationFavoriteRepository(),);
   static final PaymentUrlBloc paymentUrlBloc = PaymentUrlBloc(PaymentRepository());
   static final EventBloc eventBloc = EventBloc(EventRepository());
+  static final AccommodationFilterBloc accommodationFilterBloc = AccommodationFilterBloc(AccommodationRepository());
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -80,6 +81,7 @@ class Blocs {
     BlocProvider<AccommodationFavoriteBloc>(create: (context) => accommodationFavoriteBloc),
     BlocProvider<PaymentUrlBloc>(create: (context) => paymentUrlBloc),
     BlocProvider<EventBloc>(create: (context) => eventBloc),
+    BlocProvider<AccommodationFilterBloc>(create: (context) => accommodationFilterBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -108,6 +110,7 @@ class Blocs {
     accommodationFavoriteBloc.close();
     paymentUrlBloc.close();
     eventBloc.close();
+    accommodationFilterBloc.close();
   }
 
 

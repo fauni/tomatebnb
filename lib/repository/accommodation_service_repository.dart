@@ -10,7 +10,7 @@ import 'package:tomatebnb/models/response/api_response_list.dart' as api_respons
 import 'package:tomatebnb/models/response/api_response.dart';
 
 class AccommodationServiceRepository {
-   final String _baseUrl = Environment.UrlApi;
+  final String _baseUrl = Environment.UrlApi;
 
   Future<api_response_list.ApiResponse<AccommodationServiceResponseModel>> getbyAccommodation(int accommodationId) async {
     try{

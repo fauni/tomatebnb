@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchHomeWidget extends StatelessWidget {
-  const SearchHomeWidget({super.key});
+  // Agregamos evento de entrada
+  final void Function() onSearch;
+
+  const SearchHomeWidget({required this.onSearch, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class SearchHomeWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: TextField(
           textAlign: TextAlign.center,
-          onTap: () {},
+          onTap: onSearch,
           readOnly: true,
           decoration: InputDecoration(
             hintText: 'Empieza la búsqueda',
