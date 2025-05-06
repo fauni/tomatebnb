@@ -18,38 +18,45 @@ class EmptyDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styleContext = Theme.of(context);
-    return Center(
-      child: SizedBox(
-        height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              child: Padding(
-                padding: const EdgeInsets.all(13.0),
-                child: Image.asset(image),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0),
+      child: Center(
+        child: SizedBox(
+          height: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 50,
+                child: Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: Image.asset(image),
+                ),
               ),
-            ),
-            Text(
-              message,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: styleContext.colorScheme.primary),
-            ),
-            SizedBox(height: 30,),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                minimumSize: const Size(300, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-                )
+              Text(
+                message,
+                style: TextStyle(
+                  fontFamily: "Gilroy Light",
+                  color: Theme.of(context).colorScheme.primary
+                ),
+                // style: // Theme.of(context).textTheme.tit?.copyWith(color: styleContext.colorScheme.primary),
               ),
-              onPressed: onPush, 
-              icon: Icon(iconButton), 
-              label: Text(textButton!)
-            )
-          ],
+              SizedBox(height: 30,),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  minimumSize: const Size(300, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                onPressed: onPush, 
+                icon: Icon(iconButton), 
+                label: Text(textButton!)
+              )
+            ],
+          ),
         ),
       ),
     );

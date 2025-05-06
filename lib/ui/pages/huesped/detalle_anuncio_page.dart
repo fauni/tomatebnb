@@ -47,14 +47,12 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
   Widget build(BuildContext context) {
     _accommodationId = GoRouterState.of(context).extra as int;
 
-    context
-        .read<AccommodationBloc>()
-        .add(AccommodationGetByIdEvent(_accommodationId));
+    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(_accommodationId));
 
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.onPrimary,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -78,18 +76,14 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        (accommodation.prices != null &&
-                                accommodation.prices!.isNotEmpty &&
-                                accommodation.prices!.first.priceNight !=
-                                    null &&
-                                accommodation.prices!.first.priceNight != 0)
+                        (accommodation.prices != null && accommodation.prices!.isNotEmpty && accommodation.prices!.first.priceNight !=null && accommodation.prices!.first.priceNight != 0)
                             ? "Bs. ${accommodation.prices!.first.priceNight.toString()} noche"
                             : "Sin precio",
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.primary,
                           fontFamily: "Gilroy Bold",
-                          decoration: TextDecoration.underline,
+                          decoration: TextDecoration.none,
                         ),
                       ),
                       SizedBox(
@@ -100,7 +94,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                           context.push('/select_date', extra: accommodation);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.error,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           foregroundColor:
                               Theme.of(context).colorScheme.onPrimary,
                           minimumSize: Size(150, 50),
@@ -372,139 +366,84 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                 Divider(),
                                 Text(
                                   'Lo que este lugar ofrece',
-                                  style: TextStyle(
-                                      fontSize: 18, fontFamily: "Gilroy Bold"),
+                                  style: TextStyle(fontSize: 18, fontFamily: "Gilroy Bold"),
                                 ),
 
-                                BlocConsumer<AccommodationServiceBloc,
-                                    AccommodationServiceState>(
+                                BlocConsumer<AccommodationServiceBloc, AccommodationServiceState>(
                                   listener: (context, state) {
                                     if (state is AccommodationServicecGetSuccess) {
-                                      services =
-                                          state.responseAccommodationServices;
-                                    }
-                                    if (state
-                                        is AccommodationServicecGetError) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(state.message),
-                                      ));
+                                      services = state.responseAccommodationServices;
+                                    } else if (state is AccommodationServicecGetError) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message),));
                                       services = [];
                                     }
                                   },
                                   builder: (context, state) {
-                                    if (state
-                                        is AccommodationServicecGetLoading) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
+                                    if (state is AccommodationServicecGetLoading) {
+                                      return Center(child: CircularProgressIndicator(),);
                                     }
-                                    if (state
-                                        is AccommodationServicecGetError) {
-                                      return Center(
-                                        child: Text(state.message),
-                                      );
+                                    if (state is AccommodationServicecGetError) {
+                                      return Center( child: Text(state.message), );
                                     }
 
-                                    return Container(
-                                      child: ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        padding: EdgeInsets.zero,
-                                        itemCount: services.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return ListTile(
-                                            title: Text(
-                                              services[index].service?.name ??
-                                                  "Sin nombre",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  // color: notifire.getgreycolor,
-                                                  fontFamily: "Gilroy Medium"),
-                                            ),
-                                            // leading: Image.asset(
-                                            //   "assets/images/wifi.png",
-                                            //   height: 20,
-                                            //   // color: notifire.getwhiteblackcolor,
-                                            // ),
-                                           leading: FadeInImage.assetNetwork(
-                                              placeholder:'assets/images/load.gif',
-                                              image: services[index].service!.icon,
-                                              height: 30.0,
-                                              width: 30.0,
-                                            )
-                                          );
-                                        },
-                                      ),
+                                    return ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      itemCount: services.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return ListTile(
+                                          title: Text( services[index].service?.name ?? "Sin nombre",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Gilroy Medium"),
+                                          ),
+                                          subtitle: Text(services[index].service!.icon),
+                                          leading: FadeInImage.assetNetwork(
+                                            placeholder:'assets/images/load.gif',
+                                            image: services[index].service!.icon,
+                                            height: 30.0,
+                                            width: 30.0,
+                                          )
+                                        );
+                                      },
                                     );
                                   },
                                 ),
 
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.025),
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.025),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Ubicación",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "Gilroy Bold",
-                                        // color: notifire.getwhiteblackcolor
-                                      ),
+                                      style: TextStyle(fontSize: 18, fontFamily: "Gilroy Bold",),
                                     ),
                                   ],
                                 ),
                                 Card(
                                   elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
+                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         StaticMapImage(
-                                            latitude:
-                                                accommodation.latitude ?? 0,
-                                            longitude:
-                                                accommodation.longitude ?? 0,
+                                            latitude: accommodation.latitude ?? 0,
+                                            longitude: accommodation.longitude ?? 0,
                                             zoom: 15,
-                                            size:
-                                                '${MediaQuery.of(context).size.width.toInt()}x200',
-                                            apiKey:
-                                                'AIzaSyAbYyLahsC3aGr0X3nkuWOXcLjrAZMRSbc'),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
+                                            size: '${MediaQuery.of(context).size.width.toInt()}x200',
+                                            apiKey: 'AIzaSyAbYyLahsC3aGr0X3nkuWOXcLjrAZMRSbc'),
+                                        SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                                         Row(
                                           children: [
-                                            Image.asset(
-                                              "assets/images/Maplocation.png",
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01,
-                                            ),
+                                            Image.asset("assets/images/Maplocation.png",height: 20,),
+                                            SizedBox(width: MediaQuery.of(context).size.width *0.01,),
                                             Text(
                                               "${accommodation.address ?? ''}  "
                                               "${accommodation.city ?? ""}, ${accommodation.country ?? ""}",
-                                              style: TextStyle(
-                                                  // color: notifire.getgreycolor,
-                                                  fontFamily: "Gilroy Medium"),
+                                              style: TextStyle(fontFamily: "Gilroy Medium"),
                                             )
                                           ],
                                         ),
@@ -512,22 +451,13 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                ),
-
+                                SizedBox( height: MediaQuery.of(context).size.height * 0.03,),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Reglas",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "Gilroy Bold",
-                                        // color: notifire.getwhiteblackcolor
-                                      ),
+                                      style: TextStyle(fontSize: 16,fontFamily: "Gilroy Bold",),
                                     ),
                                   ],
                                 ),
@@ -535,15 +465,11 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                 ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    itemCount:
-                                        (accommodation.rules ?? []).length,
+                                    itemCount: (accommodation.rules ?? []).length,
                                     itemBuilder: (context, index) {
-                                      return ItemListRuleAnuncio(
-                                          rule: accommodation.rules![index]);
+                                      return ItemListRuleAnuncio(rule: accommodation.rules![index]);
                                     }),
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.035),
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.035),
                               ],
                             ),
                           ],

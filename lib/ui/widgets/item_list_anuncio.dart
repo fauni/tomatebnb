@@ -33,7 +33,7 @@ class ItemListAnuncio extends StatelessWidget {
             :Theme.of(context).colorScheme.errorContainer,
             width: 2,
           ),
-          color: Theme.of(context).colorScheme.surfaceContainer,
+          color: Theme.of(context).colorScheme.tertiary.withAlpha(50),
         ),
         child: Row(
           children: [
@@ -51,7 +51,11 @@ class ItemListAnuncio extends StatelessWidget {
                   anuncio.photos!.isNotEmpty
                   ?FadeInImage.assetNetwork(
                     placeholder: 'assets/images/load.gif', 
-                    image: '$imgsUrl/accommodations/${anuncio.photos?.first.photoUrl}')              
+                    image: anuncio.photos!.first.url,
+                    fit: BoxFit.cover,
+                    height: 75,
+                    width: 75,)
+                    // image: '$imgsUrl/accommodations/${anuncio.photos?.first.photoUrl}')              
                   :Image.asset("assets/images/BoutiqueHotel.jpg"),
               ),
             ),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 
 class ItemListReserva extends StatefulWidget {
   final ReserveResponseModel reserva;
+  // Agregamos el metodo onTap
+  final Function() onTap;
 
-  const ItemListReserva({super.key, required this.reserva});
+  const ItemListReserva({super.key, required this.reserva, required this.onTap});
 
   @override
   State<ItemListReserva> createState() => _ItemListReservaState();
@@ -17,7 +18,6 @@ class _ItemListReservaState extends State<ItemListReserva> {
   @override
   void initState() {
     super.initState();
-    
   }
   
   @override
@@ -27,13 +27,13 @@ class _ItemListReservaState extends State<ItemListReserva> {
       
       builder: (context, state) {
         return GestureDetector(
-          onTap: () => context.push('/detalle_reserva', extra: widget.reserva),
+          onTap: widget.onTap,
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 6),
             padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Theme.of(context).colorScheme.surfaceContainer,
+              color: Theme.of(context).colorScheme.tertiary.withAlpha(100),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +54,6 @@ class _ItemListReservaState extends State<ItemListReserva> {
                     style: TextStyle(
                       fontSize: 12,
                       fontFamily: "Gilroy",
-                      color: Theme.of(context).colorScheme.secondary,
                       overflow: TextOverflow.ellipsis
                     ),
                   ),

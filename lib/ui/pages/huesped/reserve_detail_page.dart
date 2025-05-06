@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:scrollable_clean_calendar/utils/extensions.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
-import 'package:tomatebnb/utils/customwidget.dart';
 
 class ReserveDetailPage extends StatefulWidget {
   ReserveResponseModel reserva;
@@ -19,31 +18,32 @@ class _ReserveDetailPageState extends State<ReserveDetailPage> {
   @override
   void initState() {
     super.initState();
-    cargarReservaPorId();
   }
 
   
    int _nights=0;
 
-  cargarReservaPorId(){
-    context.read<ReserveBloc>().add(ReserveGetByIdEvent(widget.reserva.id!));
-  }
   @override
   Widget build(BuildContext context) {
     context.read<ReserveBloc>().add(ReserveGetByIdEvent(widget.reserva.id!));
-_nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
+    _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
         widget.reserva.endDate ?? DateTime.now());
    
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(75),
-        child: CustomAppbar(
-          centertext: "Detalle de la Reserva"
+        child: AppBar(
+          title: Text("Detalle de la Reserva"),
+          actions: [
+            IconButton(onPressed: (){
+              context.read<ReserveBloc>().add(ReserveGetByIdEvent(widget.reserva.id!));
+            }, icon: Icon(Icons.refresh))
+          ]
         ),
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
         child: BlocConsumer<ReserveBloc, ReserveState>(
           listener: (context, state) {
             // if(state is ReserveGetByIdSuccess){
@@ -52,24 +52,17 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
           },
           builder: (context, state) {
             if(state is ReserveGetByIdLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator(),);
             }
             if(state is ReserveGetByIdError) {
-              return Center(
-                child: Text(state.message),
-              );
+              return Center(child: Text(state.message),);
             } else if (state is ReserveGetByIdSuccess) {
               return Column(
                 children: [
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5,),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      
                       Container(
                         width: double.infinity,
                         margin: const EdgeInsets.symmetric(vertical: 6),
@@ -85,21 +78,22 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                               width: 75,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Icon(Icons.error),
-                                // child: Image.network(
-                                //   'https://asda', // state.responseReserve.accommodation.photos![0].url,
-                                //   errorBuilder: (context, error, stackTrace) {
-                                //     return const Icon(Icons.error);
-                                //   },
-                                //   width: 100,
-                                //   height: 100,
-                                //   fit: BoxFit.cover,
-                                // ),
+                                // child: Icon(Icons.dangerous),
+                                child: Image.network(
+                                  state.responseReserve.accommodation!.photos![0].url,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.error);
+                                  },
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text('data'),
                                 Text(
                                   state.responseReserve.accommodation!.title!,
                                   style: TextStyle(
@@ -224,6 +218,9 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                     thickness: 1,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Column(
                     children: [
                       Column(
@@ -285,70 +282,87 @@ _nights = daysBetween(widget.reserva.startDate ?? DateTime.now(),
                       ),
                     ],
                   ),
-                 Divider(
+                  Divider(
                     thickness: 1,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    widget.reserva.state == "Pagado" 
-                                    ?InkWell(
-                                      onTap: () {
-                                        // if(_accommodationId!=0){
-                                        context.push('/instructions_reserve',
-                                            extra: widget.reserva);
-                                        // }
-                                      },
-                                      child: Text(
-                                            "Ver Instrucciones",
-                                            style: TextStyle(
-                                                 fontSize: 16,
-                                                fontFamily: "Gilroy Bold",
-                                                color: Theme.of(context).colorScheme.primary),
-                                          ),
-                                    ):
-                                    Text(
-                                          "Pendiente de Pago",
-                                          style: TextStyle(
-                                                fontSize: 16,
-                                                fontFamily: "Gilroy Bold",
-                                                color: Theme.of(context).colorScheme.primary),
-                                        ),
-                                    
-                                  ],
-                                ),
-                  SizedBox(
-                    height: 20,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Estado de la Reserva",
+                        style: TextStyle(
+                          fontFamily: "Gilroy",
+                          color: Theme.of(context).colorScheme.primary
+                          // color: notifire.getwhiteblackcolor,
+                        ),
+                      ),
+                      Text(
+                        widget.reserva.state!.toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: "Gilroy Bold",
+                          // color: notifire.getwhiteblackcolor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      widget.reserva.state == "Pagado" 
+                      ? InkWell(
+                        onTap: () {
+                          context.push('/instructions_reserve', extra: widget.reserva);
+                        },
+                        child: Text(
+                          "Ver Instrucciones",
+                          style: TextStyle(fontSize: 16,fontFamily: "Gilroy Bold",color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ):
+                      Text(
+                        "Pendiente de Pago",
+                        style: TextStyle(fontSize: 16, fontFamily: "Gilroy Bold",color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  ElevatedButton(
+                    onPressed: () { context.replace('/payment', extra: widget.reserva.id); },
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                    child: Text('Realizar Pago')),
+                    SizedBox(height: 20,
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        context.replace('/payment', extra: widget.reserva.id);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Theme.of(context).colorScheme.tertiary,
-                          foregroundColor: Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          )),
-                      child: Text('Realizar Pago')),
-                       SizedBox(
-                    height: 20,
+                    onPressed: () { context.push('/instructions_reserve', extra: widget.reserva); },
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                    child: Text('Instrucciones de Llegada')),
+                    SizedBox(height: 20,
                   ),
                   widget.reserva.state != "pendiente" &&(widget.reserva.startDate!.isSameDayOrAfter(DateTime.now()))
-                  ?ElevatedButton(
-                      onPressed: () {
-                        context.push('/checkin', extra: widget.reserva);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Theme.of(context).colorScheme.tertiary,
-                          foregroundColor: Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          )),
-                      child: Text('Check In'))
+                  ? ElevatedButton(
+                    onPressed: () {
+                      context.push('/checkin', extra: widget.reserva);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                    child: Text('CHECK IN'))
                   :Text(""),
                   SizedBox(
                     height: 20,

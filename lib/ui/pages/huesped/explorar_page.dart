@@ -89,8 +89,8 @@ class _ExplorarPageState extends State<ExplorarPage> {
               },
               builder: (context, state) {
                 accommodations = [];
-                String errorMessage = 'Ocurrio un error al cargar los alojamientos';
-                String emptyMessage = 'No se encontraron alojamientos';
+                String errorMessage = 'Ocurrio un error al cargar los anuncios';
+                String emptyMessage = 'No se encontraron anuncios';
                 if (state is GetAccommodationNearbyLoading || state is GetAccommodationByDescribeLoading) {
                   return Center(child: CircularProgressIndicator(),);
                 } else if (state is GetAccommodationNearbySuccess) {

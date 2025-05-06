@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/config/app_colors.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
@@ -30,6 +31,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
     super.initState();
     getdarkmodepreviousstate();
   }
+  
 
   int _accommodationId = 0;
   final String _imgsUrl = Environment.UrlImg;
@@ -38,13 +40,13 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
   List<AccommodationServicecResponseModel> services = [];
   UserResponseModel user = UserResponseModel();
   AccommodationRequestModel requestModel =AccommodationRequestModel();
+
+  
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     _accommodationId = GoRouterState.of(context).extra as int;
-    context
-        .read<AccommodationBloc>()
-        .add(AccommodationGetByIdEvent(_accommodationId));
+    context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(_accommodationId));
     return Scaffold(
       backgroundColor: notifire.getbgcolor,
       body: CustomScrollView(
@@ -53,9 +55,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
             listener: (context, state) {
               if (state is AccommodationGetByIdSuccess) {
                 accommodation = state.responseAccommodation;
-                context
-                    .read<AccommodationServiceBloc>()
-                    .add(AccommodationServicecGetEvent(accommodation.id!));
+                context.read<AccommodationServiceBloc>().add(AccommodationServicecGetEvent(accommodation.id!));
                 context.read<UserBloc>().add(UserGetByIdEvent());
               }
             },
@@ -78,7 +78,11 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                 accommodation = state.responseAccommodation;
                 return SliverAppBar(
                   elevation: 0,
-                  backgroundColor: notifire.getbgcolor,
+                  actions: [
+                    IconButton(onPressed: (){
+                      context.read<AccommodationBloc>().add(AccommodationGetByIdEvent(_accommodationId));
+                    }, icon: Icon(Icons.refresh))
+                  ],
                   leading: Padding(
                     padding: const EdgeInsets.only(top: 8, left: 12),
                     child: CircleAvatar(
@@ -96,8 +100,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                     background: accommodation.photos!.isNotEmpty
                         ? FadeInImage.assetNetwork(
                             placeholder: 'assets/images/load.gif',
-                            image:
-                                '$_imgsUrl/accommodations/${accommodation.photos![0].photoUrl}',
+                            image: accommodation.photos!.first.url,
                           )
                         : Image.asset("assets/images/SagamoreResort.jpg",
                             height: 20),
@@ -438,8 +441,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: FadeInImage.assetNetwork(
                                           placeholder: 'assets/images/load.gif',
-                                          image:
-                                              '$_imgsUrl/accommodations/${accommodation.photos![index].photoUrl}',
+                                          image: accommodation.photos![index].url,
                                         ),
                                       );
                                     },
@@ -516,7 +518,7 @@ class _AccommodationDetailPageState extends State<AccommodationDetailPage> {
                                     context.replace('/describe',
                                      extra: _accommodationId);
                                   },
-                                  color: Theme.of(context).colorScheme.tertiary,
+                                  color: AppColors().greyColor2,// Theme.of(context).colorScheme.secondary,
                                   icon: Icon(Icons.edit_document),
                                   iconSize: 35.0,
                                 ),

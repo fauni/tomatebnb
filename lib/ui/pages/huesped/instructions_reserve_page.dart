@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_instruction_response_model.dart';
 import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
-import 'package:tomatebnb/utils/Colors.dart';
 import 'package:tomatebnb/utils/customwidget.dart';
-import 'package:tomatebnb/utils/dark_lightmode.dart';
 
 class InstructionsReservePage extends StatefulWidget {
   const InstructionsReservePage({super.key});
@@ -20,72 +17,47 @@ class InstructionsReservePage extends StatefulWidget {
 class _InstructionsReservePageState extends State<InstructionsReservePage> {
   List<AccommodationInstructionResponseModel> instructions = [];
   late ReserveResponseModel reserveResponseModel;
-  late ColorNotifire notifire;
   TimeOfDay? _selectedTime;
   TimeOfDay? _selectedTimeOut;
 
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
-    reserveResponseModel =
-        GoRouterState.of(context).extra as ReserveResponseModel;
-    context.read<AccommodationInstructionBloc>().add(
-        AccommodationInstructionGetByAccommodationEvent(
-            reserveResponseModel.accommodation?.id ?? 0));
+    reserveResponseModel = GoRouterState.of(context).extra as ReserveResponseModel;
+    context.read<AccommodationInstructionBloc>().add(AccommodationInstructionGetByAccommodationEvent(reserveResponseModel.accommodation?.id ?? 0));
     _selectedTime = TimeOfDay.fromDateTime(reserveResponseModel.checkinDate!);
-    _selectedTimeOut =
-        TimeOfDay.fromDateTime(reserveResponseModel.checkoutDate!);
+    _selectedTimeOut = TimeOfDay.fromDateTime(reserveResponseModel.checkoutDate!);
 
     return Center(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          backgroundColor: notifire.getbgcolor,
-          leading: BackButton(color: notifire.getwhiteblackcolor),
-          title: Text(
-            "Instrucciones",
-            style: TextStyle(
-                color: notifire.getwhiteblackcolor, fontFamily: "Gilroy Bold"),
+          // leading: BackButton(color: notifire.getwhiteblackcolor),
+          title: Text("Instrucciones de llegada", style: TextStyle(fontFamily: "Gilroy"),
           ),
         ),
-        backgroundColor: notifire.getbgcolor,
         body: Column(
           children: [
-            BlocConsumer<AccommodationInstructionBloc,
-                AccommodationInstructionState>(
+            BlocConsumer<AccommodationInstructionBloc, AccommodationInstructionState>(
               listener: (context, state) {
-                if (state
-                    is AccommodationInstructionGetByAccommodationSuccess) {
+                if (state is AccommodationInstructionGetByAccommodationSuccess) {
                   instructions = state.responseAccommodationInstructions;
                 }
                 if (state is AccommodationInstructionGetByAccommodationError) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
+                    SnackBar(content: Text(state.message),backgroundColor: Colors.red,),
                   );
                 }
               },
               builder: (context, state) {
-                if (state
-                    is AccommodationInstructionGetByAccommodationLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                if (state is AccommodationInstructionGetByAccommodationLoading) {
+                  return const Center( child: CircularProgressIndicator(),);
                 }
                 if (instructions.isEmpty) {
-                  return Center(
-                    child: Text(
-                      "No hay instrucciones disponibles",
-                      style: TextStyle(color: notifire.getwhiteblackcolor),
-                    ),
-                  );
+                  return Center(child: Text("No hay instrucciones disponibles",),);
                 }
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,41 +70,27 @@ class _InstructionsReservePageState extends State<InstructionsReservePage> {
                             return Container(
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                color: notifire.getwhiteblackcolor
-                                    .withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).colorScheme.tertiary.withAlpha(30)
                               ),
                               child: ListTile(
                                 title: Text(instructions[index].title ?? "",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      fontFamily: "Gilroy Bold",
-                                    )),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontFamily: "Gilroy Bold",
+                                  )
+                                ),
                                 subtitle: Text(
                                   instructions[index].description ?? "",
                                   maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: notifire.getwhiteblackcolor,
-                                  ),
+                                  style: TextStyle(),
                                 ),
                                 leading: index == 0
-                                    ? Icon(
-                                        Icons.location_searching,
-                                        color: notifire.getwhiteblackcolor,
-                                      )
-                                    : index == 1
-                                        ? Icon(
-                                            Icons.input,
-                                            color: notifire.getwhiteblackcolor,
-                                          )
-                                        : Icon(
-                                            Icons.output,
-                                            color: notifire.getwhiteblackcolor,
-                                          ),
+                                  ? Icon(Icons.location_searching)
+                                  : index == 1 ? Icon(Icons.input) : Icon(Icons.output),
                               ),
                             );
                           },
@@ -143,46 +101,42 @@ class _InstructionsReservePageState extends State<InstructionsReservePage> {
                 );
               },
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Divider(
-              height: 5,
+            const SizedBox(height: 20),
+            Divider(height: 5),
+            SizedBox(height: 5,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                'Es importante que completes la información de entrada y salida.',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              )
             ),
             BlocConsumer<ReserveBloc, ReserveState>(
               listener: (context, state) {
                 if (state is ReserveCheckinSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Actualizado correctamente'),
-                      backgroundColor: Colors.green,
-                    ),
+                    SnackBar( content: Text('Actualizado correctamente'), backgroundColor: Colors.green,),
                   );
                 }
                 if (state is ReserveCheckinError) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: Colors.red,
-                    ),
+                    SnackBar( content: Text(state.message), backgroundColor: Colors.red,),
                   );
                 }
                 
               },
               builder: (context, state) {
                 if (state is ReserveCheckinLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center( child: CircularProgressIndicator(), );
                 }
                 
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      "Llegaré al lugar a Horas:",
+                      "A que hora llegaras al lugar? :",
                       style: TextStyle(
-                        fontFamily: "Gilroy Bold",
+                        fontFamily: "Gilroy",
                         // color: notifire.getwhiteblackcolor,
                       ),
                     ),
@@ -213,9 +167,9 @@ class _InstructionsReservePageState extends State<InstructionsReservePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  "Dejaré el lugar a Horas:",
+                  "A que hora dejaras el lugar?",
                   style: TextStyle(
-                    fontFamily: "Gilroy Bold",
+                    fontFamily: "Gilroy",
                     // color: notifire.getwhiteblackcolor,
                   ),
                 ),

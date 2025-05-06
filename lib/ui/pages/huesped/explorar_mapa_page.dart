@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,13 +9,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:tomatebnb/config/constants/environment.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_filter_request.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_response_complete_model.dart';
-import 'package:tomatebnb/ui/widgets/filters_explore_widget.dart';
 import 'package:tomatebnb/ui/widgets/lista_describes_explore.dart';
 import 'package:tomatebnb/ui/widgets/search_home_widget.dart';
-
-import 'dart:ui' as ui;
-
-import '../../../bloc/export_blocs.dart';
+import 'package:tomatebnb/bloc/export_blocs.dart';
 
 class ExplorarMapaPage extends StatefulWidget {
   const ExplorarMapaPage({super.key});
@@ -24,83 +21,72 @@ class ExplorarMapaPage extends StatefulWidget {
 }
 
 class _ExplorarMapaPageState extends State<ExplorarMapaPage> {
+  late GoogleMapController mapController;
+  final String imgsUrl = Environment.UrlImg;
+  
   bool _showFloatingContainer = false;
   AccommodationResponseCompleteModel? _selectedAccommodation;
-
-  // Completer para el controlador del mapa
-  late GoogleMapController mapController;
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
-  // Índice de la categoría seleccionada
-  int _selectedIndex = 0;
-
-  // Datos de las categorías (título e icono)
-  final List<Map<String, dynamic>> _categories = [
-    {'title': 'Casas rurales', 'icon': Icons.home_filled},
-    {'title': 'Icónicos', 'icon': Icons.star},
-    {'title': 'Vistas increibles', 'icon': Icons.landscape},
-    {'title': 'Islas', 'icon': Icons.beach_access},
-    {'title': 'Casas rurales', 'icon': Icons.home},
-    {'title': 'Icónicos', 'icon': Icons.star},
-    {'title': 'Vistas increíbles', 'icon': Icons.landscape},
-    {'title': 'Islas', 'icon': Icons.beach_access},
-  ];
-
   List<AccommodationResponseCompleteModel> accommodations = [];
-  Set<Marker> markers = {}; // Inicializa markers como un conjunto vacío
+  final Set<Marker> markers = {};
+  final Completer<GoogleMapController> _controller = Completer();
+
   @override
   void initState() {
     super.initState();
-    getLocation();
+    _initializeData();
+  }
+
+  void _initializeData() {
+    _loadCurrentLocation();
     _loadInitialData();
   }
 
-  // Obtener ubicación actual
-  void getLocation() {
+  void _loadCurrentLocation() {
     context.read<LocationBloc>().add(LoadLocation());
   }
 
-  // Obtener alojamientos cercanos
   void _loadInitialData() {
     context.read<ExploreDescribeBloc>().add(GetDescribesForExploreEvent());
     context.read<ExploreAccommodationBloc>().add(NearbyAccommodationGetEvent());
   }
 
-  void _loadByFilter(AccommodationFilterRequest dataFilter){
-    context.read<ExploreAccommodationBloc>().add(GetAccommodationByFilterEvent(dataFilter));
+  Future<void> _loadByFilter(AccommodationFilterRequest dataFilter) async {
+    context.read<ExploreAccommodationBloc>().add(
+      GetAccommodationByFilterEvent(dataFilter)
+    );
   }
-  void getAccommodationById(int id) {
-    context.read<ExploreAccommodationDetailBloc>().add(GetAccommodationByIdEvent(id));
+
+  void _getAccommodationById(int id) {
+    context.read<ExploreAccommodationDetailBloc>().add(
+      GetAccommodationByIdEvent(id)
+    );
   }
 
-  Future<Uint8List> createCustomMarker(String price) async {
-    const double markerWidth = 120; // Ancho del rectángulo
-    const double markerHeight = 60; // Altura del rectángulo
-    const double borderRadius = 20; // Radio de los bordes
+  Future<Uint8List> _createCustomMarker(String price) async {
+    const double markerWidth = 120;
+    const double markerHeight = 60;
+    const double borderRadius = 20;
 
-    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(pictureRecorder);
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(recorder);
 
-    final Paint paint = Paint()..color = Colors.white; // Fondo blanco
+    // Draw background
+    final Paint paint = Paint()..color = Colors.white;
     final Paint borderPaint = Paint()
-      ..color = Colors.black // Borde negro
+      ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 
     final RRect rrect = RRect.fromRectAndRadius(
       Rect.fromLTWH(0, 0, markerWidth, markerHeight),
-      Radius.circular(borderRadius),
+      const Radius.circular(borderRadius),
     );
 
-    // Dibuja el fondo
     canvas.drawRRect(rrect, paint);
-    // Dibuja el borde
     canvas.drawRRect(rrect, borderPaint);
 
-    // Configurar el texto
-    final TextPainter textPainter = TextPainter(
+    // Draw text
+    final textPainter = TextPainter(
       text: TextSpan(
         text: '\$$price',
         style: const TextStyle(
@@ -110,308 +96,253 @@ class _ExplorarMapaPageState extends State<ExplorarMapaPage> {
         ),
       ),
       textDirection: TextDirection.ltr,
-      textAlign: TextAlign.center,
-    )..layout(minWidth: 0, maxWidth: markerWidth);
+    )..layout();
 
-    // Pintar el texto centrado
     textPainter.paint(
       canvas,
-      Offset((markerWidth - textPainter.width) / 2,
-          (markerHeight - textPainter.height) / 2),
+      Offset(
+        (markerWidth - textPainter.width) / 2,
+        (markerHeight - textPainter.height) / 2,
+      ),
     );
 
-    // Convertir el canvas en imagen
-    final img = await pictureRecorder
+    // Convert to image
+    final image = await recorder
         .endRecording()
         .toImage(markerWidth.toInt(), markerHeight.toInt());
-    final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    
     return byteData!.buffer.asUint8List();
   }
 
-  // Actualizar los marcadores
-  void updateMarkers(
-      List<AccommodationResponseCompleteModel> accommodations) async {
+  Future<void> _updateMarkers(List<AccommodationResponseCompleteModel> accommodations) async {
     markers.clear();
 
-    List<Future<Marker>> markerFutures = accommodations.map((anuncio) async {
-      LatLng location = LatLng(anuncio.latitude!, anuncio.longitude!);
+    if(accommodations.isNotEmpty){
+      for (final anuncio in accommodations) {
+        final location = LatLng(anuncio.latitude!, anuncio.longitude!);
+        final markerIcon = await _createCustomMarker(anuncio.priceNight.toString());
+        
+        markers.add(
+          Marker(
+            markerId: MarkerId('marker_${anuncio.id}'),
+            position: location,
+            icon: BitmapDescriptor.fromBytes(markerIcon),
+            onTap: () => _getAccommodationById(anuncio.id!),
+          ),
+        );
+      }
+    }
 
-      Uint8List markerIconBytes =
-          await createCustomMarker(anuncio.priceNight.toString());
-      BitmapDescriptor icon = BitmapDescriptor.fromBytes(markerIconBytes);
+    if (mounted) setState(() {});
+  }
 
-      return Marker(
-        markerId: MarkerId(location.toString()),
-        position: location,
-        icon: icon,
-        onTap: () {
-          // print(anuncio.id);
-          getAccommodationById(anuncio.id!);
-        },
-        // infoWindow: InfoWindow(
-        //   title: anuncio.title,
-        //   snippet: 'Precio: \$${anuncio.priceNight}',
-        // ),
-      );
-    }).toList();
+  Widget _buildMap(LocationState state) {
+    if (state.status == LocationStatus.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-    List<Marker> newMarkers = await Future.wait(markerFutures);
+    final defaultLocation = const LatLng(-17.009547, -64.832168);
+    final currentLocation = state.position != null 
+      ? LatLng(state.position!.latitude, state.position!.longitude)
+      : defaultLocation;
 
-    setState(() {
-      markers.addAll(newMarkers);
-    });
+    return GoogleMap(
+      onMapCreated: (controller) {
+        _controller.complete(controller);
+        mapController = controller;
+      },
+      initialCameraPosition: CameraPosition(
+        target: currentLocation,
+        zoom: state.position != null ? 14 : 7,
+      ),
+      markers: markers,
+    );
+  }
+
+  Widget _buildDescribesSection() {
+    return BlocConsumer<ExploreDescribeBloc, ExploreDescribeState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is DescribesForExploreLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is DescribesForExploreError) {
+          return Center(child: Text(state.message));
+        }
+        if (state is DescribesForExploreSuccess) {
+          return ListaDescribesExplore(
+            listaDescribes: state.describes,
+            onDescribeSelected: (describe) {
+              context.read<ExploreAccommodationBloc>().add(
+                GetAccommodationByDescribeEvent(describe.id!)
+              );
+            },
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget _buildAccommodationDetail(ExploreAccommodationDetailState state) {
+    if (state is! GetAccommodationDetailSuccess) return const SizedBox();
+
+    _selectedAccommodation = state.accommodation;
+    
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 300),
+      bottom: _showFloatingContainer ? 20 : -300,
+      left: 20,
+      right: 20,
+      child: Material(
+        borderRadius: BorderRadius.circular(20),
+        elevation: 10,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                _buildImageSlider(state),
+                _buildAccommodationInfo(state),
+              ],
+            ),
+            _buildCloseButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageSlider(GetAccommodationDetailSuccess state) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      child: SizedBox(
+        height: 200,
+        child: PageView.builder(
+          itemCount: state.accommodation.photos!.length,
+          itemBuilder: (context, index) {
+            final photoUrl = '$imgsUrl/accommodations/${state.accommodation.photos![index].photoUrl}';
+            return Image.network(
+              photoUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: progress.expectedTotalBytes != null
+                      ? progress.cumulativeBytesLoaded / progress.expectedTotalBytes!
+                      : null,
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stack) => const Center(
+                child: Text('Error al cargar la imagen'),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccommodationInfo(GetAccommodationDetailSuccess state) {
+    return InkWell(
+      onTap: () => context.push('/detail_ads', extra: state.accommodation.id),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              state.accommodation.title!,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Precio: ${state.accommodation.priceNight} Bs. por noche',
+              style: const TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCloseButton() {
+    return Positioned(
+      top: 10,
+      right: 10,
+      child: IconButton.filled(
+        onPressed: () => setState(() => _showFloatingContainer = false),
+        icon: const Icon(Icons.close),
+        style: FilledButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    String imgsUrl = Environment.UrlImg;
-    List<String> imageUrls = [
-      '$imgsUrl/accommodations/202503111741731635.jpg',
-      '$imgsUrl/accommodations/202503121741738252.jpg',
-      '$imgsUrl/accommodations/202503121741743684.jpg'
-      // 'assets/images/BangkokHotel.jpg',
-      // 'assets/images/BoutiqueHotel.jpg',
-      // 'assets/images/AnticipatedHotel.jpg',
-    ];
-
     return Scaffold(
       appBar: AppBar(),
       body: Stack(
-      children: [
-        Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  SearchHomeWidget(
-                    onSearch: () async {
-                      final result = await context.push<AccommodationFilterRequest>('/accommodation_filter');
-                      _loadByFilter(result!);
+        children: [
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              SearchHomeWidget(
+                onSearch: () async {
+                  final result = await context.push<AccommodationFilterRequest>(
+                    '/accommodation_filter'
+                  );
+                  if (result != null) await _loadByFilter(result);
+                },
+              ),
+              _buildDescribesSection(),
+              Expanded(
+                child: MultiBlocListener(
+                listeners: [
+                  BlocListener<ExploreAccommodationBloc, ExploreAccommodationState>(
+                    listener: (context, state) {
+                      if (state is GetAccommodationNearbySuccess) {
+                        accommodations = state.accommodations;
+                        _updateMarkers(accommodations);
+                      } else if (state is GetAccommodationByDescribeSuccess) {
+                        accommodations = state.accommodations;
+                        _updateMarkers(accommodations);
+                      } else if (state is AccommodationFilterSuccess) {
+                        accommodations = state.accommodations;
+                        _updateMarkers(accommodations);
+                      } else if(state is GetAccommodationByDescribeError || state is GetAccommodationNearbyError || state is AccommodationFilterError){
+                        accommodations = [];
+                        _updateMarkers([]);
+                      }
                     },
                   ),
-
-                  // FiltersExploreWidget(categories: _categories, selectedIndex: _selectedIndex),
-                  BlocConsumer<ExploreDescribeBloc, ExploreDescribeState>(
+                  BlocListener<ExploreAccommodationDetailBloc, ExploreAccommodationDetailState>(
                     listener: (context, state) {
-                      if (state is DescribesForExploreSuccess){
-                        // state.describes.forEach((element) {
-                        //   print(element.icon);
-                        // });
-                      }
-                    },
-                    builder: (context, state) {
-                      if(state is DescribesForExploreLoading){
-                        return Center(child: CircularProgressIndicator(),);
-                      }else if(state is DescribesForExploreError){
-                        return Center(child: Text(state.message),);
-                      }else if(state is DescribesForExploreSuccess){
-                        return ListaDescribesExplore(
-                          listaDescribes: state.describes, 
-                          onDescribeSelected: (p0) => context.read<ExploreAccommodationBloc>().add(GetAccommodationByDescribeEvent(p0.id!)),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
+                      setState(() {
+                        _showFloatingContainer = state is GetAccommodationDetailSuccess;
+                      });
                     },
                   ),
                 ],
-              ),
-            ),
-            Expanded(
-              child: BlocListener<ExploreAccommodationBloc,ExploreAccommodationState>(
-                listener: (context, state) {
-                  if (state is GetAccommodationNearbySuccess) {
-                    accommodations = state.accommodations;
-                    updateMarkers(accommodations); // Actualiza los markers en el mapa
-                  }
-                },
                 child: BlocBuilder<LocationBloc, LocationState>(
-                  builder: (context, state) {
-                    if (state.status == LocationStatus.loading) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state.status == LocationStatus.loaded &&
-                        state.position != null) {
-                      LatLng currentLocation = LatLng(
-                          state.position!.latitude, state.position!.longitude);
-                      return GoogleMap(
-                        onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: currentLocation,
-                          zoom: 14,
-                        ),
-                        markers: markers, // Agregar los markers al mapa
-                      );
-                    } else if (state.status == LocationStatus.error) {
-                      // return Center(child: Text('Error: ${state.errorMessage}'),);
-                      LatLng currentLocation = LatLng(-17.009547, -64.832168);
-                      return GoogleMap(
-                        onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: currentLocation,
-                          zoom: 7,
-                        ),
-                        markers: markers, // Agregar los markers al mapa
-                      );
-                    } else {
-                      return Center(
-                        child: Text('Cargando ubicación...'),
-                      );
-                    }
-                  },
+                  builder: (context, state) => _buildMap(state),
                 ),
               ),
-            ),
-          ],
-        ),
-        BlocConsumer<ExploreAccommodationDetailBloc, ExploreAccommodationDetailState>(
-          listener: (context, state) {
-            if(state is GetAccommodationDetailSuccess){
-              _showFloatingContainer = true;
-            } else {
-              _showFloatingContainer = false;
-            }
-            setState(() {
-                
-              });
-          },
-          builder: (context, state) {
-            if(state is GetAccommodationDetailLoading){
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if(state is GetAccommodationDetailSuccess){
-              _selectedAccommodation = state.accommodation;
-              return Visibility(
-                visible: _showFloatingContainer,
-                child: Positioned(
-                  bottom: 20,
-                  left: 20,
-                  right: 20,
-                  child: Container(
-                    padding: EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          spreadRadius: 2,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius:
-                                  BorderRadius.vertical(top: Radius.circular(20)),
-                              child: SizedBox(
-                                height: 200,
-                                child: PageView.builder(
-                                  itemCount: state.accommodation.photos!.length,
-                                  itemBuilder: (context, index) {
-                                    final photo = '$imgsUrl/accommodations/${state.accommodation.photos![index].photoUrl}';
-                                    return Image.network(
-                                      photo,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent? loadingProgress) {
-                                        if (loadingProgress == null) return child;
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder: (BuildContext context,
-                                          Object exception,
-                                          StackTrace? stackTrace) {
-                                        return Center(
-                                            child:
-                                                Text('Error al cargar la imagen'));
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => context.push('/detail_ads',extra: state.accommodation.id),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 10, right: 10, bottom: 20),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      state.accommodation.title!,
-                                      style: TextStyle(
-                                          fontSize: 13, fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      'Precio: ${state.accommodation.priceNight} Bs. noche',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: Row(
-                            children: [
-                              IconButton.filled(
-                                onPressed: () {},
-                                icon: Icon(Icons.favorite_border),
-                                style: FilledButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: Colors.black),
-                              ),
-                              IconButton.filled(
-                                onPressed: () {
-                                  setState(() {
-                                    _showFloatingContainer = false;
-                                  });
-                                },
-                                icon: Icon(Icons.close),
-                                style: FilledButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: Colors.black),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            } else  if(state is GetAccommodationDetailError){
-              return SizedBox();
-            } else {
-              return SizedBox();
-            }
-            
-          },
-        )
-      ],
-    ));
+              ),
+            ],
+          ),
+          BlocBuilder<ExploreAccommodationDetailBloc, ExploreAccommodationDetailState>(
+            builder: (context, state) => _buildAccommodationDetail(state),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/provider/navigation_provider.dart';
 import 'package:tomatebnb/ui/widgets/empty_data_widget.dart';
-import 'package:tomatebnb/utils/customwidget.dart';
 
 import '../../../bloc/export_blocs.dart';
 
@@ -17,9 +16,14 @@ class FavoritoPage extends StatefulWidget {
 class _FavoritoPageState extends State<FavoritoPage> {
   @override
   void initState() {
-    context.read<AccommodationFavoriteBloc>().add(GetAccommodationFavoriteEvent());
     super.initState();
+    cargarAnunciosFavoritos();
   }
+
+  void cargarAnunciosFavoritos(){
+    context.read<AccommodationFavoriteBloc>().add(GetAccommodationFavoriteEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +37,11 @@ class _FavoritoPageState extends State<FavoritoPage> {
         title: Text(
           "Favoritos",
           style: TextStyle(fontFamily: "Gilroy Bold"),
-        )
+        ),
+        actions: [
+          IconButton(onPressed: ()=> cargarAnunciosFavoritos(), icon: Icon(Icons.refresh)),
+          SizedBox(width: 10,)
+        ],
       ),
       body: BlocConsumer<AccommodationFavoriteBloc, AccommodationFavoriteState>(
         builder: (context, state) {
@@ -46,8 +54,9 @@ class _FavoritoPageState extends State<FavoritoPage> {
               itemBuilder: (context, index) {
                 final accommodation = state.accommodationList[index];
                 return InkWell(
-                  onTap: () {
-                    context.push('/detail_ads', extra: accommodation.id);
+                  onTap: () async {
+                    await context.push('/detail_ads', extra: accommodation.id);
+                    cargarAnunciosFavoritos();
                   },
                   child: Container(
                     width: double.infinity,

@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tomatebnb/bloc/export_blocs.dart';
+import 'package:tomatebnb/models/reserve/reserve_response_model.dart';
 import 'package:tomatebnb/provider/navigation_provider.dart';
 import 'package:tomatebnb/ui/widgets/empty_data_widget.dart';
 import 'package:tomatebnb/ui/widgets/item_list_reserva.dart';
 
 
-class ViajePage extends StatelessWidget {
+class ViajePage extends StatefulWidget {
   const ViajePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<ViajePage> createState() => _ViajePageState();
+}
+
+class _ViajePageState extends State<ViajePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    cargarReservas();
+  }
+
+  void cargarReservas() {
     context.read<ReserveBloc>().add(ReserveGetByUserEvent());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // context.read<ReserveBloc>().add(ReserveGetByUserEvent());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -21,7 +39,7 @@ class ViajePage extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text("Mis Reservas",style: TextStyle(fontFamily: "Gilroy Bold"),),
         actions: [
-          
+          IconButton(onPressed: ()=> cargarReservas(), icon: Icon(Icons.refresh)),
           SizedBox(width: 10,)
         ],
       ),
@@ -54,11 +72,16 @@ class ViajePage extends StatelessWidget {
               return ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: state.responseReserves.length,
                 itemBuilder: (BuildContext context, int index) {
+                  ReserveResponseModel reserva = state.responseReserves[index];
                   return ItemListReserva(
-                    reserva: state.responseReserves[index],
+                    reserva: reserva,
+                    onTap: () async {
+                      await context.push('/detalle_reserva', extra: reserva);
+                      cargarReservas();
+                    },
                   );
                 
                 },

@@ -584,7 +584,7 @@ class _HighlightPageState extends State<HighlightPage> {
                           children:<Widget> [
                             FadeInImage.assetNetwork(
                               placeholder: 'assets/images/load.gif', 
-                              image: '$_imgsUrl/accommodations/${photos[index].photoUrl}'),
+                              image: photos.first.url,),// '$_imgsUrl/accommodations/${photos[index].photoUrl}'),
                               Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Row(

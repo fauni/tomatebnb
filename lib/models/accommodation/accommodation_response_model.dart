@@ -3,7 +3,9 @@
 //     final AccommodationResponseModel = AccommodationResponseModelFromJson(jsonString);
 import 'dart:convert';
 import 'package:tomatebnb/models/accommodation/accommodation_photo_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_photo_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_price_request_model.dart';
+import 'package:tomatebnb/models/accommodation/accommodation_price_response_model.dart';
 import 'package:tomatebnb/models/accommodation/accommodation_request_model.dart';
 
 class AccommodationsResponseModel {
@@ -47,8 +49,10 @@ class AccommodationResponseModel {
     bool? published;
     DateTime? updatedAt;
     DateTime? createdAt;
-    final List<AccommodationPricesRequestModel>? prices;
-    final List<AccommodationPhotosRequestModel>? photos;
+    List<AccommodationPriceResponseModel>? prices=[];
+    List<AccommodationPhotoResponseModel>? photos=[];
+
+    
 
 
     AccommodationResponseModel({
@@ -99,8 +103,8 @@ class AccommodationResponseModel {
         bool? published,
         DateTime? updatedAt,
         DateTime? createdAt,
-        List<AccommodationPricesRequestModel>? prices,
-        List<AccommodationPhotosRequestModel>? photos,
+        List<AccommodationPriceResponseModel>? prices,
+        List<AccommodationPriceResponseModel>? photos,
     }) => 
         AccommodationResponseModel(
             id: id?? this.id,
@@ -123,9 +127,7 @@ class AccommodationResponseModel {
             status: status?? this.status,
             published: published?? this.published,
             updatedAt: updatedAt?? this.updatedAt,
-            createdAt: createdAt?? this.createdAt,
-            prices: prices?? this.prices,
-            photos: photos?? this.photos,
+            createdAt: createdAt?? this.createdAt
         );
 
     factory AccommodationResponseModel.fromJson(Map<String, dynamic> json) => AccommodationResponseModel(
@@ -150,8 +152,12 @@ class AccommodationResponseModel {
         published: json["published"],
         updatedAt: DateTime.parse(json["updated_at"]),
         createdAt: DateTime.parse(json["created_at"]),
-        // prices: json["prices"] == null ? [] : List<Price>.from(json["prices"]!.map((x) => Price.fromJson(x))),
-        // photos: json["photos"] == null ? [] : List<Photo>.from(json["photos"]!.map((x) => Photo.fromJson(x))),
+        prices: (json["prices"] as List<dynamic>?)
+          ?.map((x) => AccommodationPriceResponseModel.fromJson(x))
+          .toList() ?? [],
+        photos: (json["photos"] as List<dynamic>?)
+          ?.map((x) => AccommodationPhotoResponseModel.fromJson(x))
+          .toList() ?? [],
     );
  
     Map<String, dynamic> toJson() => {
@@ -176,6 +182,8 @@ class AccommodationResponseModel {
         "published": published,
         "updated_at": updatedAt?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),
+        "prices": prices?.map((x) => x.toJson()).toList() ?? [],
+        "photos": photos?.map((x) => x.toJson()).toList() ?? [],
     };
 
     AccommodationRequestModel toRequestModel() => AccommodationRequestModel(

@@ -64,7 +64,7 @@ AppButton({onclick, buttontext, BuildContext? context}) {
     child: Container(
       height: 55,
       width: double.infinity,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context!).colorScheme.secondary),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context!).colorScheme.primary),
       child: Center(child: Text(buttontext,style: TextStyle(fontSize: 16,color: WhiteColor,fontFamily: "Gilroy Bold")))
     )
   );
