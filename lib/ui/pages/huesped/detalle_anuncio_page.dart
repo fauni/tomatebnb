@@ -398,7 +398,7 @@ class _DetalleAnuncioPageState extends State<DetalleAnuncioPage> {
                                             fontSize: 15,
                                             fontFamily: "Gilroy Medium"),
                                           ),
-                                          subtitle: Text(services[index].service!.icon),
+                                          // subtitle: Text(services[index].service!.icon),
                                           leading: FadeInImage.assetNetwork(
                                             placeholder:'assets/images/load.gif',
                                             image: services[index].service!.icon,
