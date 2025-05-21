@@ -13,6 +13,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
    on<UserUpdateEvent>(_onUserUpdate); 
    on<UserPhotoUpdateEvent>(_onUserPhotoUpdate); 
    on<UserPasswordUpdateEvent>(_onUserPasswordUpdate);
+    on<UserUnsubscribeEvent>(_onUserUnsubscribe);
   }
 
   Future<void> _onUserGetById(UserGetByIdEvent event, Emitter<UserState> emit) async {
@@ -79,6 +80,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     } catch(e){
       emit(UserPasswordUpdateError(e.toString()));
+      
+    }
+  }
+
+   Future<void> _onUserUnsubscribe(UserUnsubscribeEvent event, Emitter<UserState> emit) async {
+    emit(UserUnsubscribeLoading());
+    try{
+      final response = await userRepository.unsubscribe();
+      
+      if(response.status){
+        emit(UserUnsubscribeSuccess(response.status));
+      } else {
+        emit(UserUnsubscribeError(response.message));
+      }
+    } catch(e){
+      emit(UserUnsubscribeError(e.toString()));
       
     }
   }

@@ -164,5 +164,43 @@ Future<ApiResponse<UserResponseModel>> updatePassword(String password) async {
     }
   }
 
+Future<ApiResponse<UserResponseModel>> unsubscribe() async {
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString("token")??"";
+      // String id = prefs.getInt("userId")??0;
+      String email = prefs.getString("email")??"";
+      final response = await http.post(
+        Uri.parse('$_baseUrl/auth/unsubscrive'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept' : 'application/json',
+          'Authorization':'Bearer $token',
+        },
+        body:jsonEncode(<String,dynamic>{
+          "email":email
+        })  
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: true,
+          message: data['message'],
+          
+        ); 
+      } else {
+        final data = json.decode(response.body); 
+        return ApiResponse<UserResponseModel>(
+          status: false,
+          message: data['message']
+        ); 
+      }
+    } catch (e) {
+      return ApiResponse<UserResponseModel>(
+        status: false, 
+        message: e.toString()
+      );
+    }
+  }
 
 }

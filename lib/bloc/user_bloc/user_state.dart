@@ -94,4 +94,25 @@ class UserPasswordUpdateError extends UserState {
   List<Object> get props => [message];
 }
 
+//Estados para desuscribirse contraseña por id
+class UserUnsubscribeLoading extends UserState {}
+
+class UserUnsubscribeSuccess extends UserState {
+  final bool status;
+  UserUnsubscribeSuccess(
+    this.status
+  );
+  @override
+  List<Object> get props => [status];
+}
+
+class UserUnsubscribeError extends UserState {
+  final String message;
+  UserUnsubscribeError(
+    this.message
+  );
+  @override
+  List<Object> get props => [message];
+}
+
 

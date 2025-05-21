@@ -691,4 +691,85 @@ class _MyProfilePageState extends State<MyProfilePage> {
         });
       });
   }
+  bottomsheetUsubscribe() {
+    return showModalBottomSheet(
+      backgroundColor: notifire.getbgcolor,
+      isScrollControlled: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+      builder: (context) {
+        return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.20,child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            "¿Estas seguro de eliminar tu cuenta?",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).colorScheme.primary,
+                                fontFamily: "Gilroy Bold"),
+                          ),
+                          Text(
+                            "Sus datos seran eliminados en 30 dias",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme.of(context).colorScheme.primary,
+                                fontFamily: "Gilroy Bold"),
+                          ),
+                        ],
+                      ),
+
+                    ),
+                  ),
+                  Divider(color: Theme.of(context).colorScheme.primary),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          // context
+                          //     .read<UserBloc>()
+                          //     .add(UserPhotoUpdateEvent(true, column));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(5)),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Text(
+                              "Eliminar Cuenta",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: WhiteColor,
+                                  fontFamily: "Gilroy Bold"),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      });
+  }
 }
