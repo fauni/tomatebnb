@@ -38,3 +38,9 @@ class UserPasswordUpdateEvent extends UserEvent {
   List<Object?> get props => [password];
 }
 
+class UserUnsubscribeEvent extends UserEvent {
+  
+  UserUnsubscribeEvent();
+  @override
+  List<Object?> get props => [];
+}
