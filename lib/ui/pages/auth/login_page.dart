@@ -19,8 +19,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    emailController.text = 'juan@mail.com';
-    passwordController.text = '1234567';
+    emailController.text = '';
+    passwordController.text = '';
+    // emailController.text = 'juan@mail.com';
+    // passwordController.text = '1234567';
     getMode();
     super.initState();
   }
@@ -97,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: passwordController,
                     // feildcolor: notifire.getdarkmodecolor,
                     // hintcolor: notifire.getgreycolor,
-                    text: 'Enter your password',
+                    text: 'Ingresa tu contraseña',
                     prefix: Image.asset("assets/images/password.png",
                         height: 25, 
                         // color: notifire.getgreycolor

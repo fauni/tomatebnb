@@ -1,4 +1,4 @@
-package com.example.tomatebnb
+package com.samaybolivia.app
 
 import io.flutter.embedding.android.FlutterActivity
 
