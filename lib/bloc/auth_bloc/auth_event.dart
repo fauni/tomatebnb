@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:tomatebnb/models/user/user_request_model.dart';
 import 'package:tomatebnb/models/user/user_request_modelp.dart';
 abstract class AuthEvent extends Equatable {
   @override

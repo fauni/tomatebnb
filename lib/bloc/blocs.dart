@@ -54,6 +54,8 @@ class Blocs {
   static final PaymentUrlBloc paymentUrlBloc = PaymentUrlBloc(PaymentRepository());
   static final EventBloc eventBloc = EventBloc(EventRepository());
   static final AccommodationFilterBloc accommodationFilterBloc = AccommodationFilterBloc(AccommodationRepository());
+  // Bloc para olvide mi contraseña
+  static final ForgotPasswordBloc forgotPasswordBloc = ForgotPasswordBloc(AuthRepository());
 
   // Lista de blocs Providers para proveer a toda la aplicación
   static final blocsProviders = [
@@ -82,6 +84,7 @@ class Blocs {
     BlocProvider<PaymentUrlBloc>(create: (context) => paymentUrlBloc),
     BlocProvider<EventBloc>(create: (context) => eventBloc),
     BlocProvider<AccommodationFilterBloc>(create: (context) => accommodationFilterBloc),
+    BlocProvider<ForgotPasswordBloc>(create: (context) => forgotPasswordBloc),
   ];
 
   // Metodos para cerrar el bloc cuando no se necesite
@@ -111,8 +114,8 @@ class Blocs {
     paymentUrlBloc.close();
     eventBloc.close();
     accommodationFilterBloc.close();
+    forgotPasswordBloc.close();
   }
-
 
   static final Blocs _instance = Blocs._internal();
 

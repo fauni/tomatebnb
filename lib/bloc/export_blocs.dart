@@ -117,3 +117,10 @@ export 'package:tomatebnb/bloc/event_bloc/event_state.dart';
 export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_bloc.dart';
 export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_event.dart';
 export 'package:tomatebnb/bloc/accommodation_filter_bloc/accommodation_filter_state.dart';
+
+
+// Bloc para olvide mi contraseña
+export 'package:tomatebnb/bloc/forgot_password_bloc/forgot_password_bloc.dart';
+export 'package:tomatebnb/bloc/forgot_password_bloc/forgot_password_event.dart';
+export 'package:tomatebnb/bloc/forgot_password_bloc/forgot_password_state.dart';
+

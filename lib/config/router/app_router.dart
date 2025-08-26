@@ -11,6 +11,7 @@ import 'package:tomatebnb/ui/pages/accommodation/prices_page.dart';
 import 'package:tomatebnb/ui/pages/accommodation/start_page.dart';
 import 'package:tomatebnb/ui/pages/anfitrion/menu_anfitrion_page.dart';
 import 'package:tomatebnb/ui/pages/auth/create_account_page.dart';
+import 'package:tomatebnb/ui/pages/auth/forgot_password_page.dart';
 import 'package:tomatebnb/ui/pages/auth/verificate_email_page.dart';
 import 'package:tomatebnb/ui/pages/host/ads_page.dart';
 import 'package:tomatebnb/ui/pages/huesped/accommodation_filter_page.dart';
@@ -146,6 +147,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/verificate_email',
       builder: (context, state) => const VerificateEmailPage()
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (context, state) => ForgotPasswordPage()
     ),
     GoRoute(
       path: '/payment',
